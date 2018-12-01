@@ -1,0 +1,12 @@
+Menus
+{
+    [Menu] = "&File"
+    {
+        Application.Exit
+    }
+
+    [Menu] = "&Tools"
+    {
+        Application.Options
+    }
+}

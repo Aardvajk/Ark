@@ -6,6 +6,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    QApplication::setApplicationName("Ark");
+
     MainWindow w;
     w.show();
 

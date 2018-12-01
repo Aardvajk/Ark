@@ -32,7 +32,16 @@ PRE_TARGETDEPS += "C:/Projects/pcx/build-pcx/release/libpcx.a" \
 
 SOURCES += \
         main.cpp \
-        MainWindow.cpp
+        MainWindow.cpp \
+    actions/ActionList.cpp \
+    actions/ApplicationActions.cpp \
+    options/OptionsDialog.cpp
 
 HEADERS += \
-        MainWindow.h
+        MainWindow.h \
+    actions/ActionList.h \
+    actions/ApplicationActions.h \
+    options/OptionsDialog.h
+
+DISTFILES += \
+    resources/text/mainwindowui.qps

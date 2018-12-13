@@ -25,23 +25,43 @@ INCLUDEPATH += "C:/mingw64/x86_64-w64-mingw32.shared/include" \
                "C:/Projects/QPx/QPx"
 
 LIBS += "C:/Projects/QPx/build-QPx/release/libQPx.a" \
-        "C:/Projects/pcx/build-pcx/release/libpcx.a"
+        "C:/Projects/pcx/build-pcx/release/libpcx.a" \
+        "C:/Projects/Gx/build-Gx/release/libGx.a" \
+        "C:/Projects/QGx/build-QGx/release/libQGx.a" \
+        "C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/d3d9.lib" \
+        "C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/d3dx9.lib" \
+        "C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/dxerr.lib" \
+        "C:/mingw64/x86_64-w64-mingw32.shared/lib/libuser32.a" \
+        "C:/mingw64/x86_64-w64-mingw32.shared/lib/libgdi32.a" \
+        "C:/mingw64/x86_64-w64-mingw32.shared/lib/libpsapi.a"
 
 PRE_TARGETDEPS += "C:/Projects/pcx/build-pcx/release/libpcx.a" \
-                  "C:/Projects/QPx/build-QPx/release/libQPx.a"
+                  "C:/Projects/QPx/build-QPx/release/libQPx.a" \
+                  "C:/Projects/Gx/build-Gx/release/libGx.a" \
+                  "C:/Projects/QGx/build-QGx/release/libQGx.a"
 
 SOURCES += \
         main.cpp \
         MainWindow.cpp \
     actions/ActionList.cpp \
     actions/ApplicationActions.cpp \
-    options/OptionsDialog.cpp
+    options/OptionsDialog.cpp \
+    models/Model.cpp \
+    graphics/Graphics.cpp
 
 HEADERS += \
         MainWindow.h \
     actions/ActionList.h \
     actions/ApplicationActions.h \
-    options/OptionsDialog.h
+    options/OptionsDialog.h \
+    models/Model.h \
+    graphics/Graphics.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps
+
+RESOURCES += \
+    resources.qrc
+
+RC_FILE += \
+   Ark.rc

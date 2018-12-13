@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/images/ark.png</file>
+    </qresource>
+</RCC>

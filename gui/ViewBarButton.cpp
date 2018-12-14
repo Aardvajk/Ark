@@ -130,19 +130,21 @@ void ViewBarButton::paintEvent(QPaintEvent *event)
     QPainter painter(this);
 
     bool down = (c.down && c.within) || c.checked;
-    auto dark = qvariant_cast<QColor>(QApplication::instance()->property("ui-dark"));
 
-    painter.fillRect(rect(), down ? QColor(255, 255, 255, 220) : QColor(dark.red(), dark.green(), dark.blue(), int(80.0f * c.anim->currentValue().toFloat())));
+    auto hover = qvariant_cast<QColor>(QApplication::instance()->property("ui-hover"));
+    hover.setAlphaF(c.anim->currentValue().toFloat());
+
+    painter.fillRect(rect(), down ? qvariant_cast<QColor>(QApplication::instance()->property("ui-hilight")) : hover);
 
     if(down)
     {
-        painter.setPen(QPen(qvariant_cast<QColor>(QApplication::instance()->property("ui-dark"))));
+        painter.setPen(QPen(qvariant_cast<QColor>(QApplication::instance()->property("ui-border"))));
         painter.setBrush(Qt::NoBrush);
 
         painter.drawRect(rect().adjusted(0, 0, -1, -1));
     }
 
-    if(c.type == ViewBar::Type::Small || c.text.isEmpty())
+    if(c.type == ViewBar::Type::Small)
     {
         int x = (rect().width() - c.pixDim) / 2;
         int y = (rect().height() - c.pixDim) / 2;

@@ -6,7 +6,7 @@
 
 LineSeparator::LineSeparator(Qt::Orientation orientation, QWidget *parent) : QWidget(parent)
 {
-    QPx::setPaletteColor(this, QPalette::Window, qvariant_cast<QColor>(QApplication::instance()->property("ui-dark")));
+    QPx::setPaletteColor(this, QPalette::Window, qvariant_cast<QColor>(QApplication::instance()->property("ui-border")));
     setAutoFillBackground(true);
 
     if(orientation == Qt::Vertical)

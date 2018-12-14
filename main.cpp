@@ -2,6 +2,16 @@
 
 #include <QtWidgets/QApplication>
 
+namespace
+{
+
+QColor grey(int value)
+{
+    return QColor(value, value, value);
+}
+
+}
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -9,9 +19,17 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName("Ark");
     QApplication::setWindowIcon(QIcon(":/resources/images/ark.png"));
 
-    QApplication::instance()->setProperty("ui-light", QColor(240, 240, 240));
-    QApplication::instance()->setProperty("ui-dark", QColor(190, 190, 190));
-    QApplication::instance()->setProperty("ui-text", QColor(100, 100, 100));
+    QApplication::instance()->setProperty("ui-panel", grey(230));
+    QApplication::instance()->setProperty("ui-border", grey(190));
+    QApplication::instance()->setProperty("ui-text", grey(100));
+    QApplication::instance()->setProperty("ui-hover", grey(200));
+    QApplication::instance()->setProperty("ui-hilight", grey(250));
+
+//    QApplication::instance()->setProperty("ui-panel", grey(60));
+//    QApplication::instance()->setProperty("ui-border", grey(16));
+//    QApplication::instance()->setProperty("ui-text", grey(200));
+//    QApplication::instance()->setProperty("ui-hover", grey(120));
+//    QApplication::instance()->setProperty("ui-hilight", grey(32));
 
     MainWindow w;
     w.show();

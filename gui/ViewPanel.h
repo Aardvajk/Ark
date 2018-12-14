@@ -20,7 +20,7 @@ protected:
 private slots:
     void splitVertical();
     void splitHorizontal();
-    void closeWindow();
+    void closePanel();
 
 private:
     ViewBar *bar;

@@ -37,7 +37,7 @@ void Separator::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
 
-    painter.setPen(qvariant_cast<QColor>(QApplication::instance()->property("ui-dark")));
+    painter.setPen(qvariant_cast<QColor>(QApplication::instance()->property("ui-border")));
 
     if(orientation == Qt::Horizontal)
     {
@@ -116,5 +116,5 @@ QSize ViewBar::defaultButtonSize() const
 void ViewBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.fillRect(rect(), qvariant_cast<QColor>(QApplication::instance()->property("ui-light")));
+    painter.fillRect(rect(), qvariant_cast<QColor>(QApplication::instance()->property("ui-panel")));
 }

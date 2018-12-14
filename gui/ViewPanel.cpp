@@ -14,7 +14,7 @@
 
 ViewPanel::ViewPanel(QWidget *parent) : QPx::SplitterPanel(parent)
 {
-    QPx::setPaletteColor(this, QPalette::Background, qvariant_cast<QColor>(QApplication::instance()->property("ui-dark")));
+    QPx::setPaletteColor(this, QPalette::Background, qvariant_cast<QColor>(QApplication::instance()->property("ui-border")));
 
     auto layout = new QPx::VBoxLayout(this);
 
@@ -30,7 +30,7 @@ ViewPanel::ViewPanel(QWidget *parent) : QPx::SplitterPanel(parent)
     menu->addAction(QIcon(":/resources/images/splitvert.png"), "Split Vertical", this, SLOT(splitVertical()));
     menu->addAction(QIcon(":/resources/images/splithorz.png"), "Split Horizontal", this, SLOT(splitHorizontal()));
     menu->addSeparator();
-    menu->addAction("Close", this, SLOT(closeWindow()));
+    menu->addAction("Close", this, SLOT(closePanel()));
 }
 
 ViewBar *ViewPanel::viewBar() const
@@ -48,7 +48,7 @@ void ViewPanel::splitHorizontal()
     split(Qt::Horizontal, clone());
 }
 
-void ViewPanel::closeWindow()
+void ViewPanel::closePanel()
 {
     QTimer::singleShot(0, this, SLOT(close()));
 }

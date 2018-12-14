@@ -53,7 +53,8 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto horz = new QPx::HBoxLayout();
     layout->addLayout(horz);
 
-    horz->addTypedWidget(new Panel());
+    auto p = horz->addTypedWidget(new Panel());
+
     horz->addWidget(new LineSeparator(Qt::Vertical));
     auto panel = horz->addTypedWidget(new ViewBar(Qt::Vertical, ViewBar::Type::Large));
 
@@ -63,7 +64,8 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     x->setCheckable(true);
     panel->addStretch();
     panel->addSeparator();
-    panel->addWidget(new ViewBarButton(QPixmap(":/resources/images/ark.png"), panel));
+    auto ex = panel->addTypedWidget(new ViewBarButton("Exit", QPixmap(":/resources/images/ark.png"), panel));
+    connect(ex, SIGNAL(clicked()), SLOT(close()));
 
     actions = new ActionList(settings["Actions"], this);
     model = new Model(this);

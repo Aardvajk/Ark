@@ -11,10 +11,59 @@
 
 #include <QtCore/QFileInfo>
 
+#include "gui/ViewPanel.h"
+#include "gui/ViewBar.h"
+#include "gui/ViewBarButton.h"
+#include "gui/LineSeparator.h"
+#include <QtGui/QPainter>
+#include <QtWidgets/QColorDialog>
+
+class StandIn : public QWidget
+{
+public:
+    StandIn() : c(Qt::white) { setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); }
+
+    virtual void paintEvent(QPaintEvent *){ QPainter p(this); p.fillRect(rect(), c); }
+    virtual void mousePressEvent(QMouseEvent *){ QColorDialog d(c, this); if(d.exec() == QDialog::Accepted){ c = d.currentColor(); update(); } }
+
+    QColor c;
+};
+
+class Panel : public ViewPanel
+{
+public:
+    Panel();
+
+protected:
+    virtual Panel *clone() const { return new Panel(); }
+};
+
+Panel::Panel()
+{
+    layout()->addWidget(new StandIn());
+}
+
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 {
     setCentralWidget(new QWidget());
     auto layout = new QPx::VBoxLayout(centralWidget());
+
+    layout->addWidget(new LineSeparator(Qt::Horizontal));
+
+    auto horz = new QPx::HBoxLayout();
+    layout->addLayout(horz);
+
+    horz->addTypedWidget(new Panel());
+    horz->addWidget(new LineSeparator(Qt::Vertical));
+    auto panel = horz->addTypedWidget(new ViewBar(Qt::Vertical, ViewBar::Type::Large));
+
+    auto x = panel->addTypedWidget(new ViewBarButton("Select", QPixmap(":/resources/images/ark.png"), panel));
+    x->setCheckable(true);
+    x = panel->addTypedWidget(new ViewBarButton("Move", QPixmap(":/resources/images/ark.png"), panel));
+    x->setCheckable(true);
+    panel->addStretch();
+    panel->addSeparator();
+    panel->addWidget(new ViewBarButton(QPixmap(":/resources/images/ark.png"), panel));
 
     actions = new ActionList(settings["Actions"], this);
     model = new Model(this);

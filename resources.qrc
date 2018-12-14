@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/images/ark.png</file>
+        <file>resources/images/splitvert.png</file>
+        <file>resources/images/splithorz.png</file>
     </qresource>
 </RCC>

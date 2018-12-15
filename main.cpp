@@ -19,17 +19,17 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName("Ark");
     QApplication::setWindowIcon(QIcon(":/resources/images/ark.png"));
 
-    QApplication::instance()->setProperty("qpx-view-ui-panel", grey(230));
-    QApplication::instance()->setProperty("qpx-view-ui-border", grey(190));
-    QApplication::instance()->setProperty("qpx-view-ui-text", grey(100));
-    QApplication::instance()->setProperty("qpx-view-ui-hover", grey(200));
-    QApplication::instance()->setProperty("qpx-view-ui-hilight", grey(250));
+    QApplication::instance()->setProperty("ui-panel", grey(230));
+    QApplication::instance()->setProperty("ui-border", grey(190));
+    QApplication::instance()->setProperty("ui-text", grey(100));
+    QApplication::instance()->setProperty("ui-hover", grey(200));
+    QApplication::instance()->setProperty("ui-hilight", grey(250));
 
-//    QApplication::instance()->setProperty("qpx-view-ui-panel", grey(60));
-//    QApplication::instance()->setProperty("qpx-view-ui-border", grey(16));
-//    QApplication::instance()->setProperty("qpx-view-ui-text", grey(200));
-//    QApplication::instance()->setProperty("qpx-view-ui-hover", grey(120));
-//    QApplication::instance()->setProperty("qpx-view-ui-hilight", grey(32));
+//    QApplication::instance()->setProperty("ui-panel", grey(60));
+//    QApplication::instance()->setProperty("ui-border", grey(16));
+//    QApplication::instance()->setProperty("ui-text", grey(200));
+//    QApplication::instance()->setProperty("ui-hover", grey(120));
+//    QApplication::instance()->setProperty("ui-hilight", grey(32));
 
     MainWindow w;
     w.show();

@@ -11,10 +11,12 @@
 
 #include <QtCore/QFileInfo>
 
-#include "gui/ViewPanel.h"
-#include "gui/ViewBar.h"
-#include "gui/ViewBarButton.h"
-#include "gui/LineSeparator.h"
+#include <QPxView/QPxViewPanel.h>
+#include <QPxView/QPxViewBar.h>
+#include <QPxView/QPxViewBarButton.h>
+#include <QPxView/QPxViewBarButtonGroup.h>
+#include <QPxView/QPxViewSeparator.h>
+
 #include <QtGui/QPainter>
 #include <QtWidgets/QColorDialog>
 
@@ -29,7 +31,7 @@ public:
     QColor c;
 };
 
-class Panel : public ViewPanel
+class Panel : public QPx::ViewPanel
 {
 public:
     Panel();
@@ -48,23 +50,25 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     setCentralWidget(new QWidget());
     auto layout = new QPx::VBoxLayout(centralWidget());
 
-    layout->addWidget(new LineSeparator(Qt::Horizontal));
+    layout->addWidget(new QPx::ViewSeparator(Qt::Horizontal));
 
     auto horz = new QPx::HBoxLayout();
     layout->addLayout(horz);
 
     auto p = horz->addTypedWidget(new Panel());
 
-    horz->addWidget(new LineSeparator(Qt::Vertical));
-    auto panel = horz->addTypedWidget(new ViewBar(Qt::Vertical, ViewBar::Type::Large));
+    horz->addWidget(new QPx::ViewSeparator(Qt::Vertical));
+    auto panel = horz->addTypedWidget(new QPx::ViewBar(Qt::Vertical, QPx::ViewBar::Type::Large));
 
-    auto x = panel->addTypedWidget(new ViewBarButton("Select", QPixmap(":/resources/images/ark.png"), panel));
-    x->setCheckable(true);
-    x = panel->addTypedWidget(new ViewBarButton("Move", QPixmap(":/resources/images/ark.png"), panel));
-    x->setCheckable(true);
+    auto group = new QPx::ViewBarButtonGroup(panel);;
+
+    panel->addTypedWidget(group->addButton(new QPx::ViewBarButton("Select", QPixmap(":/resources/images/ark.png"), panel)));
+    panel->addTypedWidget(group->addButton(new QPx::ViewBarButton("Move", QPixmap(":/resources/images/ark.png"), panel)));
+    panel->addTypedWidget(group->addButton(new QPx::ViewBarButton("Create", QPixmap(":/resources/images/ark.png"), panel)));
+
     panel->addStretch();
     panel->addSeparator();
-    auto ex = panel->addTypedWidget(new ViewBarButton("Exit", QPixmap(":/resources/images/ark.png"), panel));
+    auto ex = panel->addTypedWidget(new QPx::ViewBarButton("Exit", QPixmap(":/resources/images/ark.png"), panel));
     connect(ex, SIGNAL(clicked()), SLOT(close()));
 
     actions = new ActionList(settings["Actions"], this);

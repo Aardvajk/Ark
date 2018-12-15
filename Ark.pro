@@ -47,11 +47,7 @@ SOURCES += \
     actions/ApplicationActions.cpp \
     options/OptionsDialog.cpp \
     models/Model.cpp \
-    graphics/Graphics.cpp \
-    gui/ViewBar.cpp \
-    gui/ViewPanel.cpp \
-    gui/ViewBarButton.cpp \
-    gui/LineSeparator.cpp
+    graphics/Graphics.cpp 
 
 HEADERS += \
         MainWindow.h \
@@ -59,11 +55,7 @@ HEADERS += \
     actions/ApplicationActions.h \
     options/OptionsDialog.h \
     models/Model.h \
-    graphics/Graphics.h \
-    gui/ViewBar.h \
-    gui/ViewPanel.h \
-    gui/ViewBarButton.h \
-    gui/LineSeparator.h
+    graphics/Graphics.h 
 
 DISTFILES += \
     resources/text/mainwindowui.qps

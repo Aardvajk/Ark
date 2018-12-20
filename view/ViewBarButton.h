@@ -15,8 +15,8 @@ class ViewBarButton : public QWidget
 public:
     ViewBarButton(const QPixmap &pixmap, ViewBar *parent);
     ViewBarButton(const QString &text, const QPixmap &pixmap, ViewBar *parent);
+    ViewBarButton(QMenu *menu, const QPixmap &pixmap, ViewBar *parent);
 
-    QMenu *setMenu(QMenu *menu);
     void setCheckable(bool state);
 
     bool isCheckable() const;

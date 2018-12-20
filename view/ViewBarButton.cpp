@@ -19,7 +19,7 @@ namespace
 class Cache
 {
 public:
-    Cache(ViewBar *bar, ViewBarButton *button, const QString &text, const QPixmap &pix);
+    Cache(ViewBar *bar, ViewBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix);
 
     ViewBar::Type type;
     QPx::UnitAnimation *anim;
@@ -31,7 +31,7 @@ public:
     QGraphicsColorizeEffect *disableEffect;
 };
 
-Cache::Cache(ViewBar *bar, ViewBarButton *button, const QString &text, const QPixmap &pix) : type(bar->type()), menu(nullptr), down(false), within(false), checkable(false), checked(false), text(text), pix(pix)
+Cache::Cache(ViewBar *bar, ViewBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix) : type(bar->type()), menu(menu), down(false), within(false), checkable(false), checked(false), text(text), pix(pix)
 {
     anim = new QPx::UnitAnimation(200, 500, button);
 
@@ -53,20 +53,18 @@ Cache::Cache(ViewBar *bar, ViewBarButton *button, const QString &text, const QPi
 
 ViewBarButton::ViewBarButton(const QPixmap &pixmap, ViewBar *parent) : QWidget(parent)
 {
-    auto &c = cache.alloc<Cache>(parent, this, QString(), pixmap);
+    auto &c = cache.alloc<Cache>(parent, this, QString(), nullptr, pixmap);
 }
 
 ViewBarButton::ViewBarButton(const QString &text, const QPixmap &pixmap, ViewBar *parent) : QWidget(parent)
 {
-    auto &c = cache.alloc<Cache>(parent, this, text, pixmap);
+    auto &c = cache.alloc<Cache>(parent, this, text, nullptr, pixmap);
 }
 
-QMenu *ViewBarButton::setMenu(QMenu *menu)
+ViewBarButton::ViewBarButton(QMenu *menu, const QPixmap &pixmap, ViewBar *parent)
 {
-    cache.get<Cache>().menu = menu;
+    auto &c = cache.alloc<Cache>(parent, this, QString(), menu, pixmap);
     connect(menu, SIGNAL(aboutToHide()), SLOT(reset()));
-
-    return menu;
 }
 
 void ViewBarButton::setCheckable(bool state)

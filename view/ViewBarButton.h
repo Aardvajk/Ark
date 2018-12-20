@@ -16,7 +16,7 @@ public:
     ViewBarButton(const QPixmap &pixmap, ViewBar *parent);
     ViewBarButton(const QString &text, const QPixmap &pixmap, ViewBar *parent);
 
-    void setMenu(QMenu *menu);
+    QMenu *setMenu(QMenu *menu);
     void setCheckable(bool state);
 
     bool isCheckable() const;
@@ -42,7 +42,7 @@ private:
     void buttonPressed();
     void buttonReleased();
 
-    pcx::aligned_store<80> cache;
+    pcx::aligned_store<88> cache;
 };
 
 #endif // VIEWBARBUTTON_H

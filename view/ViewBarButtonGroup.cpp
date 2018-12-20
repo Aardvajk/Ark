@@ -2,6 +2,8 @@
 
 #include "view/ViewBarButton.h"
 
+#include <QtGui/QMouseEvent>
+
 #include <algorithm>
 
 namespace
@@ -28,7 +30,24 @@ ViewBarButton *ViewBarButtonGroup::addButton(ViewBarButton *button)
     connect(button, SIGNAL(destroyed(QObject*)), SLOT(buttonDestroyed(QObject*)));
     connect(button, SIGNAL(toggled(bool)), SLOT(buttonToggled(bool)));
 
+    button->installEventFilter(this);
+
     return button;
+}
+
+bool ViewBarButtonGroup::eventFilter(QObject *object, QEvent *event)
+{
+    if((event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonRelease) && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton)
+    {
+        auto button = qobject_cast<ViewBarButton*>(object);
+
+        if(button->isChecked())
+        {
+            return true;
+        }
+    }
+
+    return QObject::eventFilter(object, event);
 }
 
 void ViewBarButtonGroup::buttonDestroyed(QObject *button)

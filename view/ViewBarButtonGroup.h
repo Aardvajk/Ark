@@ -16,6 +16,9 @@ public:
 
     ViewBarButton *addButton(ViewBarButton *button);
 
+protected:
+    virtual bool eventFilter(QObject *object, QEvent *event) override;
+
 private slots:
     void buttonDestroyed(QObject *button);
     void buttonToggled(bool state);

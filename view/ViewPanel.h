@@ -22,8 +22,12 @@ private slots:
     void splitHorizontal();
     void closePanel();
 
+    void click();
+
 private:
     ViewBar *bar;
+
+    QVector<QWidget*> ws;
 };
 
 #endif // VIEWPANEL_H

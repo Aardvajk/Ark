@@ -13,6 +13,14 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
+void ViewPanel::click()
+{
+    for(auto w: ws)
+    {
+        w->setEnabled(!w->isEnabled());
+    }
+}
+
 ViewPanel::ViewPanel(QWidget *parent) : SplitterPanel(parent)
 {
     setPaletteColor(this, QPalette::Background, qvariant_cast<QColor>(QApplication::instance()->property("ui-border")));
@@ -25,15 +33,18 @@ ViewPanel::ViewPanel(QWidget *parent) : SplitterPanel(parent)
 
     auto group = new ViewBarButtonGroup(bar);
 
-    bar->addWidget(group->addButton(new ViewBarButton(icon, bar)));
-    bar->addWidget(group->addButton(new ViewBarButton(icon, bar)));
-    bar->addWidget(group->addButton(new ViewBarButton(icon, bar)));
+    ws.append(bar->addTypedWidget(group->addButton(new ViewBarButton(icon, bar))));
+    ws.append(bar->addTypedWidget(group->addButton(new ViewBarButton(icon, bar))));
+    bar->addTypedWidget(group->addButton(new ViewBarButton(icon, bar)));
 
     bar->addStretch();
-    auto button = bar->addTypedWidget(new ViewBarButton(icon, bar));
+    auto tb = bar->addTypedWidget(new ViewBarButton(icon, bar));
+    connect(tb, SIGNAL(clicked()), SLOT(click()));
 
-    auto menu = new QMenu(button);
-    button->setMenu(menu);
+    auto button = bar->addTypedWidget(new ViewBarButton(icon, bar));
+    ws.append(button);
+
+    auto menu = button->setMenu(new QMenu(button));
 
     menu->addAction(QIcon(":/resources/images/splitvert.png"), "Split Vertical", this, SLOT(splitVertical()));
     menu->addAction(QIcon(":/resources/images/splithorz.png"), "Split Horizontal", this, SLOT(splitHorizontal()));

@@ -17,6 +17,8 @@
 #include "view/ViewBarButtonGroup.h"
 #include "view/ViewSeparator.h"
 
+#include <QPxWidgets/QPxSplitterContainer.h>
+
 #include <QtGui/QPainter>
 #include <QtWidgets/QColorDialog>
 
@@ -45,6 +47,14 @@ Panel::Panel()
     layout()->addWidget(new StandIn());
 }
 
+ViewBarButton *bs[10];
+
+void MainWindow::click()
+{
+    bs[0]->setEnabled(!bs[0]->isEnabled());
+    bs[1]->setEnabled(!bs[1]->isEnabled());
+}
+
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 {
     setCentralWidget(new QWidget());
@@ -55,21 +65,21 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto horz = new QPx::HBoxLayout();
     layout->addLayout(horz);
 
-    auto p = horz->addTypedWidget(new Panel());
+    horz->addWidget(new QPx::SplitterContainer(new Panel()));
 
     horz->addWidget(new ViewSeparator(Qt::Vertical));
     auto panel = horz->addTypedWidget(new ViewBar(Qt::Vertical, ViewBar::Type::Large));
 
     auto group = new ViewBarButtonGroup(panel);;
 
-    panel->addTypedWidget(group->addButton(new ViewBarButton("Select", QPixmap(":/resources/images/ark.png"), panel)));
-    panel->addTypedWidget(group->addButton(new ViewBarButton("Move", QPixmap(":/resources/images/ark.png"), panel)));
-    panel->addTypedWidget(group->addButton(new ViewBarButton("Create", QPixmap(":/resources/images/ark.png"), panel)));
+    panel->addTypedWidget(group->addButton(new ViewBarButton("Select", QPixmap(":/resources/images/ark.png"), panel)))->setChecked(true);
+    bs[0] = panel->addTypedWidget(group->addButton(new ViewBarButton("Move", QPixmap(":/resources/images/ark.png"), panel)));
+    bs[1] = panel->addTypedWidget(group->addButton(new ViewBarButton("Create", QPixmap(":/resources/images/ark.png"), panel)));
 
     panel->addStretch();
     panel->addSeparator();
     auto ex = panel->addTypedWidget(new ViewBarButton("Exit", QPixmap(":/resources/images/ark.png"), panel));
-    connect(ex, SIGNAL(clicked()), SLOT(close()));
+    connect(ex, SIGNAL(clicked()), SLOT(click()));
 
     actions = new ActionList(settings["Actions"], this);
     model = new Model(this);

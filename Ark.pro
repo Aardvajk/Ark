@@ -52,7 +52,8 @@ SOURCES += \
     view/ViewBarButton.cpp \
     view/ViewBarButtonGroup.cpp \
     view/ViewPanel.cpp \
-    view/ViewSeparator.cpp
+    view/ViewSeparator.cpp \
+    view/ViewContainer.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -65,7 +66,9 @@ HEADERS += \
     view/ViewBarButton.h \
     view/ViewBarButtonGroup.h \
     view/ViewPanel.h \
-    view/ViewSeparator.h
+    view/ViewSeparator.h \
+    view/ViewContainer.h \
+    view/ViewPanelFactory.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

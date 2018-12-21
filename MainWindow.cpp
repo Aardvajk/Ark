@@ -16,16 +16,17 @@
 #include "view/ViewBarButton.h"
 #include "view/ViewBarButtonGroup.h"
 #include "view/ViewSeparator.h"
-
-#include <QPxWidgets/QPxSplitterContainer.h>
+#include "view/ViewContainer.h"
+#include "view/ViewPanelFactory.h"
 
 #include <QtGui/QPainter>
 #include <QtWidgets/QColorDialog>
+#include <QtWidgets/QApplication>
 
 class StandIn : public QWidget
 {
 public:
-    StandIn() : c(Qt::white) { setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); }
+    explicit StandIn(const QColor &color) : c(color) { setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); }
 
     virtual void paintEvent(QPaintEvent *){ QPainter p(this); p.fillRect(rect(), c); }
     virtual void mousePressEvent(QMouseEvent *){ QColorDialog d(c, this); if(d.exec() == QDialog::Accepted){ c = d.currentColor(); update(); } }
@@ -36,16 +37,19 @@ public:
 class Panel : public ViewPanel
 {
 public:
-    Panel();
+    explicit Panel(const QColor &color) : s(new StandIn(color)) { layout()->addWidget(s); }
+    explicit Panel(const QPx::Settings &settings) : s(new StandIn(qvariant_cast<QColor>(settings["color"].value()))) { layout()->addWidget(s); }
+
+    virtual void saveState(QPx::Settings &settings) const override { settings["color"].setValue(s->c); }
+
+    QColor color() const { return s->c; }
 
 protected:
-    virtual Panel *clone() const { return new Panel(); }
-};
+    virtual Panel *clone() const { return new Panel(color()); }
 
-Panel::Panel()
-{
-    layout()->addWidget(new StandIn());
-}
+private:
+    StandIn *s;
+};
 
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 {
@@ -57,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto horz = new QPx::HBoxLayout();
     layout->addLayout(horz);
 
-    horz->addWidget(new QPx::SplitterContainer(new Panel()));
+    vc = horz->addTypedWidget(new ViewContainer(new Panel(Qt::white)));
 
     horz->addWidget(new ViewSeparator(Qt::Vertical));
     auto panel = horz->addTypedWidget(new ViewBar(Qt::Vertical, ViewBar::Type::Large));
@@ -70,8 +74,8 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     panel->addStretch();
     panel->addSeparator();
-    auto ex = panel->addTypedWidget(new ViewBarButton("Exit", QPixmap(":/resources/images/ark.png"), panel));
-    connect(ex, SIGNAL(clicked()), SLOT(close()));
+
+    connect(panel->addTypedWidget(new ViewBarButton("Exit", QPixmap(":/resources/images/ark.png"), panel)), SIGNAL(clicked()), SLOT(close()));
 
     actions = new ActionList(settings["Actions"], this);
     model = new Model(this);
@@ -86,11 +90,15 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
 
     auto graphics = new Graphics(this);
+
+    vc->restoreState(settings["Test"], ViewPanelFactory<Panel>());
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     settings["Application"]["Geometry"].setValue(saveGeometry());
+
+    vc->saveState(settings["Test"]);
 
     actions->sync();
     settings.sync();

@@ -3,6 +3,13 @@
 
 #include <QPxWidgets/QPxSplitterPanel.h>
 
+namespace QPx
+{
+
+class Settings;
+
+}
+
 class ViewBar;
 
 class ViewPanel : public QPx::SplitterPanel
@@ -13,6 +20,8 @@ public:
     explicit ViewPanel(QWidget *parent = nullptr);
 
     ViewBar *viewBar() const;
+
+    virtual void saveState(QPx::Settings &settings) const = 0;
 
 protected:
     virtual ViewPanel *clone() const = 0;

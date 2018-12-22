@@ -36,7 +36,9 @@ ViewPanel::ViewPanel(QWidget *parent) : SplitterPanel(parent)
     menu->addAction(QIcon(":/resources/images/splitvert.png"), "Split Vertical", this, SLOT(splitVertical()));
     menu->addAction(QIcon(":/resources/images/splithorz.png"), "Split Horizontal", this, SLOT(splitHorizontal()));
     menu->addSeparator();
-    menu->addAction("Close", this, SLOT(closePanel()));
+    closeAction = menu->addAction("Close", this, SLOT(closePanel()));
+
+    connect(menu, SIGNAL(aboutToShow()), SLOT(menuAboutToShow()));
 
     bar->addTypedWidget(new ViewBarButton(menu, icon, bar));
 }
@@ -44,6 +46,11 @@ ViewPanel::ViewPanel(QWidget *parent) : SplitterPanel(parent)
 ViewBar *ViewPanel::viewBar() const
 {
     return bar;
+}
+
+void ViewPanel::menuAboutToShow()
+{
+    closeAction->setVisible(qobject_cast<QSplitter*>(parentWidget()));
 }
 
 void ViewPanel::splitVertical()

@@ -17,7 +17,6 @@
 #include "view/ViewBarButtonGroup.h"
 #include "view/ViewSeparator.h"
 #include "view/ViewContainer.h"
-#include "view/ViewPanelFactory.h"
 
 #include <QtGui/QPainter>
 #include <QtWidgets/QColorDialog>
@@ -61,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto horz = new QPx::HBoxLayout();
     layout->addLayout(horz);
 
-    vc = horz->addTypedWidget(new ViewContainer(new Panel(Qt::white)));
+    vc = horz->addTypedWidget(new TypedViewContainer<Panel>(new Panel(Qt::white)));
 
     horz->addWidget(new ViewSeparator(Qt::Vertical));
     auto panel = horz->addTypedWidget(new ViewBar(Qt::Vertical, ViewBar::Type::Large));
@@ -91,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto graphics = new Graphics(this);
 
-    vc->restoreState(settings["Test"], ViewPanelFactory<Panel>());
+//    vc->restoreState(settings["Test"]);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

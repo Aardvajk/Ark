@@ -67,8 +67,7 @@ HEADERS += \
     view/ViewBarButtonGroup.h \
     view/ViewPanel.h \
     view/ViewSeparator.h \
-    view/ViewContainer.h \
-    view/ViewPanelFactory.h
+    view/ViewContainer.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

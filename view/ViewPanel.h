@@ -10,6 +10,7 @@ class Settings;
 
 }
 
+class QAction;
 class ViewBar;
 
 class ViewPanel : public QPx::SplitterPanel
@@ -27,12 +28,15 @@ protected:
     virtual ViewPanel *clone() const = 0;
 
 private slots:
+    void menuAboutToShow();
+
     void splitVertical();
     void splitHorizontal();
     void closePanel();
 
 private:
     ViewBar *bar;
+    QAction *closeAction;
 };
 
 #endif // VIEWPANEL_H

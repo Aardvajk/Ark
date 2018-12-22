@@ -16,18 +16,14 @@ namespace
 
 }
 
-ViewContainer::ViewContainer(ViewPanel *panel, QWidget *parent) : QWidget(parent)
+ViewContainer::ViewContainer(QWidget *parent) : QWidget(parent)
 {
     new QPx::VBoxLayout(this);
-    layout()->addWidget(panel);
 }
 
-void ViewContainer::clear()
+void ViewContainer::addPanel(ViewPanel *panel)
 {
-    auto item = layout()->takeAt(0);
-
-    delete item->widget();
-    delete item;
+    layout()->addWidget(panel);
 }
 
 void ViewContainer::saveState(QPx::Settings &settings) const
@@ -41,15 +37,26 @@ void ViewContainer::restoreState(const QPx::Settings &settings)
     layout()->addWidget(restoreContainerState(settings[0]));
 }
 
+void ViewContainer::clear()
+{
+    if(layout()->count())
+    {
+        auto item = layout()->takeAt(0);
+
+        delete item->widget();
+        delete item;
+    }
+}
+
 void ViewContainer::saveContainerState(QWidget *widget, QPx::Settings &settings) const
 {
     if(auto splitter = qobject_cast<const QSplitter*>(widget))
     {
         auto &s = settings.append("splitter");
-        s["properties"]["state"].setValue(splitter->saveState());
+        s.setValue(splitter->saveState());
 
-        saveContainerState(splitter->widget(0), s["first"]);
-        saveContainerState(splitter->widget(1), s["second"]);
+        saveContainerState(splitter->widget(0), s);
+        saveContainerState(splitter->widget(1), s);
     }
     else if(auto panel = qobject_cast<const ViewPanel*>(widget))
     {
@@ -61,15 +68,13 @@ QWidget *ViewContainer::restoreContainerState(const QPx::Settings &settings)
 {
     if(settings.key() == "splitter")
     {
-        auto &p = settings["properties"];
-
         auto splitter = new QPx::LineSplitter(Qt::Vertical);
         QPx::setPaletteColor(splitter, QPalette::Background, qvariant_cast<QColor>(QApplication::instance()->property("ui-border")));
 
-        splitter->addWidget(restoreContainerState(settings["first"][0]));
-        splitter->addWidget(restoreContainerState(settings["second"][0]));
+        splitter->addWidget(restoreContainerState(settings[0]));
+        splitter->addWidget(restoreContainerState(settings[1]));
 
-        splitter->restoreState(p["state"].value().toByteArray());
+        splitter->restoreState(settings.value().toByteArray());
 
         return splitter;
     }

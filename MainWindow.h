@@ -21,6 +21,9 @@ protected:
     virtual void closeEvent(QCloseEvent *event) override;
 
 private slots:
+    void load();
+    void save();
+
     void updateTitle();
 
 private:

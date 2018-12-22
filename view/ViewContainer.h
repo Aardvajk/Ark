@@ -17,12 +17,15 @@ class ViewContainer : public QWidget
     Q_OBJECT
 
 public:
-    ViewContainer(ViewPanel *panel, QWidget *parent = nullptr);
+    explicit ViewContainer(QWidget *parent = nullptr);
 
-    void clear();
+    void addPanel(ViewPanel *panel);
 
     void saveState(QPx::Settings &settings) const;
     void restoreState(const QPx::Settings &settings);
+
+public slots:
+    void clear();
 
 protected:
     virtual ViewPanel *createPanel(const QPx::Settings &settings) const = 0;
@@ -35,7 +38,7 @@ private:
 template<typename T> class TypedViewContainer : public ViewContainer
 {
 public:
-    TypedViewContainer(ViewPanel *panel, QWidget *parent = nullptr) : ViewContainer(panel, parent) { }
+    TypedViewContainer(QWidget *parent = nullptr) : ViewContainer(parent) { }
 
 protected:
     virtual ViewPanel *createPanel(const QPx::Settings &settings) const { return new T(settings); }

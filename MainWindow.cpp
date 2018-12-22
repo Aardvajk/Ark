@@ -60,7 +60,8 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto horz = new QPx::HBoxLayout();
     layout->addLayout(horz);
 
-    vc = horz->addTypedWidget(new TypedViewContainer<Panel>(new Panel(Qt::white)));
+    vc = horz->addTypedWidget(new TypedViewContainer<Panel>());
+    vc->addPanel(new Panel(Qt::white));
 
     horz->addWidget(new ViewSeparator(Qt::Vertical));
     auto panel = horz->addTypedWidget(new ViewBar(Qt::Vertical, ViewBar::Type::Large));
@@ -74,7 +75,9 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     panel->addStretch();
     panel->addSeparator();
 
-    connect(panel->addTypedWidget(new ViewBarButton("Exit", QPixmap(":/resources/images/ark.png"), panel)), SIGNAL(clicked()), SLOT(close()));
+    connect(panel->addTypedWidget(new ViewBarButton("Clear", QPixmap(":/resources/images/ark.png"), panel)), SIGNAL(clicked()), vc, SLOT(clear()));
+    connect(panel->addTypedWidget(new ViewBarButton("Load", QPixmap(":/resources/images/ark.png"), panel)), SIGNAL(clicked()), SLOT(load()));
+    connect(panel->addTypedWidget(new ViewBarButton("Save", QPixmap(":/resources/images/ark.png"), panel)), SIGNAL(clicked()), SLOT(save()));
 
     actions = new ActionList(settings["Actions"], this);
     model = new Model(this);
@@ -89,18 +92,30 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
 
     auto graphics = new Graphics(this);
-
-//    vc->restoreState(settings["Test"]);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     settings["Application"]["Geometry"].setValue(saveGeometry());
 
-    vc->saveState(settings["Test"]);
-
     actions->sync();
     settings.sync();
+}
+
+void MainWindow::load()
+{
+    QPx::Settings s;
+    s.load("C:/Users/aardv/Desktop/test.txt");
+
+    vc->restoreState(s);
+}
+
+void MainWindow::save()
+{
+    QPx::Settings s;
+    vc->saveState(s);
+
+    s.save("C:/Users/aardv/Desktop/test.txt");
 }
 
 void MainWindow::updateTitle()

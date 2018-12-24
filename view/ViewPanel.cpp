@@ -4,9 +4,9 @@
 #include "view/ViewBarButton.h"
 #include "view/ViewBarButtonGroup.h"
 #include "view/ViewSeparator.h"
+#include "view/ViewSplitter.h"
 
 #include <QPxWidgets/QPxLayouts.h>
-#include <QPxWidgets/QPxPalette.h>
 
 #include <QtCore/QTimer>
 
@@ -15,8 +15,6 @@
 
 ViewPanel::ViewPanel(QWidget *parent) : SplitterPanel(parent)
 {
-    setPaletteColor(this, QPalette::Background, qvariant_cast<QColor>(QApplication::instance()->property("ui-border")));
-
     auto layout = new QPx::VBoxLayout(this);
 
     bar = layout->addTypedWidget(new ViewBar(Qt::Horizontal, ViewBar::Type::Small));
@@ -46,6 +44,11 @@ ViewPanel::ViewPanel(QWidget *parent) : SplitterPanel(parent)
 ViewBar *ViewPanel::viewBar() const
 {
     return bar;
+}
+
+QSplitter *ViewPanel::createSplitter(Qt::Orientation orientation) const
+{
+    return new ViewSplitter(orientation);
 }
 
 void ViewPanel::menuAboutToShow()

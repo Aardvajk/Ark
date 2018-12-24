@@ -1,5 +1,8 @@
 #include "MainWindow.h"
 
+#include "properties/custom/Selection.h"
+#include "properties/custom/Mesh.h"
+
 #include <QtWidgets/QApplication>
 
 namespace
@@ -24,6 +27,10 @@ int main(int argc, char *argv[])
     QApplication::instance()->setProperty("ui-text", grey(100));
     QApplication::instance()->setProperty("ui-hover", grey(200));
     QApplication::instance()->setProperty("ui-hilight", grey(250));
+
+    QMetaType::registerComparators<Selection>();
+    QMetaType::registerComparators<Mesh>();
+    qRegisterMetaTypeStreamOperators<Mesh>("Mesh");
 
 //    QApplication::instance()->setProperty("ui-panel", grey(60));
 //    QApplication::instance()->setProperty("ui-border", grey(16));

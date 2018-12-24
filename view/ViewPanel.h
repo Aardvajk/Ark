@@ -27,6 +27,8 @@ public:
 protected:
     virtual ViewPanel *clone() const = 0;
 
+    virtual QSplitter *createSplitter(Qt::Orientation orientation) const override;
+
 private slots:
     void menuAboutToShow();
 

@@ -1,12 +1,12 @@
 #include "ViewContainer.h"
 
 #include "view/ViewPanel.h"
+#include "view/ViewSplitter.h"
 
 #include <QPxCore/QPxSettings.h>
 
 #include <QPxWidgets/QPxLayouts.h>
 #include <QPxWidgets/QPxLineSplitter.h>
-#include <QPxWidgets/QPxPalette.h>
 
 #include <QtWidgets/QApplication>
 
@@ -68,8 +68,7 @@ QWidget *ViewContainer::restoreContainerState(const QPx::Settings &settings)
 {
     if(settings.key() == "splitter")
     {
-        auto splitter = new QPx::LineSplitter(Qt::Vertical);
-        QPx::setPaletteColor(splitter, QPalette::Background, qvariant_cast<QColor>(QApplication::instance()->property("ui-border")));
+        auto splitter = new ViewSplitter(Qt::Vertical);
 
         splitter->addWidget(restoreContainerState(settings[0]));
         splitter->addWidget(restoreContainerState(settings[1]));

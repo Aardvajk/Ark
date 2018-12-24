@@ -53,7 +53,13 @@ SOURCES += \
     view/ViewBarButtonGroup.cpp \
     view/ViewPanel.cpp \
     view/ViewSeparator.cpp \
-    view/ViewContainer.cpp
+    view/ViewContainer.cpp \
+    view/ViewSplitter.cpp \
+    models/ModelData.cpp \
+    entity/Entity.cpp \
+    properties/PropertyMap.cpp \
+    properties/custom/Selection.cpp \
+    properties/custom/Mesh.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -67,7 +73,15 @@ HEADERS += \
     view/ViewBarButtonGroup.h \
     view/ViewPanel.h \
     view/ViewSeparator.h \
-    view/ViewContainer.h
+    view/ViewContainer.h \
+    view/ViewSplitter.h \
+    properties/Property.h \
+    models/ModelData.h \
+    entity/Entity.h \
+    properties/PropertyMap.h \
+    properties/custom/Selection.h \
+    properties/custom/Mesh.h \
+    properties/custom/Face.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

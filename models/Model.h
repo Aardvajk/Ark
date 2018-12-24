@@ -3,18 +3,29 @@
 
 #include <QPxEditor/QPxAbstractEditorModel.h>
 
+class ModelData;
+class PropertyMap;
+class Entity;
+
 class Model : public QPx::AbstractEditorModel
 {
     Q_OBJECT
 
 public:
     explicit Model(QObject *parent = nullptr);
+    virtual ~Model() override;
 
-    bool clear() override;
-    bool open(const QString &path) override;
-    bool save(const QString &path) const override;
+    const PropertyMap &properties() const;
+    const QList<Entity> &entities() const;
 
-    QString filter() const override;
+    virtual bool clear() override;
+    virtual bool open(const QString &path) override;
+    virtual bool save(const QString &path) const override;
+
+    virtual QString filter() const override;
+
+private:
+    ModelData *data;
 };
 
 #endif // MODEL_H

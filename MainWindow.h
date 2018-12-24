@@ -8,8 +8,6 @@
 class ActionList;
 class Model;
 
-class ViewContainer;
-
 class MainWindow : public QPx::MainWindow
 {
     Q_OBJECT
@@ -21,9 +19,6 @@ protected:
     virtual void closeEvent(QCloseEvent *event) override;
 
 private slots:
-    void load();
-    void save();
-
     void updateTitle();
 
 private:
@@ -31,8 +26,6 @@ private:
 
     ActionList *actions;
     Model *model;
-
-    ViewContainer *vc;
 };
 
 #endif // MAINWINDOW_H

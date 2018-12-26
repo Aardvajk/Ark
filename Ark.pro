@@ -65,7 +65,9 @@ SOURCES += \
     graphics/buffers/FaceBuffer.cpp \
     graphics/buffers/PointBuffer.cpp \
     graphics/buffers/PreviewBuffer.cpp \
-    views/ModelView.cpp
+    views/ModelView.cpp \
+    panels/Panel.cpp \
+    panels/ModelViewPanel.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -96,7 +98,9 @@ HEADERS += \
     graphics/buffers/PointBuffer.h \
     graphics/buffers/PreviewBuffer.h \
     graphics/components/EdgeKey.h \
-    views/ModelView.h
+    views/ModelView.h \
+    panels/Panel.h \
+    panels/ModelViewPanel.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

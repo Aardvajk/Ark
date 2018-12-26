@@ -11,7 +11,7 @@
 
 #include <QtCore/QFileInfo>
 
-#include "views/ModelView.h"
+#include "panels/ModelViewPanel.h"
 
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 {
@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 
-    auto view = layout->addTypedWidget(new ModelView(model, graphics));
+    auto view = layout->addTypedWidget(new ModelViewPanel(model, graphics));
     connect(graphics, SIGNAL(render()), view, SLOT(update()));
 
     restoreGeometry(settings["Application"]["Geometry"].value().toByteArray());

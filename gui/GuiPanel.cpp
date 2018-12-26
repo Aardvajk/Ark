@@ -21,12 +21,6 @@ GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent)
 
     auto icon = QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation);
 
-    auto group = new GuiBarButtonGroup(bar);
-
-    bar->addTypedWidget(group->addButton(new GuiBarButton(icon, bar)));
-    bar->addTypedWidget(group->addButton(new GuiBarButton(icon, bar)));
-    bar->addTypedWidget(group->addButton(new GuiBarButton(icon, bar)));
-
     bar->addStretch();
 
     auto menu = new QMenu();

@@ -11,6 +11,6 @@ ModelView::ModelView(Model *model, Graphics *graphics, QWidget *parent) : QGx::G
 void ModelView::paintEvent(QPaintEvent *event)
 {
     graphics->device.begin(this);
-    graphics->device.clear({ 0.7f, 0.75f, 0.8f }, 1.0f);
+    graphics->device.clear({ 0.9f, 0.95f, 1.0f }, 1.0f);
     graphics->device.end(this);
 }

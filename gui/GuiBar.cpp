@@ -1,4 +1,4 @@
-#include "ViewBar.h"
+#include "GuiBar.h"
 
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -52,16 +52,16 @@ void Separator::paintEvent(QPaintEvent *event)
 class Cache
 {
 public:
-    Cache(Qt::Orientation orientation, ViewBar::Type type) : orientation(orientation), type(type), defaultButtonSize(type == ViewBar::Type::Small ? QSize(26, 26) : QSize(70, 52)) { }
+    Cache(Qt::Orientation orientation, GuiBar::Type type) : orientation(orientation), type(type), defaultButtonSize(type == GuiBar::Type::Small ? QSize(26, 26) : QSize(70, 52)) { }
 
     Qt::Orientation orientation;
-    ViewBar::Type type;
+    GuiBar::Type type;
     QSize defaultButtonSize;
 };
 
 }
 
-ViewBar::ViewBar(Qt::Orientation orientation, Type type, QWidget *parent) : QWidget(parent)
+GuiBar::GuiBar(Qt::Orientation orientation, Type type, QWidget *parent) : QWidget(parent)
 {
     auto &c = cache.alloc<Cache>(orientation, type);
 
@@ -79,18 +79,18 @@ ViewBar::ViewBar(Qt::Orientation orientation, Type type, QWidget *parent) : QWid
     }
 }
 
-void ViewBar::addWidget(QWidget *widget)
+void GuiBar::addWidget(QWidget *widget)
 {
     layout()->addWidget(widget);
 }
 
-void ViewBar::addSeparator()
+void GuiBar::addSeparator()
 {
     auto &c = cache.get<Cache>();
     addWidget(new Separator(c.orientation, c.defaultButtonSize));
 }
 
-void ViewBar::addStretch()
+void GuiBar::addStretch()
 {
     auto w = new QWidget();
     w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -98,22 +98,22 @@ void ViewBar::addStretch()
     addWidget(w);
 }
 
-Qt::Orientation ViewBar::orientation() const
+Qt::Orientation GuiBar::orientation() const
 {
     return cache.get<Cache>().orientation;
 }
 
-ViewBar::Type ViewBar::type() const
+GuiBar::Type GuiBar::type() const
 {
     return cache.get<Cache>().type;
 }
 
-QSize ViewBar::defaultButtonSize() const
+QSize GuiBar::defaultButtonSize() const
 {
     return cache.get<Cache>().defaultButtonSize;
 }
 
-void ViewBar::paintEvent(QPaintEvent *event)
+void GuiBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.fillRect(rect(), qvariant_cast<QColor>(QApplication::instance()->property("ui-panel")));

@@ -1,21 +1,21 @@
-#ifndef VIEWBARBUTTON_H
-#define VIEWBARBUTTON_H
+#ifndef GUIBARBUTTON_H
+#define GUIBARBUTTON_H
 
 #include <QtWidgets/QWidget>
 
 #include <pcx/aligned_store.h>
 
-class ViewBar;
+class GuiBar;
 class QMenu;
 
-class ViewBarButton : public QWidget
+class GuiBarButton : public QWidget
 {
     Q_OBJECT
 
 public:
-    ViewBarButton(const QPixmap &pixmap, ViewBar *parent);
-    ViewBarButton(const QString &text, const QPixmap &pixmap, ViewBar *parent);
-    ViewBarButton(QMenu *menu, const QPixmap &pixmap, ViewBar *parent);
+    GuiBarButton(const QPixmap &pixmap, GuiBar *parent);
+    GuiBarButton(const QString &text, const QPixmap &pixmap, GuiBar *parent);
+    GuiBarButton(QMenu *menu, const QPixmap &pixmap, GuiBar *parent);
 
     void setCheckable(bool state);
 
@@ -45,4 +45,4 @@ private:
     pcx::aligned_store<88> cache;
 };
 
-#endif // VIEWBARBUTTON_H
+#endif // GUIBARBUTTON_H

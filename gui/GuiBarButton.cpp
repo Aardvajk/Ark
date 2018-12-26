@@ -1,6 +1,6 @@
-#include "ViewBarButton.h"
+#include "GuiBarButton.h"
 
-#include "view/ViewBar.h"
+#include "gui/GuiBar.h"
 
 #include <QPxCore/QPxAnimations.h>
 
@@ -19,9 +19,9 @@ namespace
 class Cache
 {
 public:
-    Cache(ViewBar *bar, ViewBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix);
+    Cache(GuiBar *bar, GuiBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix);
 
-    ViewBar::Type type;
+    GuiBar::Type type;
     QPx::UnitAnimation *anim;
     QMenu *menu;
     bool down, within, checkable, checked;
@@ -31,11 +31,11 @@ public:
     QGraphicsColorizeEffect *disableEffect;
 };
 
-Cache::Cache(ViewBar *bar, ViewBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix) : type(bar->type()), menu(menu), down(false), within(false), checkable(false), checked(false), text(text), pix(pix)
+Cache::Cache(GuiBar *bar, GuiBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix) : type(bar->type()), menu(menu), down(false), within(false), checkable(false), checked(false), text(text), pix(pix)
 {
     anim = new QPx::UnitAnimation(200, 500, button);
 
-    pixDim = bar->type() == ViewBar::Type::Small ? 16 : 24;
+    pixDim = bar->type() == GuiBar::Type::Small ? 16 : 24;
 
     button->setAttribute(Qt::WA_Hover);
     button->setFixedSize(bar->defaultButtonSize());
@@ -51,43 +51,43 @@ Cache::Cache(ViewBar *bar, ViewBarButton *button, const QString &text, QMenu *me
 
 }
 
-ViewBarButton::ViewBarButton(const QPixmap &pixmap, ViewBar *parent) : QWidget(parent)
+GuiBarButton::GuiBarButton(const QPixmap &pixmap, GuiBar *parent) : QWidget(parent)
 {
     auto &c = cache.alloc<Cache>(parent, this, QString(), nullptr, pixmap);
 }
 
-ViewBarButton::ViewBarButton(const QString &text, const QPixmap &pixmap, ViewBar *parent) : QWidget(parent)
+GuiBarButton::GuiBarButton(const QString &text, const QPixmap &pixmap, GuiBar *parent) : QWidget(parent)
 {
     auto &c = cache.alloc<Cache>(parent, this, text, nullptr, pixmap);
 }
 
-ViewBarButton::ViewBarButton(QMenu *menu, const QPixmap &pixmap, ViewBar *parent)
+GuiBarButton::GuiBarButton(QMenu *menu, const QPixmap &pixmap, GuiBar *parent)
 {
     auto &c = cache.alloc<Cache>(parent, this, QString(), menu, pixmap);
     connect(menu, SIGNAL(aboutToHide()), SLOT(reset()));
 }
 
-void ViewBarButton::setCheckable(bool state)
+void GuiBarButton::setCheckable(bool state)
 {
     cache.get<Cache>().checkable = state;
 }
 
-bool ViewBarButton::isCheckable() const
+bool GuiBarButton::isCheckable() const
 {
     return cache.get<Cache>().checkable;
 }
 
-bool ViewBarButton::isChecked() const
+bool GuiBarButton::isChecked() const
 {
     return cache.get<Cache>().checked;
 }
 
-void ViewBarButton::click()
+void GuiBarButton::click()
 {
     emit clicked();
 }
 
-void ViewBarButton::setChecked(bool state)
+void GuiBarButton::setChecked(bool state)
 {
     auto &c = cache.get<Cache>();
     if(c.checkable)
@@ -104,7 +104,7 @@ void ViewBarButton::setChecked(bool state)
     }
 }
 
-void ViewBarButton::toggle()
+void GuiBarButton::toggle()
 {
     auto &c = cache.get<Cache>();
     if(c.checkable)
@@ -116,7 +116,7 @@ void ViewBarButton::toggle()
     }
 }
 
-bool ViewBarButton::event(QEvent *event)
+bool GuiBarButton::event(QEvent *event)
 {
     auto &c = cache.get<Cache>();
 
@@ -146,7 +146,7 @@ bool ViewBarButton::event(QEvent *event)
     return QWidget::event(event);
 }
 
-void ViewBarButton::paintEvent(QPaintEvent *event)
+void GuiBarButton::paintEvent(QPaintEvent *event)
 {
     auto &c = cache.get<Cache>();
     QPainter painter(this);
@@ -166,7 +166,7 @@ void ViewBarButton::paintEvent(QPaintEvent *event)
         painter.drawRect(rect().adjusted(0, 0, -1, -1));
     }
 
-    if(c.type == ViewBar::Type::Small)
+    if(c.type == GuiBar::Type::Small)
     {
         int x = (rect().width() - c.pixDim) / 2;
         int y = (rect().height() - c.pixDim) / 2;
@@ -193,7 +193,7 @@ void ViewBarButton::paintEvent(QPaintEvent *event)
     }
 }
 
-void ViewBarButton::reset()
+void GuiBarButton::reset()
 {
     auto &c = cache.get<Cache>();
 
@@ -201,7 +201,7 @@ void ViewBarButton::reset()
     c.anim->reset();
 }
 
-void ViewBarButton::buttonPressed()
+void GuiBarButton::buttonPressed()
 {
     auto &c = cache.get<Cache>();
 
@@ -214,7 +214,7 @@ void ViewBarButton::buttonPressed()
     }
 }
 
-void ViewBarButton::buttonReleased()
+void GuiBarButton::buttonReleased()
 {
     auto &c = cache.get<Cache>();
 

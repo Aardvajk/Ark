@@ -1,6 +1,6 @@
-#include "ViewBarButtonGroup.h"
+#include "GuiBarButtonGroup.h"
 
-#include "view/ViewBarButton.h"
+#include "gui/GuiBarButton.h"
 
 #include <QtGui/QMouseEvent>
 
@@ -12,17 +12,17 @@ namespace
 class Cache
 {
 public:
-    QList<ViewBarButton*> buttons;
+    QList<GuiBarButton*> buttons;
 };
 
 }
 
-ViewBarButtonGroup::ViewBarButtonGroup(QObject *parent) : QObject(parent)
+GuiBarButtonGroup::GuiBarButtonGroup(QObject *parent) : QObject(parent)
 {
     cache.alloc<Cache>();
 }
 
-ViewBarButton *ViewBarButtonGroup::addButton(ViewBarButton *button)
+GuiBarButton *GuiBarButtonGroup::addButton(GuiBarButton *button)
 {
     cache.get<Cache>().buttons.append(button);
     button->setCheckable(true);
@@ -35,11 +35,11 @@ ViewBarButton *ViewBarButtonGroup::addButton(ViewBarButton *button)
     return button;
 }
 
-bool ViewBarButtonGroup::eventFilter(QObject *object, QEvent *event)
+bool GuiBarButtonGroup::eventFilter(QObject *object, QEvent *event)
 {
     if((event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonRelease) && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton)
     {
-        auto button = qobject_cast<ViewBarButton*>(object);
+        auto button = qobject_cast<GuiBarButton*>(object);
 
         if(button->isChecked())
         {
@@ -50,13 +50,13 @@ bool ViewBarButtonGroup::eventFilter(QObject *object, QEvent *event)
     return QObject::eventFilter(object, event);
 }
 
-void ViewBarButtonGroup::buttonDestroyed(QObject *button)
+void GuiBarButtonGroup::buttonDestroyed(QObject *button)
 {
     auto &b = cache.get<Cache>().buttons;
-    b.erase(std::remove(b.begin(), b.end(), static_cast<ViewBarButton*>(button)), b.end());
+    b.erase(std::remove(b.begin(), b.end(), static_cast<GuiBarButton*>(button)), b.end());
 }
 
-void ViewBarButtonGroup::buttonToggled(bool state)
+void GuiBarButtonGroup::buttonToggled(bool state)
 {
     if(state)
     {

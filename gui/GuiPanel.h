@@ -1,5 +1,5 @@
-#ifndef VIEWPANEL_H
-#define VIEWPANEL_H
+#ifndef GUIPANEL_H
+#define GUIPANEL_H
 
 #include <QPxWidgets/QPxSplitterPanel.h>
 
@@ -11,21 +11,21 @@ class Settings;
 }
 
 class QAction;
-class ViewBar;
+class GuiBar;
 
-class ViewPanel : public QPx::SplitterPanel
+class GuiPanel : public QPx::SplitterPanel
 {
     Q_OBJECT
 
 public:
-    explicit ViewPanel(QWidget *parent = nullptr);
+    explicit GuiPanel(QWidget *parent = nullptr);
 
-    ViewBar *viewBar() const;
+    GuiBar *viewBar() const;
 
     virtual void saveState(QPx::Settings &settings) const = 0;
 
 protected:
-    virtual ViewPanel *clone() const = 0;
+    virtual GuiPanel *clone() const = 0;
 
     virtual QSplitter *createSplitter(Qt::Orientation orientation) const override;
 
@@ -37,8 +37,8 @@ private slots:
     void closePanel();
 
 private:
-    ViewBar *bar;
+    GuiBar *bar;
     QAction *closeAction;
 };
 
-#endif // VIEWPANEL_H
+#endif // GUIPANEL_H

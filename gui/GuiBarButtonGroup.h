@@ -1,20 +1,20 @@
-#ifndef VIEWBARBUTTONGROUP_H
-#define VIEWBARBUTTONGROUP_H
+#ifndef GUIBARBUTTONGROUP_H
+#define GUIBARBUTTONGROUP_H
 
 #include <QtCore/QObject>
 
 #include <pcx/aligned_store.h>
 
-class ViewBarButton;
+class GuiBarButton;
 
-class ViewBarButtonGroup : public QObject
+class GuiBarButtonGroup : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ViewBarButtonGroup(QObject *parent = nullptr);
+    explicit GuiBarButtonGroup(QObject *parent = nullptr);
 
-    ViewBarButton *addButton(ViewBarButton *button);
+    GuiBarButton *addButton(GuiBarButton *button);
 
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event) override;
@@ -27,4 +27,4 @@ private:
     pcx::aligned_store<8> cache;
 };
 
-#endif // VIEWBARBUTTONGROUP_H
+#endif // GUIBARBUTTONGROUP_H

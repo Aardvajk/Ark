@@ -9,6 +9,15 @@
 
 #include <pcx/resource_map.h>
 
+namespace Gx
+{
+
+class VertexDeclaration;
+class VertexShader;
+class VertexBuffer;
+
+}
+
 class Graphics : public QObject
 {
     Q_OBJECT
@@ -18,6 +27,17 @@ public:
 
     QGx::GraphicsDevice device;
     pcx::resource_map<Gx::GraphicsResource> resources;
+
+    template<typename T> using Handle = pcx::resource_handle<Gx::GraphicsResource, T>;
+
+    Handle<Gx::VertexDeclaration> previewVertexDec;
+    Handle<Gx::VertexDeclaration> colorVertexDec;
+
+    Handle<Gx::VertexShader> previewShader;
+    Handle<Gx::VertexShader> colorShader;
+    Handle<Gx::VertexShader> screenShader;
+
+    Handle<Gx::VertexBuffer> genericBuffer;
 
 signals:
     void render();

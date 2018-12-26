@@ -48,18 +48,24 @@ SOURCES += \
     options/OptionsDialog.cpp \
     models/Model.cpp \
     graphics/Graphics.cpp \ 
-    view/ViewBar.cpp \
-    view/ViewBarButton.cpp \
-    view/ViewBarButtonGroup.cpp \
-    view/ViewPanel.cpp \
-    view/ViewSeparator.cpp \
-    view/ViewContainer.cpp \
-    view/ViewSplitter.cpp \
+    gui/GuiBar.cpp \
+    gui/GuiBarButton.cpp \
+    gui/GuiBarButtonGroup.cpp \
+    gui/GuiPanel.cpp \
+    gui/GuiSeparator.cpp \
+    gui/GuiContainer.cpp \
+    gui/GuiSplitter.cpp \
     models/ModelData.cpp \
     entity/Entity.cpp \
     properties/PropertyMap.cpp \
     properties/custom/Selection.cpp \
-    properties/custom/Mesh.cpp
+    properties/custom/Mesh.cpp \
+    entity/EntityFactory.cpp \
+    graphics/buffers/Buffer.cpp \
+    graphics/buffers/FaceBuffer.cpp \
+    graphics/buffers/PointBuffer.cpp \
+    graphics/buffers/PreviewBuffer.cpp \
+    views/ModelView.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -68,20 +74,29 @@ HEADERS += \
     options/OptionsDialog.h \
     models/Model.h \
     graphics/Graphics.h \ 
-    view/ViewBar.h \
-    view/ViewBarButton.h \
-    view/ViewBarButtonGroup.h \
-    view/ViewPanel.h \
-    view/ViewSeparator.h \
-    view/ViewContainer.h \
-    view/ViewSplitter.h \
+    gui/GuiBar.h \
+    gui/GuiBarButton.h \
+    gui/GuiBarButtonGroup.h \
+    gui/GuiPanel.h \
+    gui/GuiSeparator.h \
+    gui/GuiContainer.h \
+    gui/GuiSplitter.h \
     properties/Property.h \
     models/ModelData.h \
     entity/Entity.h \
     properties/PropertyMap.h \
     properties/custom/Selection.h \
     properties/custom/Mesh.h \
-    properties/custom/Face.h
+    properties/custom/Face.h \
+    entity/EntityFactory.h \
+    graphics/vertices/ColorVertex.h \
+    graphics/vertices/PreviewVertex.h \
+    graphics/buffers/Buffer.h \
+    graphics/buffers/FaceBuffer.h \
+    graphics/buffers/PointBuffer.h \
+    graphics/buffers/PreviewBuffer.h \
+    graphics/components/EdgeKey.h \
+    views/ModelView.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

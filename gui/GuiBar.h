@@ -1,11 +1,11 @@
-#ifndef VIEWBAR_H
-#define VIEWBAR_H
+#ifndef GUIBAR_H
+#define GUIBAR_H
 
 #include <QtWidgets/QWidget>
 
 #include <pcx/aligned_store.h>
 
-class ViewBar : public QWidget
+class GuiBar : public QWidget
 {
     Q_OBJECT
 
@@ -16,7 +16,7 @@ public:
         Large
     };
 
-    ViewBar(Qt::Orientation orientation, Type type, QWidget *parent = nullptr);
+    GuiBar(Qt::Orientation orientation, Type type, QWidget *parent = nullptr);
 
     void addWidget(QWidget *widget);
     void addSeparator();
@@ -35,4 +35,4 @@ private:
     pcx::aligned_store<32> cache;
 };
 
-#endif // VIEWBAR_H
+#endif // GUIBAR_H

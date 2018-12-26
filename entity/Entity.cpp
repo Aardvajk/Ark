@@ -7,7 +7,7 @@ const char *types[] = { "Geometry" };
 
 }
 
-Entity::Entity(Type type) : s(type, PropertyMap())
+Entity::Entity(Type type) : s(type, PropertyMap(), SubPropertyMap())
 {
 }
 

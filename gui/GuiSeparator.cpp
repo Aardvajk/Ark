@@ -1,10 +1,10 @@
-#include "ViewSeparator.h"
+#include "GuiSeparator.h"
 
 #include <QPxWidgets/QPxPalette.h>
 
 #include <QtWidgets/QApplication>
 
-ViewSeparator::ViewSeparator(Qt::Orientation orientation, QWidget *parent) : QWidget(parent)
+GuiSeparator::GuiSeparator(Qt::Orientation orientation, QWidget *parent) : QWidget(parent)
 {
     QPx::setPaletteColor(this, QPalette::Window, qvariant_cast<QColor>(QApplication::instance()->property("ui-border")));
     setAutoFillBackground(true);

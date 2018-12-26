@@ -1,10 +1,10 @@
-#include "ViewPanel.h"
+#include "GuiPanel.h"
 
-#include "view/ViewBar.h"
-#include "view/ViewBarButton.h"
-#include "view/ViewBarButtonGroup.h"
-#include "view/ViewSeparator.h"
-#include "view/ViewSplitter.h"
+#include "gui/GuiBar.h"
+#include "gui/GuiBarButton.h"
+#include "gui/GuiBarButtonGroup.h"
+#include "gui/GuiSeparator.h"
+#include "gui/GuiSplitter.h"
 
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -13,19 +13,19 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
-ViewPanel::ViewPanel(QWidget *parent) : SplitterPanel(parent)
+GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent)
 {
     auto layout = new QPx::VBoxLayout(this);
 
-    bar = layout->addTypedWidget(new ViewBar(Qt::Horizontal, ViewBar::Type::Small));
+    bar = layout->addTypedWidget(new GuiBar(Qt::Horizontal, GuiBar::Type::Small));
 
     auto icon = QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation);
 
-    auto group = new ViewBarButtonGroup(bar);
+    auto group = new GuiBarButtonGroup(bar);
 
-    bar->addTypedWidget(group->addButton(new ViewBarButton(icon, bar)));
-    bar->addTypedWidget(group->addButton(new ViewBarButton(icon, bar)));
-    bar->addTypedWidget(group->addButton(new ViewBarButton(icon, bar)));
+    bar->addTypedWidget(group->addButton(new GuiBarButton(icon, bar)));
+    bar->addTypedWidget(group->addButton(new GuiBarButton(icon, bar)));
+    bar->addTypedWidget(group->addButton(new GuiBarButton(icon, bar)));
 
     bar->addStretch();
 
@@ -38,35 +38,35 @@ ViewPanel::ViewPanel(QWidget *parent) : SplitterPanel(parent)
 
     connect(menu, SIGNAL(aboutToShow()), SLOT(menuAboutToShow()));
 
-    bar->addTypedWidget(new ViewBarButton(menu, icon, bar));
+    bar->addTypedWidget(new GuiBarButton(menu, icon, bar));
 }
 
-ViewBar *ViewPanel::viewBar() const
+GuiBar *GuiPanel::viewBar() const
 {
     return bar;
 }
 
-QSplitter *ViewPanel::createSplitter(Qt::Orientation orientation) const
+QSplitter *GuiPanel::createSplitter(Qt::Orientation orientation) const
 {
-    return new ViewSplitter(orientation);
+    return new GuiSplitter(orientation);
 }
 
-void ViewPanel::menuAboutToShow()
+void GuiPanel::menuAboutToShow()
 {
     closeAction->setVisible(qobject_cast<QSplitter*>(parentWidget()));
 }
 
-void ViewPanel::splitVertical()
+void GuiPanel::splitVertical()
 {
     split(Qt::Vertical, clone());
 }
 
-void ViewPanel::splitHorizontal()
+void GuiPanel::splitHorizontal()
 {
     split(Qt::Horizontal, clone());
 }
 
-void ViewPanel::closePanel()
+void GuiPanel::closePanel()
 {
     QTimer::singleShot(0, this, SLOT(close()));
 }

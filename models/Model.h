@@ -24,6 +24,9 @@ public:
 
     virtual QString filter() const override;
 
+signals:
+    void changed();
+
 private:
     ModelData *data;
 };

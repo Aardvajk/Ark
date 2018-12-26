@@ -11,6 +11,8 @@
 
 #include <QtCore/QFileInfo>
 
+#include "views/ModelView.h"
+
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 {
     setCentralWidget(new QWidget());
@@ -18,17 +20,19 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     actions = new ActionList(settings["Actions"], this);
     model = new Model(this);
+    auto graphics = new Graphics(this);
 
     new ApplicationActions(actions, this);
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 
+    auto view = layout->addTypedWidget(new ModelView(model, graphics));
+    connect(graphics, SIGNAL(render()), view, SLOT(update()));
+
     restoreGeometry(settings["Application"]["Geometry"].value().toByteArray());
 
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
-
-    auto graphics = new Graphics(this);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

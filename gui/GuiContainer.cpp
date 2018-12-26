@@ -1,7 +1,7 @@
-#include "ViewContainer.h"
+#include "GuiContainer.h"
 
-#include "view/ViewPanel.h"
-#include "view/ViewSplitter.h"
+#include "gui/GuiPanel.h"
+#include "gui/GuiSplitter.h"
 
 #include <QPxCore/QPxSettings.h>
 
@@ -16,28 +16,28 @@ namespace
 
 }
 
-ViewContainer::ViewContainer(QWidget *parent) : QWidget(parent)
+GuiContainer::GuiContainer(QWidget *parent) : QWidget(parent)
 {
     new QPx::VBoxLayout(this);
 }
 
-void ViewContainer::addPanel(ViewPanel *panel)
+void GuiContainer::addPanel(GuiPanel *panel)
 {
     layout()->addWidget(panel);
 }
 
-void ViewContainer::saveState(QPx::Settings &settings) const
+void GuiContainer::saveState(QPx::Settings &settings) const
 {
     saveContainerState(layout()->itemAt(0)->widget(), settings);
 }
 
-void ViewContainer::restoreState(const QPx::Settings &settings)
+void GuiContainer::restoreState(const QPx::Settings &settings)
 {
     clear();
     layout()->addWidget(restoreContainerState(settings[0]));
 }
 
-void ViewContainer::clear()
+void GuiContainer::clear()
 {
     if(layout()->count())
     {
@@ -48,7 +48,7 @@ void ViewContainer::clear()
     }
 }
 
-void ViewContainer::saveContainerState(QWidget *widget, QPx::Settings &settings) const
+void GuiContainer::saveContainerState(QWidget *widget, QPx::Settings &settings) const
 {
     if(auto splitter = qobject_cast<const QSplitter*>(widget))
     {
@@ -58,17 +58,17 @@ void ViewContainer::saveContainerState(QWidget *widget, QPx::Settings &settings)
         saveContainerState(splitter->widget(0), s);
         saveContainerState(splitter->widget(1), s);
     }
-    else if(auto panel = qobject_cast<const ViewPanel*>(widget))
+    else if(auto panel = qobject_cast<const GuiPanel*>(widget))
     {
         panel->saveState(settings.append("panel"));
     }
 }
 
-QWidget *ViewContainer::restoreContainerState(const QPx::Settings &settings)
+QWidget *GuiContainer::restoreContainerState(const QPx::Settings &settings)
 {
     if(settings.key() == "splitter")
     {
-        auto splitter = new ViewSplitter(Qt::Vertical);
+        auto splitter = new GuiSplitter(Qt::Vertical);
 
         splitter->addWidget(restoreContainerState(settings[0]));
         splitter->addWidget(restoreContainerState(settings[1]));

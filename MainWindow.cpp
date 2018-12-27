@@ -4,6 +4,7 @@
 #include "actions/ApplicationActions.h"
 
 #include "models/Model.h"
+#include "models/ModelBuffers.h"
 
 #include "graphics/Graphics.h"
 
@@ -11,6 +12,7 @@
 
 #include <QtCore/QFileInfo>
 
+#include "gui/GuiSeparator.h"
 #include "panels/ModelViewPanel.h"
 
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
@@ -19,15 +21,17 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto layout = new QPx::VBoxLayout(centralWidget());
 
     actions = new ActionList(settings["Actions"], this);
-    model = new Model(this);
     auto graphics = new Graphics(this);
+
+    model = new Model(graphics, this);
 
     new ApplicationActions(actions, this);
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 
+    layout->addWidget(new GuiSeparator(Qt::Horizontal));
+
     auto view = layout->addTypedWidget(new ModelViewPanel(model, graphics));
-    connect(graphics, SIGNAL(render()), view, SLOT(update()));
 
     restoreGeometry(settings["Application"]["Geometry"].value().toByteArray());
 

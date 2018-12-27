@@ -153,14 +153,14 @@ void GuiBarButton::paintEvent(QPaintEvent *event)
 
     bool down = (c.down && c.within) || c.checked;
 
-    auto hover = qvariant_cast<QColor>(QApplication::instance()->property("ui-hover"));
+    auto hover = qvariant_cast<QColor>(QApplication::instance()->property("gui-hover"));
     hover.setAlphaF(c.anim->currentValue().toFloat());
 
-    painter.fillRect(rect(), down ? qvariant_cast<QColor>(QApplication::instance()->property("ui-hilight")) : hover);
+    painter.fillRect(rect(), down ? qvariant_cast<QColor>(QApplication::instance()->property("gui-hilight")) : hover);
 
     if(down)
     {
-        painter.setPen(QPen(qvariant_cast<QColor>(QApplication::instance()->property("ui-border"))));
+        painter.setPen(QPen(qvariant_cast<QColor>(QApplication::instance()->property("gui-border"))));
         painter.setBrush(Qt::NoBrush);
 
         painter.drawRect(rect().adjusted(0, 0, -1, -1));
@@ -188,7 +188,7 @@ void GuiBarButton::paintEvent(QPaintEvent *event)
 
         QRect r(0, y + c.pixDim + 2, rect().width(), QFontMetrics(font).height());
 
-        painter.setPen(qvariant_cast<QColor>(QApplication::instance()->property("ui-text")));
+        painter.setPen(qvariant_cast<QColor>(QApplication::instance()->property("gui-text")));
         painter.drawText(r, Qt::AlignCenter | Qt::AlignVCenter, c.text);
     }
 }

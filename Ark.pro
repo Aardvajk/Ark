@@ -67,7 +67,9 @@ SOURCES += \
     graphics/buffers/PreviewBuffer.cpp \
     views/ModelView.cpp \
     panels/Panel.cpp \
-    panels/ModelViewPanel.cpp
+    panels/ModelViewPanel.cpp \
+    models/ModelBuffers.cpp \
+    graphics/RenderState.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -100,7 +102,10 @@ HEADERS += \
     graphics/components/EdgeKey.h \
     views/ModelView.h \
     panels/Panel.h \
-    panels/ModelViewPanel.h
+    panels/ModelViewPanel.h \
+    models/ModelBuffers.h \
+    graphics/RenderParams.h \
+    graphics/RenderState.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

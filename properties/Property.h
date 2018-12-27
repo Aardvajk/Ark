@@ -42,6 +42,14 @@ public:
     Selection toSelection() const { return qvariant_cast<Selection>(s.value().value); }
     Mesh toMesh() const { return qvariant_cast<Mesh>(s.value().value); }
 
+    void setValue(int value){ s.value().value = value; }
+    void setValue(float value){ s.value().value = value; }
+    void setValue(bool value){ s.value().value = value; }
+    void setValue(const QString &value){ s.value().value = value; }
+    void setValue(const QColor &value){ s.value().value = QVariant::fromValue(value); }
+    void setValue(const Selection &value){ s.value().value = QVariant::fromValue(value); }
+    void setValue(const Mesh &value){ s.value().value = QVariant::fromValue(value); }
+
     Flags flags() const { return s.value().flags; }
 
 private:

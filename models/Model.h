@@ -3,20 +3,25 @@
 
 #include <QPxEditor/QPxAbstractEditorModel.h>
 
+#include <pcx/aligned_store.h>
+
+class Graphics;
 class ModelData;
 class PropertyMap;
 class Entity;
+class ModelBuffers;
 
 class Model : public QPx::AbstractEditorModel
 {
     Q_OBJECT
 
 public:
-    explicit Model(QObject *parent = nullptr);
-    virtual ~Model() override;
+    Model(Graphics *graphics, QObject *parent = nullptr);
 
     const PropertyMap &properties() const;
     const QList<Entity> &entities() const;
+
+    const ModelBuffers *buffers() const;
 
     virtual bool clear() override;
     virtual bool open(const QString &path) override;
@@ -28,7 +33,7 @@ signals:
     void changed();
 
 private:
-    ModelData *data;
+    pcx::aligned_store<16> cache;
 };
 
 #endif // MODEL_H

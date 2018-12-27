@@ -3,8 +3,13 @@
 
 #include <QGxGraphics/QGxGraphicsWidget.h>
 
+#include <GxCore/GxTimer.h>
+
+#include <GxMaths/GxTransform.h>
+
 class Model;
 class Graphics;
+class RenderParams;
 
 class ModelView : public QGx::GraphicsWidget
 {
@@ -13,11 +18,31 @@ class ModelView : public QGx::GraphicsWidget
 public:
     ModelView(Model *model, Graphics *graphics, QWidget *parent = nullptr);
 
+    RenderParams renderParams() const;
+
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
 
+    virtual void keyPressEvent(QKeyEvent *event) override;
+    virtual void keyReleaseEvent(QKeyEvent *event) override;
+
+    virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseMoveEvent(QMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QMouseEvent *event) override;
+
 private:
+    void updateCamera(float delta);
+    void renderModel();
+
+    Model *model;
     Graphics *graphics;
+
+    QSet<Qt::MouseButton> buttons;
+    QSet<int> keys;
+
+    Gx::Timer timer;
+    Gx::Vec2 prevMousePos;
+    Gx::Transform cam;
 };
 
 #endif // MODELVIEW_H

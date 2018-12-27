@@ -8,6 +8,7 @@
 namespace Gx
 {
 
+class GraphicsDevice;
 class VertexBuffer;
 
 }
@@ -18,6 +19,10 @@ class Buffer : public QObject
 
 public:
     Buffer(Graphics *graphics, std::uint32_t elements, std::uint16_t stride, QObject *parent = nullptr);
+
+    void renderTriangleList(Gx::GraphicsDevice &device) const;
+    void renderLineList(Gx::GraphicsDevice &device) const;
+    void renderPointList(Gx::GraphicsDevice &device) const;
 
     const Gx::VertexBuffer &buffer() const;
     unsigned count() const;

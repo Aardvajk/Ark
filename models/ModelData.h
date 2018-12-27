@@ -3,12 +3,15 @@
 
 #include "entity/Entity.h"
 
+#include <QtCore/QObject>
 #include <QtCore/QList>
 
-class ModelData
+class ModelData : public QObject
 {
+    Q_OBJECT
+
 public:
-    ModelData() = default;
+    explicit ModelData(QObject *parent = nullptr);
 
     PropertyMap properties;
     QList<Entity> entities;

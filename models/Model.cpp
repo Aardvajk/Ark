@@ -1,24 +1,40 @@
 #include "Model.h"
 
 #include "models/ModelData.h"
+#include "models/ModelBuffers.h"
 
-Model::Model(QObject *parent) : QPx::AbstractEditorModel(parent), data(new ModelData())
+namespace
 {
+
+class Cache
+{
+public:
+    Cache(Model *model, Graphics *graphics) : data(new ModelData(model)), buffers(new ModelBuffers(model, graphics, model)) { }
+
+    ModelData *data;
+    ModelBuffers *buffers;
+};
+
 }
 
-Model::~Model()
+Model::Model(Graphics *graphics, QObject *parent) : QPx::AbstractEditorModel(parent)
 {
-    delete data;
+    cache.alloc<Cache>(this, graphics);
 }
 
 const PropertyMap &Model::properties() const
 {
-    return data->properties;
+    return cache.get<Cache>().data->properties;
 }
 
 const QList<Entity> &Model::entities() const
 {
-    return data->entities;
+    return cache.get<Cache>().data->entities;
+}
+
+const ModelBuffers *Model::buffers() const
+{
+    return cache.get<Cache>().buffers;
 }
 
 bool Model::clear()

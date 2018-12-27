@@ -17,11 +17,12 @@ inline QColor grey(int value){ return QColor(value, value, value); }
 
 void setUI()
 {
-    QApplication::instance()->setProperty("ui-panel", grey(230));
-    QApplication::instance()->setProperty("ui-border", grey(190));
-    QApplication::instance()->setProperty("ui-text", grey(100));
-    QApplication::instance()->setProperty("ui-hover", grey(200));
-    QApplication::instance()->setProperty("ui-hilight", grey(250));
+    QApplication::instance()->setProperty("gui-panel", grey(230));
+    QApplication::instance()->setProperty("gui-border", grey(190));
+    QApplication::instance()->setProperty("gui-text", grey(100));
+    QApplication::instance()->setProperty("gui-hover", grey(200));
+    QApplication::instance()->setProperty("gui-hilight", grey(250));
+    QApplication::instance()->setProperty("gui-splitter", grey(175));
 }
 
 }

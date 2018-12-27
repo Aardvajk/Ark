@@ -27,7 +27,7 @@ void EntityFactory::updateMesh(Entity &entity)
     {
         PropertyMap pm;
 
-        pm["Color"] = Property(QColor(0, 0, 0));
+        pm["Color"] = Property(QColor(200, 200, 200));
         pm["Visible"] = Property(true);
 
         faces.append(pm);

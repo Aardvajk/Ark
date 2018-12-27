@@ -70,6 +70,7 @@ void ModelView::mousePressEvent(QMouseEvent *event)
     prevMousePos = Gx::Vec2(event->pos().x(), event->pos().y());
 
     buttons.insert(event->button());
+    emit mousePressed(this, event);
 }
 
 void ModelView::mouseMoveEvent(QMouseEvent *event)
@@ -94,11 +95,13 @@ void ModelView::mouseMoveEvent(QMouseEvent *event)
     }
 
     prevMousePos = mousePos;
+    emit mouseMoved(this, event);
 }
 
 void ModelView::mouseReleaseEvent(QMouseEvent *event)
 {
     buttons.remove(event->button());
+    emit mouseReleased(this, event);
 }
 
 void ModelView::updateCamera(float delta)
@@ -141,6 +144,8 @@ void ModelView::renderModel()
         model->buffers()->faceBuffer()->renderLineList(graphics->device);
         model->buffers()->pointBuffer()->renderPointList(graphics->device);
     }
+
+    emit render(this, graphics, params);
 
     graphics->device.end(this);
 }

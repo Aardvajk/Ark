@@ -21,7 +21,7 @@ class Cache
 public:
     Cache(GuiBar *bar, GuiBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix);
 
-    GuiBar::Type type;
+    GuiBar *bar;
     QPx::UnitAnimation *anim;
     QMenu *menu;
     bool down, within, checkable, checked;
@@ -31,7 +31,7 @@ public:
     QGraphicsColorizeEffect *disableEffect;
 };
 
-Cache::Cache(GuiBar *bar, GuiBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix) : type(bar->type()), menu(menu), down(false), within(false), checkable(false), checked(false), text(text), pix(pix)
+Cache::Cache(GuiBar *bar, GuiBarButton *button, const QString &text, QMenu *menu, const QPixmap &pix) : bar(bar), menu(menu), down(false), within(false), checkable(false), checked(false), text(text), pix(pix)
 {
     anim = new QPx::UnitAnimation(200, 500, button);
 
@@ -158,15 +158,7 @@ void GuiBarButton::paintEvent(QPaintEvent *event)
 
     painter.fillRect(rect(), down ? qvariant_cast<QColor>(QApplication::instance()->property("gui-hilight")) : hover);
 
-    if(down)
-    {
-        painter.setPen(QPen(qvariant_cast<QColor>(QApplication::instance()->property("gui-border"))));
-        painter.setBrush(Qt::NoBrush);
-
-        painter.drawRect(rect().adjusted(0, 0, -1, -1));
-    }
-
-    if(c.type == GuiBar::Type::Small)
+    if(c.bar->type() == GuiBar::Type::Small)
     {
         int x = (rect().width() - c.pixDim) / 2;
         int y = (rect().height() - c.pixDim) / 2;

@@ -11,7 +11,15 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     e.properties()["Mesh"].setValue(Mesh::cuboid({ 2, 2, 2 }));
     EntityFactory::updateMesh(e);
 
-    e.properties()["Selection"].setValue(Selection(true));
+    entities.append(e);
+
+    auto m = e.properties()["Mesh"].toMesh();
+    for(auto &v: m.vertices)
+    {
+        v += Gx::Vec3(3, 1, 3);
+    }
+
+    e.properties()["Mesh"].setValue(m);
 
     entities.append(e);
 }

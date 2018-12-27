@@ -22,6 +22,8 @@ public:
     void addSeparator();
     void addStretch();
 
+    void insertWidget(int index, QWidget *widget);
+
     template<typename T> T *addTypedWidget(T *widget){ addWidget(widget); return widget; }
 
     Qt::Orientation orientation() const;

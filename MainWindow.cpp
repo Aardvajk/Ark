@@ -8,12 +8,20 @@
 
 #include "graphics/Graphics.h"
 
+#include "gui/GuiSeparator.h"
+#include "gui/GuiBar.h"
+
+#include "views/ModelViewRelay.h"
+
+#include "panels/ModelViewPanel.h"
+#include "panels/ToolPanel.h"
+
+#include "tools/SelectTool.h"
+#include "tools/MoveTool.h"
+
 #include <QPxWidgets/QPxLayouts.h>
 
 #include <QtCore/QFileInfo>
-
-#include "gui/GuiSeparator.h"
-#include "panels/ModelViewPanel.h"
 
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 {
@@ -21,7 +29,9 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto layout = new QPx::VBoxLayout(centralWidget());
 
     actions = new ActionList(settings["Actions"], this);
+
     auto graphics = new Graphics(this);
+    auto relay = new ModelViewRelay(this);
 
     model = new Model(graphics, this);
 
@@ -30,8 +40,19 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 
     layout->addWidget(new GuiSeparator(Qt::Horizontal));
+    auto horz = layout->addTypedLayout(new QPx::HBoxLayout());
 
-    auto view = layout->addTypedWidget(new ModelViewPanel(model, graphics));
+    auto side = horz->addTypedLayout(new QPx::VBoxLayout());
+    side->addTypedWidget(new GuiBar(Qt::Horizontal, GuiBar::Type::Small))->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+    side->addTypedWidget(new GuiSeparator(Qt::Horizontal))->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+    auto tools = side->addTypedWidget(new ToolPanel(relay));
+
+    horz->addWidget(new GuiSeparator(Qt::Vertical));
+    auto view = horz->addTypedWidget(new ModelViewPanel(model, graphics, relay));
+
+    tools->addTool(new SelectTool(model, actions, this));
+    tools->addTool(new MoveTool(model, actions, this));
 
     restoreGeometry(settings["Application"]["Geometry"].value().toByteArray());
 

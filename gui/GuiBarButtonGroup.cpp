@@ -35,6 +35,11 @@ GuiBarButton *GuiBarButtonGroup::addButton(GuiBarButton *button)
     return button;
 }
 
+int GuiBarButtonGroup::count() const
+{
+    return cache.get<Cache>().buttons.count();
+}
+
 bool GuiBarButtonGroup::eventFilter(QObject *object, QEvent *event)
 {
     if((event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonRelease) && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton)

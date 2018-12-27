@@ -20,6 +20,13 @@ public:
 
     RenderParams renderParams() const;
 
+signals:
+    void mousePressed(ModelView *view, QMouseEvent *event);
+    void mouseMoved(ModelView *view, QMouseEvent *event);
+    void mouseReleased(ModelView *view, QMouseEvent *event);
+
+    void render(ModelView *view, Graphics *graphics, const RenderParams &params);
+
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
 

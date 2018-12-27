@@ -6,5 +6,5 @@
 
 GuiSplitter::GuiSplitter(Qt::Orientation orientation, QWidget *parent) : QPx::LineSplitter(orientation, parent)
 {
-    QPx::setPaletteColor(this, QPalette::Background, qvariant_cast<QColor>(QApplication::instance()->property("gui-splitter")));
+    QPx::setPaletteColor(this, QPalette::Background, qvariant_cast<QColor>(QApplication::instance()->property("gui-border")));
 }

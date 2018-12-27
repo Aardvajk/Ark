@@ -98,6 +98,11 @@ void GuiBar::addStretch()
     addWidget(w);
 }
 
+void GuiBar::insertWidget(int index, QWidget *widget)
+{
+    static_cast<QBoxLayout*>(layout())->insertWidget(index, widget);
+}
+
 Qt::Orientation GuiBar::orientation() const
 {
     return cache.get<Cache>().orientation;

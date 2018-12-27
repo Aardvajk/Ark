@@ -16,6 +16,8 @@ public:
 
     GuiBarButton *addButton(GuiBarButton *button);
 
+    int count() const;
+
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event) override;
 

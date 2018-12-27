@@ -2,8 +2,6 @@
 
 #include "gui/GuiBar.h"
 #include "gui/GuiBarButton.h"
-#include "gui/GuiBarButtonGroup.h"
-#include "gui/GuiSeparator.h"
 #include "gui/GuiSplitter.h"
 
 #include <QPxWidgets/QPxLayouts.h>

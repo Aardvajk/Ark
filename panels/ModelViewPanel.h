@@ -1,16 +1,19 @@
 #ifndef MODELVIEWPANEL_H
 #define MODELVIEWPANEL_H
 
-#include "panels/Panel.h"
+#include "gui/GuiPanel.h"
 
 class Model;
 class Graphics;
 class ModelView;
+class ModelViewRelay;
 
-class ModelViewPanel : public Panel
+class ModelViewPanel : public GuiPanel
 {
+    Q_OBJECT
+
 public:
-    ModelViewPanel(Model *model, Graphics *graphics, QWidget *parent = nullptr);
+    ModelViewPanel(Model *model, Graphics *graphics, ModelViewRelay *relay, QWidget *parent = nullptr);
 
     virtual void saveState(QPx::Settings &settings) const override;
 
@@ -21,6 +24,7 @@ private:
     Model *model;
     Graphics *graphics;
     ModelView *view;
+    ModelViewRelay *relay;
 };
 
 #endif // MODELVIEWPANEL_H

@@ -66,10 +66,16 @@ SOURCES += \
     graphics/buffers/PointBuffer.cpp \
     graphics/buffers/PreviewBuffer.cpp \
     views/ModelView.cpp \
-    panels/Panel.cpp \
     panels/ModelViewPanel.cpp \
     models/ModelBuffers.cpp \
-    graphics/RenderState.cpp
+    graphics/RenderState.cpp \
+    panels/ToolPanel.cpp \
+    tools/Tool.cpp \
+    tools/SelectTool.cpp \
+    views/ModelViewRelay.cpp \
+    tools/MoveTool.cpp \
+    tools/components/Marquee.cpp \
+    graphics/RenderPrimitives.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -101,11 +107,17 @@ HEADERS += \
     graphics/buffers/PreviewBuffer.h \
     graphics/components/EdgeKey.h \
     views/ModelView.h \
-    panels/Panel.h \
     panels/ModelViewPanel.h \
     models/ModelBuffers.h \
     graphics/RenderParams.h \
-    graphics/RenderState.h
+    graphics/RenderState.h \
+    panels/ToolPanel.h \
+    tools/Tool.h \
+    tools/SelectTool.h \
+    tools/MoveTool.h \
+    views/ModelViewRelay.h \
+    tools/components/Marquee.h \
+    graphics/RenderPrimitives.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

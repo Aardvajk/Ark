@@ -1,20 +1,20 @@
-#ifndef GUIBARBUTTONGROUP_H
-#define GUIBARBUTTONGROUP_H
+#ifndef GUIBUTTONGROUP_H
+#define GUIBUTTONGROUP_H
 
 #include <QtCore/QObject>
 
 #include <pcx/aligned_store.h>
 
-class GuiBarButton;
+class GuiButton;
 
-class GuiBarButtonGroup : public QObject
+class GuiButtonGroup : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit GuiBarButtonGroup(QObject *parent = nullptr);
+    explicit GuiButtonGroup(QObject *parent = nullptr);
 
-    GuiBarButton *addButton(GuiBarButton *button);
+    GuiButton *addButton(GuiButton *button);
 
     int count() const;
 
@@ -29,4 +29,4 @@ private:
     pcx::aligned_store<8> cache;
 };
 
-#endif // GUIBARBUTTONGROUP_H
+#endif // GUIBUTTONGROUP_H

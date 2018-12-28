@@ -1,37 +1,50 @@
 #include "ToolPanel.h"
 
-#include "gui/GuiBarButton.h"
-#include "gui/GuiBarButtonGroup.h"
-
-#include "tools/Tool.h"
+#include "gui/GuiButtonGroup.h"
 
 #include "views/ModelViewRelay.h"
 
-ToolPanel::ToolPanel(ModelViewRelay *relay, QWidget *parent) : GuiBar(Qt::Vertical, GuiBar::Type::Large, parent), relay(relay), group(new GuiBarButtonGroup(this)), current(nullptr)
+#include "panels/ToolButton.h"
+
+#include "tools/Tool.h"
+
+#include <QPxWidgets/QPxLayouts.h>
+
+#include <QtGui/QPainter>
+
+#include <QtWidgets/QApplication>
+
+ToolPanel::ToolPanel(ModelViewRelay *relay, QWidget *parent) : QWidget(parent), relay(relay), group(new GuiButtonGroup(this)), current(nullptr)
 {
-    addStretch();
+    new QPx::VBoxLayout(this);
+    setFixedWidth(QApplication::instance()->property("gui-tool-width").toInt());
 }
 
 Tool *ToolPanel::addTool(Tool *tool)
 {
-    auto button = group->addButton(new GuiBarButton(tool->name(), tool->icon(), this));
+    auto button = new ToolButton(tool->name(), tool->icon());
     button->setProperty("ark-tool", QVariant::fromValue(tool));
 
-    connect(button, SIGNAL(toggled(bool)), SLOT(toggle(bool)));
-    connect(tool, SIGNAL(select()), SLOT(select()));
+    layout()->addWidget(group->addButton(button));
 
-    insertWidget(group->count() - 1, button);
-    mapping[tool] = button;
+    connect(button, SIGNAL(toggled(bool)), SLOT(toggled(bool)));
+    connect(tool, SIGNAL(select()), SLOT(selected()));
 
     return tool;
 }
 
-void ToolPanel::select()
+void ToolPanel::addStretch()
 {
-    mapping[static_cast<Tool*>(sender())]->setChecked(true);
+    static_cast<QBoxLayout*>(layout())->addStretch();
 }
 
-void ToolPanel::toggle(bool state)
+void ToolPanel::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.fillRect(rect(), qvariant_cast<QColor>(QApplication::instance()->property("gui-panel-color")));
+}
+
+void ToolPanel::toggled(bool state)
 {
     if(current)
     {
@@ -51,5 +64,19 @@ void ToolPanel::toggle(bool state)
         connect(relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), current, SLOT(mouseMoved(ModelView*,QMouseEvent*)));
         connect(relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), current, SLOT(mouseReleased(ModelView*,QMouseEvent*)));
         connect(relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)), current, SLOT(render(ModelView*,Graphics*,RenderParams)));
+    }
+}
+
+void ToolPanel::selected()
+{
+    for(int i = 0; i < layout()->count(); ++i)
+    {
+        auto widget = layout()->itemAt(i)->widget();
+
+        if(widget && qvariant_cast<Tool*>(widget->property("ark-tool")) == sender())
+        {
+            static_cast<ToolButton*>(widget)->setChecked(true);
+            return;
+        }
     }
 }

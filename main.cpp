@@ -15,13 +15,20 @@ namespace
 
 inline QColor grey(int value){ return QColor(value, value, value); }
 
-void setUI()
+void setGui()
 {
-    QApplication::instance()->setProperty("gui-panel", grey(190));
-    QApplication::instance()->setProperty("gui-border", grey(170));
-    QApplication::instance()->setProperty("gui-text", grey(100));
-    QApplication::instance()->setProperty("gui-hover", grey(160));
-    QApplication::instance()->setProperty("gui-hilight", grey(250));
+    QApplication::instance()->setProperty("gui-panel-color", grey(190));
+    QApplication::instance()->setProperty("gui-border-color", grey(170));
+    QApplication::instance()->setProperty("gui-text-color", grey(100));
+    QApplication::instance()->setProperty("gui-hover-color", grey(160));
+    QApplication::instance()->setProperty("gui-hilight-color", grey(250));
+
+    QApplication::instance()->setProperty("gui-bar-height", 26);
+    QApplication::instance()->setProperty("gui-bar-icon-size", 16);
+
+    QApplication::instance()->setProperty("gui-tool-width", 70);
+    QApplication::instance()->setProperty("gui-tool-height", 52);
+    QApplication::instance()->setProperty("gui-tool-icon-size", 24);
 }
 
 }
@@ -33,7 +40,7 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName("Ark");
     QApplication::setWindowIcon(QIcon(":/resources/images/ark.png"));
 
-    setUI();
+    setGui();
 
     QMetaType::registerComparators<Selection>();
     QMetaType::registerComparators<Mesh>();

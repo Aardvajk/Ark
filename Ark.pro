@@ -48,9 +48,6 @@ SOURCES += \
     options/OptionsDialog.cpp \
     models/Model.cpp \
     graphics/Graphics.cpp \ 
-    gui/GuiBar.cpp \
-    gui/GuiBarButton.cpp \
-    gui/GuiBarButtonGroup.cpp \
     gui/GuiPanel.cpp \
     gui/GuiSeparator.cpp \
     gui/GuiContainer.cpp \
@@ -66,16 +63,21 @@ SOURCES += \
     graphics/buffers/PointBuffer.cpp \
     graphics/buffers/PreviewBuffer.cpp \
     views/ModelView.cpp \
-    panels/ModelViewPanel.cpp \
     models/ModelBuffers.cpp \
     graphics/RenderState.cpp \
-    panels/ToolPanel.cpp \
     tools/Tool.cpp \
     tools/SelectTool.cpp \
     views/ModelViewRelay.cpp \
     tools/MoveTool.cpp \
     tools/components/Marquee.cpp \
-    graphics/RenderPrimitives.cpp
+    graphics/RenderPrimitives.cpp \
+    gui/GuiBar.cpp \
+    panels/ModelViewPanel.cpp \
+    gui/GuiButton.cpp \
+    gui/GuiBarButton.cpp \
+    gui/GuiButtonGroup.cpp \
+    panels/ToolPanel.cpp \
+    panels/ToolButton.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -84,9 +86,6 @@ HEADERS += \
     options/OptionsDialog.h \
     models/Model.h \
     graphics/Graphics.h \ 
-    gui/GuiBar.h \
-    gui/GuiBarButton.h \
-    gui/GuiBarButtonGroup.h \
     gui/GuiPanel.h \
     gui/GuiSeparator.h \
     gui/GuiContainer.h \
@@ -107,17 +106,22 @@ HEADERS += \
     graphics/buffers/PreviewBuffer.h \
     graphics/components/EdgeKey.h \
     views/ModelView.h \
-    panels/ModelViewPanel.h \
     models/ModelBuffers.h \
     graphics/RenderParams.h \
     graphics/RenderState.h \
-    panels/ToolPanel.h \
     tools/Tool.h \
     tools/SelectTool.h \
     tools/MoveTool.h \
     views/ModelViewRelay.h \
     tools/components/Marquee.h \
-    graphics/RenderPrimitives.h
+    graphics/RenderPrimitives.h \
+    gui/GuiBar.h \
+    panels/ModelViewPanel.h \
+    gui/GuiButton.h \
+    gui/GuiBarButton.h \
+    gui/GuiButtonGroup.h \
+    panels/ToolPanel.h \
+    panels/ToolButton.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

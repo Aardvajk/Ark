@@ -1,6 +1,6 @@
-#include "GuiBarButtonGroup.h"
+#include "GuiButtonGroup.h"
 
-#include "gui/GuiBarButton.h"
+#include "gui/GuiButton.h"
 
 #include <QtGui/QMouseEvent>
 
@@ -12,17 +12,17 @@ namespace
 class Cache
 {
 public:
-    QList<GuiBarButton*> buttons;
+    QList<GuiButton*> buttons;
 };
 
 }
 
-GuiBarButtonGroup::GuiBarButtonGroup(QObject *parent) : QObject(parent)
+GuiButtonGroup::GuiButtonGroup(QObject *parent) : QObject(parent)
 {
     cache.alloc<Cache>();
 }
 
-GuiBarButton *GuiBarButtonGroup::addButton(GuiBarButton *button)
+GuiButton *GuiButtonGroup::addButton(GuiButton *button)
 {
     cache.get<Cache>().buttons.append(button);
     button->setCheckable(true);
@@ -35,16 +35,16 @@ GuiBarButton *GuiBarButtonGroup::addButton(GuiBarButton *button)
     return button;
 }
 
-int GuiBarButtonGroup::count() const
+int GuiButtonGroup::count() const
 {
     return cache.get<Cache>().buttons.count();
 }
 
-bool GuiBarButtonGroup::eventFilter(QObject *object, QEvent *event)
+bool GuiButtonGroup::eventFilter(QObject *object, QEvent *event)
 {
     if((event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonRelease) && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton)
     {
-        auto button = qobject_cast<GuiBarButton*>(object);
+        auto button = qobject_cast<GuiButton*>(object);
 
         if(button->isChecked())
         {
@@ -55,13 +55,13 @@ bool GuiBarButtonGroup::eventFilter(QObject *object, QEvent *event)
     return QObject::eventFilter(object, event);
 }
 
-void GuiBarButtonGroup::buttonDestroyed(QObject *button)
+void GuiButtonGroup::buttonDestroyed(QObject *button)
 {
     auto &b = cache.get<Cache>().buttons;
-    b.erase(std::remove(b.begin(), b.end(), static_cast<GuiBarButton*>(button)), b.end());
+    b.erase(std::remove(b.begin(), b.end(), static_cast<GuiButton*>(button)), b.end());
 }
 
-void GuiBarButtonGroup::buttonToggled(bool state)
+void GuiButtonGroup::buttonToggled(bool state)
 {
     if(state)
     {

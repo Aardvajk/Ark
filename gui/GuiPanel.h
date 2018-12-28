@@ -20,8 +20,6 @@ class GuiPanel : public QPx::SplitterPanel
 public:
     explicit GuiPanel(QWidget *parent = nullptr);
 
-    GuiBar *viewBar() const;
-
     virtual void saveState(QPx::Settings &settings) const = 0;
 
 protected:

@@ -77,7 +77,11 @@ SOURCES += \
     gui/GuiBarButton.cpp \
     gui/GuiButtonGroup.cpp \
     panels/ToolPanel.cpp \
-    panels/ToolButton.cpp
+    panels/ToolButton.cpp \
+    views/PropertyView.cpp \
+    panels/PropertyViewPanel.cpp \
+    containers/ModelViewContainer.cpp \
+    containers/PropertyViewContainer.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -121,7 +125,11 @@ HEADERS += \
     gui/GuiBarButton.h \
     gui/GuiButtonGroup.h \
     panels/ToolPanel.h \
-    panels/ToolButton.h
+    panels/ToolButton.h \
+    views/PropertyView.h \
+    panels/PropertyViewPanel.h \
+    containers/ModelViewContainer.h \
+    containers/PropertyViewContainer.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

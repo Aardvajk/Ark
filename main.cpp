@@ -23,7 +23,7 @@ void setGui()
     QApplication::instance()->setProperty("gui-hover-color", grey(160));
     QApplication::instance()->setProperty("gui-hilight-color", grey(250));
 
-    QApplication::instance()->setProperty("gui-bar-height", 26);
+    QApplication::instance()->setProperty("gui-bar-height", 24);
     QApplication::instance()->setProperty("gui-bar-icon-size", 16);
 
     QApplication::instance()->setProperty("gui-tool-width", 70);

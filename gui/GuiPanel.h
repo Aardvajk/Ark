@@ -21,6 +21,7 @@ public:
     explicit GuiPanel(QWidget *parent = nullptr);
 
     virtual void saveState(QPx::Settings &settings) const = 0;
+    virtual void restoreState(const QPx::Settings &settings) = 0;
 
 protected:
     virtual GuiPanel *clone() const = 0;

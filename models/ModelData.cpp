@@ -4,7 +4,7 @@
 
 ModelData::ModelData(QObject *parent) : QObject(parent)
 {
-    properties["Background"].setValue(QColor(20, 40, 60));
+    properties["Background"].setValue(QColor(200, 220, 250));
 
     auto e = EntityFactory::create(Entity::Type::Geometry);
 

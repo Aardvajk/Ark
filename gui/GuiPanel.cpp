@@ -3,6 +3,7 @@
 #include "gui/GuiSplitter.h"
 #include "gui/GuiBar.h"
 #include "gui/GuiBarButton.h"
+#include "gui/GuiSeparator.h"
 
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -16,6 +17,7 @@ GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent)
     auto layout = new QPx::VBoxLayout(this);
 
     bar = layout->addTypedWidget(new GuiBar());
+    layout->addWidget(new GuiSeparator(Qt::Horizontal));
 
     bar->addStretch();
     auto button = bar->addTypedWidget(new GuiBarButton(QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation)));

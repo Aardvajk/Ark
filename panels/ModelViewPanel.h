@@ -16,6 +16,7 @@ public:
     ModelViewPanel(Model *model, Graphics *graphics, ModelViewRelay *relay, QWidget *parent = nullptr);
 
     virtual void saveState(QPx::Settings &settings) const override;
+    virtual void restoreState(const QPx::Settings &settings) override;
 
 protected:
     virtual ModelViewPanel *clone() const override;

@@ -10,15 +10,15 @@
 
 #include <QtWidgets/QApplication>
 
-namespace
-{
-
-
-}
-
 GuiContainer::GuiContainer(QWidget *parent) : QWidget(parent)
 {
     new QPx::VBoxLayout(this);
+}
+
+GuiContainer::GuiContainer(GuiPanel *panel, QWidget *parent) : QWidget(parent)
+{
+    new QPx::VBoxLayout(this);
+    layout()->addWidget(panel);
 }
 
 void GuiContainer::addPanel(GuiPanel *panel)
@@ -79,6 +79,9 @@ QWidget *GuiContainer::restoreContainerState(const QPx::Settings &settings)
     }
     else
     {
-        return createPanel(settings);
+        auto panel = createPanel();
+        panel->restoreState(settings);
+
+        return panel;
     }
 }

@@ -24,6 +24,10 @@ void ModelViewPanel::saveState(QPx::Settings &settings) const
 {
 }
 
+void ModelViewPanel::restoreState(const QPx::Settings &settings)
+{
+}
+
 ModelViewPanel *ModelViewPanel::clone() const
 {
     return new ModelViewPanel(model, graphics, relay);

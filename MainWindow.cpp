@@ -8,11 +8,16 @@
 
 #include "graphics/Graphics.h"
 
+#include "gui/GuiSplitter.h"
 #include "gui/GuiSeparator.h"
 #include "gui/GuiBar.h"
+#include "gui/GuiContainer.h"
 
 #include "panels/ToolPanel.h"
-#include "panels/ModelViewPanel.h"
+#include "panels/ToolOptionsPanel.h"
+
+#include "containers/PropertyViewContainer.h"
+#include "containers/ModelViewContainer.h"
 
 #include "views/ModelViewRelay.h"
 
@@ -49,7 +54,15 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto tools = vert->addTypedWidget(new ToolPanel(relay));
 
     horz->addWidget(new GuiSeparator(Qt::Vertical));
-    horz->addWidget(new ModelViewPanel(model, graphics, relay));
+
+    splitters.append(horz->addTypedWidget(new GuiSplitter(Qt::Horizontal)));
+    splitters.append(new GuiSplitter(Qt::Vertical));
+
+//    splitters[1]->addWidget(new TypedGuiContainer<ToolOptionsPanel>(new ToolOptionsPanel()));
+    splitters[1]->addWidget(new PropertyViewContainer());
+
+    splitters[0]->addWidget(splitters[1]);
+    splitters[0]->addWidget(new ModelViewContainer(model, graphics, relay));
 
     tools->addTool(new SelectTool(model, actions, this));
     tools->addTool(new MoveTool(model, actions, this));

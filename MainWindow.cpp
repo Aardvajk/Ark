@@ -58,11 +58,11 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     splitters.append(horz->addTypedWidget(new GuiSplitter(Qt::Horizontal)));
     splitters.append(new GuiSplitter(Qt::Vertical));
 
-//    splitters[1]->addWidget(new TypedGuiContainer<ToolOptionsPanel>(new ToolOptionsPanel()));
+    splitters[1]->addWidget(new ToolOptionsPanel());
     splitters[1]->addWidget(new PropertyViewContainer());
 
-    splitters[0]->addWidget(splitters[1]);
-    splitters[0]->addWidget(new ModelViewContainer(model, graphics, relay));
+    splitters[0]->addWidget(splitters[1], 1);
+    splitters[0]->addWidget(new ModelViewContainer(model, graphics, relay), 10);
 
     tools->addTool(new SelectTool(model, actions, this));
     tools->addTool(new MoveTool(model, actions, this));

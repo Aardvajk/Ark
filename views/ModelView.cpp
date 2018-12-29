@@ -26,6 +26,7 @@ ModelView::ModelView(Model *model, Graphics *graphics, QWidget *parent) : QGx::G
 {
     setAttribute(Qt::WA_MouseTracking);
     setFocusPolicy(Qt::StrongFocus);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     cam = Gx::Transform({ 0, 0, -6}, { 0, 0 });
 }

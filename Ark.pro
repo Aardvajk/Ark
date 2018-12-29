@@ -81,7 +81,8 @@ SOURCES += \
     views/PropertyView.cpp \
     panels/PropertyViewPanel.cpp \
     containers/ModelViewContainer.cpp \
-    containers/PropertyViewContainer.cpp
+    containers/PropertyViewContainer.cpp \
+    panels/ToolOptionsPanel.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -129,7 +130,8 @@ HEADERS += \
     views/PropertyView.h \
     panels/PropertyViewPanel.h \
     containers/ModelViewContainer.h \
-    containers/PropertyViewContainer.h
+    containers/PropertyViewContainer.h \
+    panels/ToolOptionsPanel.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

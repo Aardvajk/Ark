@@ -17,7 +17,7 @@ inline QColor grey(int value){ return QColor(value, value, value); }
 
 void setGui()
 {
-    QApplication::instance()->setProperty("gui-panel-color", grey(190));
+    QApplication::instance()->setProperty("gui-panel-color", grey(220));
     QApplication::instance()->setProperty("gui-border-color", grey(170));
     QApplication::instance()->setProperty("gui-text-color", grey(100));
     QApplication::instance()->setProperty("gui-hover-color", grey(160));

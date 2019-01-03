@@ -5,6 +5,8 @@
 
 #include "tools/components/Marquee.h"
 
+#include "properties/custom/Selection.h"
+
 class Model;
 class ActionList;
 
@@ -13,7 +15,7 @@ class SelectTool : public Tool
     Q_OBJECT
 
 public:
-    SelectTool(Model *model, ActionList *actions, QObject *parent = nullptr);
+    SelectTool(Model *model, ActionList *actions, Selection::Type type, QObject *parent = nullptr);
 
     virtual QString name() const override;
     virtual QPixmap icon() const override;
@@ -28,6 +30,8 @@ public slots:
     virtual void focusLost() override;
 
 private:
+    Model *model;
+    Selection::Type type;
     Marquee mq;
 };
 

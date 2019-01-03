@@ -68,7 +68,6 @@ SOURCES += \
     tools/Tool.cpp \
     tools/SelectTool.cpp \
     views/ModelViewRelay.cpp \
-    tools/MoveTool.cpp \
     tools/components/Marquee.cpp \
     graphics/RenderPrimitives.cpp \
     gui/GuiBar.cpp \
@@ -82,7 +81,10 @@ SOURCES += \
     panels/PropertyViewPanel.cpp \
     containers/ModelViewContainer.cpp \
     containers/PropertyViewContainer.cpp \
-    panels/ToolOptionsPanel.cpp
+    entity/EntityIntersect.cpp \
+    commands/Command.cpp \
+    commands/ModifyCommand.cpp \
+    actions/EditActions.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -116,7 +118,6 @@ HEADERS += \
     graphics/RenderState.h \
     tools/Tool.h \
     tools/SelectTool.h \
-    tools/MoveTool.h \
     views/ModelViewRelay.h \
     tools/components/Marquee.h \
     graphics/RenderPrimitives.h \
@@ -131,7 +132,11 @@ HEADERS += \
     panels/PropertyViewPanel.h \
     containers/ModelViewContainer.h \
     containers/PropertyViewContainer.h \
-    panels/ToolOptionsPanel.h
+    entity/EntityIntersect.h \
+    commands/Command.h \
+    commands/ModifyCommand.h \
+    commands/StoredVariant.h \
+    actions/EditActions.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

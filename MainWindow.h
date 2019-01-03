@@ -7,7 +7,6 @@
 
 class ActionList;
 class Model;
-class GuiSplitter;
 
 class MainWindow : public QPx::MainWindow
 {
@@ -27,7 +26,6 @@ private:
 
     ActionList *actions;
     Model *model;
-    QList<GuiSplitter*> splitters;
 };
 
 #endif // MAINWINDOW_H

@@ -6,7 +6,7 @@
 #include <GxGraphics/GxVertexDeclaration.h>
 #include <GxGraphics/GxShader.h>
 
-RenderState::RenderState(Type type, Graphics *graphics, const RenderParams &params) : graphics(graphics)
+RenderState::RenderState(Type type, Flags flags, Graphics *graphics, const RenderParams &params) : graphics(graphics)
 {
     if(type == Type::Preview)
     {
@@ -37,6 +37,11 @@ RenderState::RenderState(Type type, Graphics *graphics, const RenderParams &para
 
         graphics->device.setZBufferEnable(false);
     }
+
+    if(flags & Flag::Invert)
+    {
+        graphics->device.setAlphaBlend(Gx::GraphicsDevice::AlphaBlend::Invert);
+    }
 }
 
 RenderState::RenderState(RenderState &&r) : graphics(r.graphics)
@@ -49,6 +54,7 @@ RenderState::~RenderState()
     if(graphics)
     {
         graphics->device.setZBufferEnable(true);
+        graphics->device.setAlphaBlend(Gx::GraphicsDevice::AlphaBlend::Off);
     }
 }
 

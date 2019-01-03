@@ -34,14 +34,7 @@ public:
     explicit Property(const Selection &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
     explicit Property(const Mesh &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
 
-    int toInt() const { return s.value().value.toInt(); }
-    float toFloat() const { return s.value().value.toFloat(); }
-    bool toBool() const { return s.value().value.toBool(); }
-    QString toString() const { return s.value().value.toString(); }
-    QColor toColor() const { return qvariant_cast<QColor>(s.value().value); }
-    Selection toSelection() const { return qvariant_cast<Selection>(s.value().value); }
-    Mesh toMesh() const { return qvariant_cast<Mesh>(s.value().value); }
-
+    void setValue(const QVariant &value){ s.value().value = value; }
     void setValue(int value){ s.value().value = value; }
     void setValue(float value){ s.value().value = value; }
     void setValue(bool value){ s.value().value = value; }
@@ -50,6 +43,15 @@ public:
     void setValue(const Selection &value){ s.value().value = QVariant::fromValue(value); }
     void setValue(const Mesh &value){ s.value().value = QVariant::fromValue(value); }
 
+    int toInt() const { return s.value().value.toInt(); }
+    float toFloat() const { return s.value().value.toFloat(); }
+    bool toBool() const { return s.value().value.toBool(); }
+    QString toString() const { return s.value().value.toString(); }
+    QColor toColor() const { return qvariant_cast<QColor>(s.value().value); }
+    Selection toSelection() const { return qvariant_cast<Selection>(s.value().value); }
+    Mesh toMesh() const { return qvariant_cast<Mesh>(s.value().value); }
+
+    QVariant value() const { return s.value().value; }
     Flags flags() const { return s.value().flags; }
 
 private:

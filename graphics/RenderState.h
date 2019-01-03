@@ -2,6 +2,7 @@
 #define RENDERSTATE_H
 
 #include <pcx/non_copyable.h>
+#include <pcx/flags.h>
 
 class Graphics;
 class RenderParams;
@@ -16,7 +17,14 @@ public:
         Screen
     };
 
-    RenderState(Type type, Graphics *graphics, const RenderParams &params);
+    enum class Flag
+    {
+        Invert = 1
+    };
+
+    using Flags = pcx::flags<Flag>;
+
+    RenderState(Type type, Flags flags, Graphics *graphics, const RenderParams &params);
     RenderState(RenderState &&r);
     ~RenderState();
 
@@ -25,5 +33,7 @@ public:
 private:
     Graphics *graphics;
 };
+
+template<> struct pcx_is_flag_enum<RenderState::Flag> : std::true_type { };
 
 #endif // RENDERSTATE_H

@@ -3,7 +3,8 @@
 
 #include <QtWidgets/QWidget>
 
-class GuiButtonGroup;
+#include <pcx/aligned_store.h>
+
 class Tool;
 class ModelViewRelay;
 
@@ -15,9 +16,9 @@ public:
     ToolPanel(ModelViewRelay *relay, QWidget *parent = nullptr);
 
     Tool *addTool(Tool *tool);
-    void addStretch();
 
 protected:
+    virtual void resizeEvent(QResizeEvent *event) override;
     virtual void paintEvent(QPaintEvent *event) override;
 
 private slots:
@@ -25,9 +26,7 @@ private slots:
     void selected();
 
 private:
-    ModelViewRelay *relay;
-    GuiButtonGroup *group;
-    Tool *current;
+    pcx::aligned_store<64> cache;
 };
 
 #endif // TOOLPANEL_H

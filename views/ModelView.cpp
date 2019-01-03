@@ -135,12 +135,12 @@ void ModelView::renderModel()
 
     auto params = renderParams();
 
-    if(auto r = RenderState(RenderState::Type::Preview, graphics, params))
+    if(auto r = RenderState(RenderState::Type::Preview, { }, graphics, params))
     {
         model->buffers()->previewBuffer()->renderTriangleList(graphics->device);
     }
 
-    if(auto r = RenderState(RenderState::Type::Color, graphics, params))
+    if(auto r = RenderState(RenderState::Type::Color, { }, graphics, params))
     {
         model->buffers()->faceBuffer()->renderLineList(graphics->device);
         model->buffers()->pointBuffer()->renderPointList(graphics->device);

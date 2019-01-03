@@ -17,14 +17,16 @@ void RenderPrimitives::line(Graphics *graphics, const RenderParams &params, cons
     os << start << Gx::Rgba(color);
     os << end << Gx::Rgba(color);
 
-    auto r = RenderState(RenderState::Type::Color, graphics, params);
+    auto r = RenderState(RenderState::Type::Color, { }, graphics, params);
     graphics->device.renderLineList(*graphics->genericBuffer, 4);
 }
 
-void RenderPrimitives::box(Graphics *graphics, const RenderParams &params, const Gx::Vec2 &anc, const Gx::Vec2 &pos, const Gx::Color &color)
+void RenderPrimitives::invertBox(Graphics *graphics, const RenderParams &params, const Gx::Vec2 &anc, const Gx::Vec2 &pos)
 {
     Gx::BufferStream<Gx::VertexBuffer> os(*graphics->genericBuffer, Gx::Graphics::Lock::Flag::Discard);
 
+    auto color = Gx::Color(1, 1, 1);
+
     os << Gx::Vec3(anc.x, anc.y, 0) << Gx::Rgba(color);
     os << Gx::Vec3(pos.x, anc.y, 0) << Gx::Rgba(color);
 
@@ -37,7 +39,7 @@ void RenderPrimitives::box(Graphics *graphics, const RenderParams &params, const
     os << Gx::Vec3(anc.x, pos.y, 0) << Gx::Rgba(color);
     os << Gx::Vec3(anc.x, anc.y, 0) << Gx::Rgba(color);
 
-    auto r = RenderState(RenderState::Type::Screen, graphics, params);
+    auto r = RenderState(RenderState::Type::Screen, RenderState::Flag::Invert, graphics, params);
     graphics->device.renderLineList(*graphics->genericBuffer, 4);
 }
 

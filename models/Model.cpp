@@ -3,6 +3,8 @@
 #include "models/ModelData.h"
 #include "models/ModelBuffers.h"
 
+#include "commands/Command.h"
+
 namespace
 {
 
@@ -20,6 +22,11 @@ public:
 Model::Model(Graphics *graphics, QObject *parent) : QPx::AbstractEditorModel(parent)
 {
     cache.alloc<Cache>(this, graphics);
+}
+
+void Model::beginCommand(Command *command)
+{
+    command->data = cache.get<Cache>().data;
 }
 
 const PropertyMap &Model::properties() const
@@ -55,4 +62,9 @@ bool Model::save(const QString &path) const
 QString Model::filter() const
 {
     return "Ark Files (*.ark);;Any Files (*.*)";
+}
+
+void Model::change()
+{
+    emit changed();
 }

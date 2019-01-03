@@ -1,6 +1,7 @@
 #include "ToolPanel.h"
 
 #include "gui/GuiButtonGroup.h"
+#include "gui/GuiSeparator.h"
 
 #include "views/ModelViewRelay.h"
 
@@ -8,34 +9,62 @@
 
 #include "tools/Tool.h"
 
-#include <QPxWidgets/QPxLayouts.h>
-
 #include <QtGui/QPainter>
 
 #include <QtWidgets/QApplication>
 
-ToolPanel::ToolPanel(ModelViewRelay *relay, QWidget *parent) : QWidget(parent), relay(relay), group(new GuiButtonGroup(this)), current(nullptr)
+namespace
 {
-    new QPx::VBoxLayout(this);
+
+class Cache
+{
+public:
+    Cache(ToolPanel *parent, ModelViewRelay *relay) : relay(relay), group(new GuiButtonGroup(parent)), current(nullptr) { }
+
+    ModelViewRelay *relay;
+    GuiButtonGroup *group;
+    Tool *current;
+
+    QList<ToolButton*> toolButtons;
+};
+
+}
+
+ToolPanel::ToolPanel(ModelViewRelay *relay, QWidget *parent) : QWidget(parent)
+{
+    cache.alloc<Cache>(this, relay);
     setFixedWidth(QApplication::instance()->property("gui-tool-width").toInt());
 }
 
 Tool *ToolPanel::addTool(Tool *tool)
 {
-    auto button = new ToolButton(tool->name(), tool->icon());
+    auto &c = cache.get<Cache>();
+
+    auto button = new ToolButton(tool->name(), tool->icon(), this);
     button->setProperty("ark-tool", QVariant::fromValue(tool));
 
-    layout()->addWidget(group->addButton(button));
+    c.group->addButton(button);
+    c.toolButtons.append(button);
 
     connect(button, SIGNAL(toggled(bool)), SLOT(toggled(bool)));
     connect(tool, SIGNAL(select()), SLOT(selected()));
 
+    updateGeometry();
     return tool;
 }
 
-void ToolPanel::addStretch()
+void ToolPanel::resizeEvent(QResizeEvent *event)
 {
-    static_cast<QBoxLayout*>(layout())->addStretch();
+    auto &c = cache.get<Cache>();
+
+    int y = 0;
+    for(auto button: c.toolButtons)
+    {
+        button->move(0, y);
+        y += button->height();
+    }
+
+    QWidget::resizeEvent(event);
 }
 
 void ToolPanel::paintEvent(QPaintEvent *event)
@@ -46,36 +75,36 @@ void ToolPanel::paintEvent(QPaintEvent *event)
 
 void ToolPanel::toggled(bool state)
 {
-    if(current)
-    {
-        current->focusLost();
+    auto &c = cache.get<Cache>();
 
-        disconnect(relay, SIGNAL(mousePressed(ModelView*,QMouseEvent*)), current, SLOT(mousePressed(ModelView*,QMouseEvent*)));
-        disconnect(relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), current, SLOT(mouseMoved(ModelView*,QMouseEvent*)));
-        disconnect(relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), current, SLOT(mouseReleased(ModelView*,QMouseEvent*)));
-        disconnect(relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)), current, SLOT(render(ModelView*,Graphics*,RenderParams)));
+    if(c.current)
+    {
+        c.current->focusLost();
+
+        disconnect(c.relay, SIGNAL(mousePressed(ModelView*,QMouseEvent*)), c.current, SLOT(mousePressed(ModelView*,QMouseEvent*)));
+        disconnect(c.relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), c.current, SLOT(mouseMoved(ModelView*,QMouseEvent*)));
+        disconnect(c.relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), c.current, SLOT(mouseReleased(ModelView*,QMouseEvent*)));
+        disconnect(c.relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)), c.current, SLOT(render(ModelView*,Graphics*,RenderParams)));
     }
 
-    current = qvariant_cast<Tool*>(sender()->property("ark-tool"));
+    c.current = qvariant_cast<Tool*>(sender()->property("ark-tool"));
 
-    if(current)
+    if(c.current)
     {
-        connect(relay, SIGNAL(mousePressed(ModelView*,QMouseEvent*)), current, SLOT(mousePressed(ModelView*,QMouseEvent*)));
-        connect(relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), current, SLOT(mouseMoved(ModelView*,QMouseEvent*)));
-        connect(relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), current, SLOT(mouseReleased(ModelView*,QMouseEvent*)));
-        connect(relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)), current, SLOT(render(ModelView*,Graphics*,RenderParams)));
+        connect(c.relay, SIGNAL(mousePressed(ModelView*,QMouseEvent*)), c.current, SLOT(mousePressed(ModelView*,QMouseEvent*)));
+        connect(c.relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), c.current, SLOT(mouseMoved(ModelView*,QMouseEvent*)));
+        connect(c.relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), c.current, SLOT(mouseReleased(ModelView*,QMouseEvent*)));
+        connect(c.relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)), c.current, SLOT(render(ModelView*,Graphics*,RenderParams)));
     }
 }
 
 void ToolPanel::selected()
 {
-    for(int i = 0; i < layout()->count(); ++i)
+    for(auto button: cache.get<Cache>().toolButtons)
     {
-        auto widget = layout()->itemAt(i)->widget();
-
-        if(widget && qvariant_cast<Tool*>(widget->property("ark-tool")) == sender())
+        if(qvariant_cast<Tool*>(button->property("ark-tool")) == sender())
         {
-            static_cast<ToolButton*>(widget)->setChecked(true);
+            button->setChecked(true);
             return;
         }
     }

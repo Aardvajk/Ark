@@ -10,6 +10,7 @@ class ModelData;
 class PropertyMap;
 class Entity;
 class ModelBuffers;
+class Command;
 
 class Model : public QPx::AbstractEditorModel
 {
@@ -17,6 +18,8 @@ class Model : public QPx::AbstractEditorModel
 
 public:
     Model(Graphics *graphics, QObject *parent = nullptr);
+
+    void beginCommand(Command *command);
 
     const PropertyMap &properties() const;
     const QList<Entity> &entities() const;
@@ -28,6 +31,9 @@ public:
     virtual bool save(const QString &path) const override;
 
     virtual QString filter() const override;
+
+public slots:
+    void change();
 
 signals:
     void changed();

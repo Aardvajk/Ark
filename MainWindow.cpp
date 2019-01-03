@@ -2,6 +2,7 @@
 
 #include "actions/ActionList.h"
 #include "actions/ApplicationActions.h"
+#include "actions/EditActions.h"
 
 #include "models/Model.h"
 #include "models/ModelBuffers.h"
@@ -14,7 +15,6 @@
 #include "gui/GuiContainer.h"
 
 #include "panels/ToolPanel.h"
-#include "panels/ToolOptionsPanel.h"
 
 #include "containers/PropertyViewContainer.h"
 #include "containers/ModelViewContainer.h"
@@ -22,7 +22,6 @@
 #include "views/ModelViewRelay.h"
 
 #include "tools/SelectTool.h"
-#include "tools/MoveTool.h"
 
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -41,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     model = new Model(graphics, this);
 
     new ApplicationActions(actions, this);
+    new EditActions(model, actions, this);
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 
@@ -55,23 +55,21 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     horz->addWidget(new GuiSeparator(Qt::Vertical));
 
-    splitters.append(horz->addTypedWidget(new GuiSplitter(Qt::Horizontal)));
-    splitters.append(new GuiSplitter(Qt::Vertical));
+    auto splitter = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
-    splitters[1]->addWidget(new ToolOptionsPanel());
-    splitters[1]->addWidget(new PropertyViewContainer());
+    splitter->addWidget(new PropertyViewContainer(), 1);
+    splitter->addWidget(new ModelViewContainer(model, graphics, relay), 20);
 
-    splitters[0]->addWidget(splitters[1], 1);
-    splitters[0]->addWidget(new ModelViewContainer(model, graphics, relay), 10);
-
-    tools->addTool(new SelectTool(model, actions, this));
-    tools->addTool(new MoveTool(model, actions, this));
-    tools->addStretch();
+    tools->addTool(new SelectTool(model, actions, Selection::Type::Object, this));
+    tools->addTool(new SelectTool(model, actions, Selection::Type::Face, this));
+    tools->addTool(new SelectTool(model, actions, Selection::Type::Vertex, this));
 
     restoreGeometry(settings["Application"]["Geometry"].value().toByteArray());
 
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
+
+    actions->find("Tools.Select.Object")->trigger();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

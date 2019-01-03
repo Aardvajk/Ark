@@ -5,6 +5,12 @@ Menus
         Application.Exit
     }
 
+    [Menu] = "&Edit"
+    {
+        Edit.Undo
+        Edit.Redo
+    }
+
     [Menu] = "&Tools"
     {
         Application.Options

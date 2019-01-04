@@ -49,10 +49,13 @@ GuiComboBox::GuiComboBox(QWidget *parent) : QComboBox(parent)
 
 void GuiComboBox::showPopup()
 {
-    cache.get<Cache>().open = true;
-    update();
+    if(count())
+    {
+        cache.get<Cache>().open = true;
+        update();
 
-    QComboBox::showPopup();
+        QComboBox::showPopup();
+    }
 }
 
 void GuiComboBox::hidePopup()
@@ -72,6 +75,7 @@ void GuiComboBox::paintEvent(QPaintEvent *event)
     auto &c = cache.get<Cache>();
 
     QPainter painter(this);
+    QFontMetrics fm(painter.font());
 
     int size = QApplication::instance()->property("gui-bar-icon-size").toInt();
 
@@ -83,11 +87,9 @@ void GuiComboBox::paintEvent(QPaintEvent *event)
 
     painter.fillRect(rect(), c.open ? hilight : hover);
 
-    auto rc = rect().adjusted(4, 0, -size, 0);
+    auto rc = rect().adjusted(4, -1, -size, -1);
 
     painter.setPen(text);
-
-    QFontMetrics fm(painter.font());
     painter.drawText(rc, Qt::AlignLeft | Qt::AlignVCenter, fm.elidedText(currentText(), Qt::ElideMiddle, rc.width()));
 
     drawArrow(painter, rect().adjusted(rect().width() - size, 1, 0, 1), hilight);

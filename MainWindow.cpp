@@ -58,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto splitter = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
     splitter->addWidget(new PropertyPanelContainer(), 1);
-    splitter->addWidget(new ModelViewContainer(model, graphics, relay), 2);
+    splitter->addWidget(new ModelViewContainer(model, graphics, relay), 20);
 
     tools->addTool(new SelectTool(model, actions, this));
 

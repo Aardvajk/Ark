@@ -3,12 +3,18 @@
 #include "views/ModelView.h"
 #include "views/ModelViewRelay.h"
 
+#include "gui/GuiBar.h"
+
 #include "graphics/Graphics.h"
 
 #include <QtWidgets/QLayout>
+#include <QtWidgets/QMenu>
 
 ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, ModelViewRelay *relay, QWidget *parent) : GuiPanel(parent), model(model), graphics(graphics), relay(relay)
 {
+    toolBar()->addStretch();
+    addSplitButton(GuiPanel::SplitType::Both);
+
     view = new ModelView(model, graphics);
     layout()->addWidget(view);
 

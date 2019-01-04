@@ -10,15 +10,27 @@ class Settings;
 
 }
 
-class QAction;
 class GuiBar;
+class QMenu;
+class QAction;
 
 class GuiPanel : public QPx::SplitterPanel
 {
     Q_OBJECT
 
 public:
+    enum class SplitType
+    {
+        Vertical,
+        Horizontal,
+        Both
+    };
+
     explicit GuiPanel(QWidget *parent = nullptr);
+
+    GuiBar *toolBar() const;
+
+    void addSplitButton(SplitType type);
 
     virtual void saveState(QPx::Settings &settings) const = 0;
     virtual void restoreState(const QPx::Settings &settings) = 0;
@@ -37,6 +49,7 @@ private slots:
 
 private:
     GuiBar *bar;
+    QMenu *menu;
     QAction *closeAction;
 };
 

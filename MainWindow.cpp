@@ -16,7 +16,7 @@
 
 #include "panels/ToolPanel.h"
 
-#include "containers/PropertyViewContainer.h"
+#include "containers/PropertyPanelContainer.h"
 #include "containers/ModelViewContainer.h"
 
 #include "views/ModelViewRelay.h"
@@ -57,19 +57,17 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto splitter = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
-    splitter->addWidget(new PropertyViewContainer(), 1);
-    splitter->addWidget(new ModelViewContainer(model, graphics, relay), 20);
+    splitter->addWidget(new PropertyPanelContainer(), 1);
+    splitter->addWidget(new ModelViewContainer(model, graphics, relay), 2);
 
-    tools->addTool(new SelectTool(model, actions, Selection::Type::Object, this));
-    tools->addTool(new SelectTool(model, actions, Selection::Type::Face, this));
-    tools->addTool(new SelectTool(model, actions, Selection::Type::Vertex, this));
+    tools->addTool(new SelectTool(model, actions, this));
 
     restoreGeometry(settings["Application"]["Geometry"].value().toByteArray());
 
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
 
-    actions->find("Tools.Select.Object")->trigger();
+    actions->find("Tools.Select")->trigger();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

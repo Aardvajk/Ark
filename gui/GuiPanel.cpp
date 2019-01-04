@@ -12,6 +12,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
+#include "gui/GuiComboBox.h"
+
 GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent)
 {
     auto layout = new QPx::VBoxLayout(this);
@@ -19,7 +21,9 @@ GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent)
     bar = layout->addTypedWidget(new GuiBar());
     layout->addWidget(new GuiSeparator(Qt::Horizontal));
 
-    bar->addStretch();
+    auto cb = bar->addTypedWidget(new GuiComboBox());
+
+//    bar->addStretch();
     auto button = bar->addTypedWidget(new GuiBarButton(QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation)));
 
     auto menu = button->setMenu(new QMenu(button));

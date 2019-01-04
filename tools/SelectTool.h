@@ -15,7 +15,7 @@ class SelectTool : public Tool
     Q_OBJECT
 
 public:
-    SelectTool(Model *model, ActionList *actions, Selection::Type type, QObject *parent = nullptr);
+    SelectTool(Model *model, ActionList *actions, QObject *parent = nullptr);
 
     virtual QString name() const override;
     virtual QPixmap icon() const override;

@@ -28,7 +28,6 @@ public slots:
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
-
     virtual bool event(QEvent *event) override;
 
 private slots:

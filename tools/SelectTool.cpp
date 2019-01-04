@@ -23,18 +23,6 @@
 namespace
 {
 
-QKeySequence shortcut(Selection::Type type)
-{
-    switch(type)
-    {
-        case Selection::Type::Object: return QKeySequence("1");
-        case Selection::Type::Face: return QKeySequence("2");
-        case Selection::Type::Vertex: return QKeySequence("3");
-
-        default: return QKeySequence();
-    }
-}
-
 void updateSelection(Model *model, QMouseEvent *event, ModifyCommand *command, int index, const Selection &sel)
 {
     auto old = model->entities()[index].properties()["Selection"].toSelection();
@@ -99,14 +87,14 @@ void selectMarquee(Selection::Type type, Model *model, ModelView *view, QMouseEv
 
 }
 
-SelectTool::SelectTool(Model *model, ActionList *actions, Selection::Type type, QObject *parent) : Tool(parent), model(model), type(type)
+SelectTool::SelectTool(Model *model, ActionList *actions, QObject *parent) : Tool(parent), model(model), type(Selection::Type::Face)
 {
-    connect(actions->add(QString("Tools.Select.%1").arg(name()), name(), shortcut(type), QIcon()), SIGNAL(triggered()), SIGNAL(select()));
+    connect(actions->add("Tools.Select", "Select", QKeySequence("1"), QIcon()), SIGNAL(triggered()), SIGNAL(select()));
 }
 
 QString SelectTool::name() const
 {
-    return Selection::typeToString(type);
+    return "Select";
 }
 
 QPixmap SelectTool::icon() const

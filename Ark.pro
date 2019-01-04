@@ -78,13 +78,14 @@ SOURCES += \
     panels/ToolPanel.cpp \
     panels/ToolButton.cpp \
     views/PropertyView.cpp \
-    panels/PropertyViewPanel.cpp \
     containers/ModelViewContainer.cpp \
-    containers/PropertyViewContainer.cpp \
     entity/EntityIntersect.cpp \
     commands/Command.cpp \
     commands/ModifyCommand.cpp \
-    actions/EditActions.cpp
+    actions/EditActions.cpp \
+    containers/PropertyPanelContainer.cpp \
+    panels/PropertyPanel.cpp \
+    gui/GuiComboBox.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -129,14 +130,15 @@ HEADERS += \
     panels/ToolPanel.h \
     panels/ToolButton.h \
     views/PropertyView.h \
-    panels/PropertyViewPanel.h \
     containers/ModelViewContainer.h \
-    containers/PropertyViewContainer.h \
     entity/EntityIntersect.h \
     commands/Command.h \
     commands/ModifyCommand.h \
     commands/StoredVariant.h \
-    actions/EditActions.h
+    actions/EditActions.h \
+    containers/PropertyPanelContainer.h \
+    panels/PropertyPanel.h \
+    gui/GuiComboBox.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

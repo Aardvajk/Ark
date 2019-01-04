@@ -20,14 +20,15 @@ public:
 
 void drawArrow(QPainter &painter, const QRect &rect, const QColor &color)
 {
-    QPoint off(rect.x() + (rect.width() - 7) / 2, rect.y() + (rect.height() - 4) / 2);
+    int x = rect.x() + ((rect.width() - 7) / 2);
+    int y = rect.y() + ((rect.height() - 4) / 2);
 
     painter.setPen(color);
 
-    painter.drawLine(off.x(), off.y(), off.x() + 6, off.y());
-    painter.drawLine(off.x() + 1, off.y() + 1, off.x() + 5, off.y() + 1);
-    painter.drawLine(off.x() + 2, off.y() + 2, off.x() + 4, off.y() + 2);
-    painter.drawLine(off.x() + 3, off.y() + 3, off.x() + 3, off.y() + 3);
+    for(int i = 0; i < 4; ++i)
+    {
+        painter.drawLine(x + i, y + i, x + (6 - i), y + i);
+    }
 }
 
 }
@@ -41,10 +42,7 @@ GuiComboBox::GuiComboBox(QWidget *parent) : QComboBox(parent)
     setFixedHeight(QApplication::instance()->property("gui-bar-height").toInt());
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
-    setMinimumWidth(16);
-
-    addItem("One");
-    addItem("TwoFourThreeNineEightTwoFourThreeNineEightTwoFourThreeNineEightTwoFourThreeNineEight");
+    setMinimumWidth(QApplication::instance()->property("gui-bar-icon-size").toInt());
 
     connect(c.anim, SIGNAL(valueChanged(QVariant)), SLOT(update()));
 }
@@ -75,6 +73,8 @@ void GuiComboBox::paintEvent(QPaintEvent *event)
 
     QPainter painter(this);
 
+    int size = QApplication::instance()->property("gui-bar-icon-size").toInt();
+
     auto hover = qvariant_cast<QColor>(QApplication::instance()->property("gui-hover-color"));
     hover.setAlphaF(c.anim->currentValue().toFloat());
 
@@ -83,15 +83,15 @@ void GuiComboBox::paintEvent(QPaintEvent *event)
 
     painter.fillRect(rect(), c.open ? hilight : hover);
 
-    auto rc = rect().adjusted(3, 0, -16, 0);
+    auto rc = rect().adjusted(4, 0, -size, 0);
 
     painter.setPen(text);
 
     QFontMetrics fm(painter.font());
     painter.drawText(rc, Qt::AlignLeft | Qt::AlignVCenter, fm.elidedText(currentText(), Qt::ElideMiddle, rc.width()));
 
-    drawArrow(painter, rect().adjusted(rect().width() - 16, 1, 0, 1), hilight);
-    drawArrow(painter, rect().adjusted(rect().width() - 16, 0, 0, 0), text);
+    drawArrow(painter, rect().adjusted(rect().width() - size, 1, 0, 1), hilight);
+    drawArrow(painter, rect().adjusted(rect().width() - size, 0, 0, 0), text);
 }
 
 bool GuiComboBox::event(QEvent *event)

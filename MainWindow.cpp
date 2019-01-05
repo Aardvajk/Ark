@@ -16,8 +16,9 @@
 
 #include "panels/ToolPanel.h"
 
-#include "containers/PropertyPanelContainer.h"
-#include "containers/ModelViewContainer.h"
+#include "containers/ToolPanelContainer.h"
+#include "containers/SidePanelContainer.h"
+#include "containers/ModelViewPanelContainer.h"
 
 #include "views/ModelViewRelay.h"
 
@@ -39,26 +40,24 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     model = new Model(graphics, this);
 
+    layout->addWidget(new GuiSeparator(Qt::Horizontal));
+
+    auto tools = new ToolPanel(relay);
+
+    auto horz = layout->addTypedLayout(new QPx::HBoxLayout());
+
+    horz->addTypedWidget(new ToolPanelContainer(tools));
+    horz->addTypedWidget(new GuiSeparator(Qt::Vertical));
+
+    auto splitter = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
+
+    splitter->addTypedWidget(new SidePanelContainer(), 1);
+    splitter->addWidget(new ModelViewPanelContainer(model, graphics, relay), 20);
+
     new ApplicationActions(actions, this);
     new EditActions(model, actions, this);
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
-
-    layout->addWidget(new GuiSeparator(Qt::Horizontal));
-
-    auto horz = layout->addTypedLayout(new QPx::HBoxLayout());
-    auto vert = horz->addTypedLayout(new QPx::VBoxLayout());
-
-    vert->addTypedWidget(new GuiBar())->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-    vert->addTypedWidget(new GuiSeparator(Qt::Horizontal))->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-    auto tools = vert->addTypedWidget(new ToolPanel(relay));
-
-    horz->addWidget(new GuiSeparator(Qt::Vertical));
-
-    auto splitter = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
-
-    splitter->addWidget(new PropertyPanelContainer(), 1);
-    splitter->addWidget(new ModelViewContainer(model, graphics, relay), 20);
 
     tools->addTool(new SelectTool(model, actions, this));
 

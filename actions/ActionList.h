@@ -23,6 +23,8 @@ public:
     QPx::Action *add(const QString &id, const QString &text, const QKeySequence &shortcut, const QIcon &icon, QPx::ActionList::Enable enable = QPx::ActionList::Enable::On);
     QPx::Action *add(const QString &id, const QString &text, QPx::ActionList::Enable enable = QPx::ActionList::Enable::On);
 
+    QPx::Action *addCheckable(const QString &id, const QString &text, bool state, QPx::ActionList::Enable enable = QPx::ActionList::Enable::On);
+
 public slots:
     void sync();
 

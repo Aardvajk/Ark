@@ -1,11 +1,11 @@
-#include "PropertyPanel.h"
+#include "SidePanel.h"
 
 #include "gui/GuiBar.h"
 #include "gui/GuiComboBox.h"
 
 #include <QtWidgets/QLayout>
 
-PropertyPanel::PropertyPanel(QWidget *parent) : GuiPanel(parent)
+SidePanel::SidePanel(QWidget *parent) : GuiPanel(parent)
 {
     auto cb = toolBar()->addTypedWidget(new GuiComboBox());
     cb->addItem("One");
@@ -20,15 +20,15 @@ PropertyPanel::PropertyPanel(QWidget *parent) : GuiPanel(parent)
     layout()->addWidget(w);
 }
 
-void PropertyPanel::saveState(QPx::Settings &settings) const
+void SidePanel::saveState(QPx::Settings &settings) const
 {
 }
 
-void PropertyPanel::restoreState(const QPx::Settings &settings)
+void SidePanel::restoreState(const QPx::Settings &settings)
 {
 }
 
-PropertyPanel *PropertyPanel::clone() const
+SidePanel *SidePanel::clone() const
 {
-    return new PropertyPanel();
+    return new SidePanel();
 }

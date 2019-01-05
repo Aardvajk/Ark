@@ -20,6 +20,16 @@ QPx::Action *ActionList::add(const QString &id, const QString &text, ActionList:
     return add(id, text, QKeySequence(), QIcon(), enable);
 }
 
+QPx::Action *ActionList::addCheckable(const QString &id, const QString &text, bool state, QPx::ActionList::Enable enable)
+{
+    auto a = add(id, text, enable);
+
+    a->setCheckable(true);
+    a->setChecked(state);
+
+    return a;
+}
+
 void ActionList::sync()
 {
     for(auto a: toList())

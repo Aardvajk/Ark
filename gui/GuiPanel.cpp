@@ -12,12 +12,14 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
-GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent), menu(nullptr), closeAction(nullptr)
+GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent), close(new QAction("Close", this))
 {
     auto layout = new QPx::VBoxLayout(this);
 
     bar = layout->addTypedWidget(new GuiBar());
     layout->addWidget(new GuiSeparator(Qt::Horizontal));
+
+    connect(close, SIGNAL(triggered()), SLOT(closePanel()));
 }
 
 GuiBar *GuiPanel::toolBar() const
@@ -25,27 +27,9 @@ GuiBar *GuiPanel::toolBar() const
     return bar;
 }
 
-void GuiPanel::addSplitButton(SplitType type)
+QAction *GuiPanel::closeAction() const
 {
-    menu = new QMenu(this);
-
-    if(type == SplitType::Vertical || type == SplitType::Both)
-    {
-        menu->addAction(QIcon(":/resources/images/splitvert.png"), type == SplitType::Vertical ? "Split" : "Split Vertical", this, SLOT(splitVertical()));
-    }
-
-    if(type == SplitType::Horizontal || type == SplitType::Both)
-    {
-        menu->addAction(QIcon(":/resources/images/splithorz.png"), type == SplitType::Horizontal ? "Split" : "Split Horizontal", this, SLOT(splitHorizontal()));
-    }
-
-    menu->addSeparator();
-    closeAction = menu->addAction("Close", this, SLOT(closePanel()));
-
-    connect(menu, SIGNAL(aboutToShow()), SLOT(menuAboutToShow()));
-
-    auto button = bar->addTypedWidget(new GuiBarButton(QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation)));
-    button->setMenu(menu);
+    return close;
 }
 
 QSplitter *GuiPanel::createSplitter(Qt::Orientation orientation) const
@@ -55,7 +39,7 @@ QSplitter *GuiPanel::createSplitter(Qt::Orientation orientation) const
 
 void GuiPanel::menuAboutToShow()
 {
-    closeAction->setVisible(qobject_cast<QSplitter*>(parentWidget()));
+    close->setVisible(qobject_cast<QSplitter*>(parentWidget()));
 }
 
 void GuiPanel::splitVertical()

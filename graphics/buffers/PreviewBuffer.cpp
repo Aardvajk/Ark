@@ -30,20 +30,17 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
 
             for(int i = 0; i < mesh.faces.count(); ++i)
             {
-                if(e.subProperties()[Selection::Type::Face][i]["Visible"].toBool())
+                auto c = QGx::Color(QColor(100, 100, 100));
+
+                for(int j = 1; j < mesh.faces[i].elements.count() - 1; ++j)
                 {
-                    auto c = QGx::Color(e.subProperties()[Selection::Type::Face][i]["Color"].toColor());
+                    auto n = mesh.faceNormal(i);
 
-                    for(int j = 1; j < mesh.faces[i].elements.count() - 1; ++j)
-                    {
-                        auto n = mesh.faceNormal(i);
+                    os << mesh.vertex(i, 0) << n << Gx::Rgba(c);
+                    os << mesh.vertex(i, j) << n << Gx::Rgba(c);
+                    os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c);
 
-                        os << mesh.vertex(i, 0) << n << Gx::Rgba(c);
-                        os << mesh.vertex(i, j) << n << Gx::Rgba(c);
-                        os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c);
-
-                        ++count;
-                    }
+                    ++count;
                 }
             }
         }

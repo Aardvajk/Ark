@@ -1,7 +1,6 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
 
-#include "properties/custom/Selection.h"
 #include "properties/custom/Mesh.h"
 
 #include <pcx/flags.h>
@@ -17,8 +16,7 @@ public:
     enum class Flag
     {
         Hidden = 1,
-        ReadOnly = 2,
-        NonPersistent = 4
+        ReadOnly = 2
     };
 
     using Flags = pcx::flags<Flag>;
@@ -31,7 +29,6 @@ public:
     explicit Property(const QString &value, Flags flags = Flags()) : s(value, flags) { }
     explicit Property(const char *value, Flags flags = Flags()) : s(QString(value), flags) { }
     explicit Property(const QColor &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
-    explicit Property(const Selection &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
     explicit Property(const Mesh &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
 
     void setValue(const QVariant &value){ s.value().value = value; }
@@ -40,7 +37,6 @@ public:
     void setValue(bool value){ s.value().value = value; }
     void setValue(const QString &value){ s.value().value = value; }
     void setValue(const QColor &value){ s.value().value = QVariant::fromValue(value); }
-    void setValue(const Selection &value){ s.value().value = QVariant::fromValue(value); }
     void setValue(const Mesh &value){ s.value().value = QVariant::fromValue(value); }
 
     int toInt() const { return s.value().value.toInt(); }
@@ -48,7 +44,6 @@ public:
     bool toBool() const { return s.value().value.toBool(); }
     QString toString() const { return s.value().value.toString(); }
     QColor toColor() const { return qvariant_cast<QColor>(s.value().value); }
-    Selection toSelection() const { return qvariant_cast<Selection>(s.value().value); }
     Mesh toMesh() const { return qvariant_cast<Mesh>(s.value().value); }
 
     QVariant value() const { return s.value().value; }

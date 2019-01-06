@@ -55,38 +55,26 @@ SOURCES += \
     models/ModelData.cpp \
     entity/Entity.cpp \
     properties/PropertyMap.cpp \
-    properties/custom/Selection.cpp \
     properties/custom/Mesh.cpp \
     entity/EntityFactory.cpp \
     graphics/buffers/Buffer.cpp \
-    graphics/buffers/FaceBuffer.cpp \
-    graphics/buffers/PointBuffer.cpp \
     graphics/buffers/PreviewBuffer.cpp \
     views/ModelView.cpp \
     models/ModelBuffers.cpp \
     graphics/RenderState.cpp \
-    tools/Tool.cpp \
-    tools/SelectTool.cpp \
-    views/ModelViewRelay.cpp \
-    tools/components/Marquee.cpp \
     graphics/RenderPrimitives.cpp \
     gui/GuiBar.cpp \
     panels/ModelViewPanel.cpp \
     gui/GuiButton.cpp \
     gui/GuiBarButton.cpp \
     gui/GuiButtonGroup.cpp \
-    panels/ToolPanel.cpp \
-    panels/ToolButton.cpp \
-    views/PropertyView.cpp \
-    entity/EntityIntersect.cpp \
     commands/Command.cpp \
-    commands/ModifyCommand.cpp \
     actions/EditActions.cpp \
     gui/GuiComboBox.cpp \
-    panels/SidePanel.cpp \
-    containers/SidePanelContainer.cpp \
-    containers/ModelViewPanelContainer.cpp \
-    containers/ToolPanelContainer.cpp
+    core/Relay.cpp \
+    containers/ModelViewContainer.cpp \
+    gui/GuiToolButton.cpp \
+    gui/GuiLayoutWidget.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -103,44 +91,31 @@ HEADERS += \
     models/ModelData.h \
     entity/Entity.h \
     properties/PropertyMap.h \
-    properties/custom/Selection.h \
     properties/custom/Mesh.h \
     properties/custom/Face.h \
     entity/EntityFactory.h \
     graphics/vertices/ColorVertex.h \
     graphics/vertices/PreviewVertex.h \
     graphics/buffers/Buffer.h \
-    graphics/buffers/FaceBuffer.h \
-    graphics/buffers/PointBuffer.h \
     graphics/buffers/PreviewBuffer.h \
     graphics/components/EdgeKey.h \
     views/ModelView.h \
     models/ModelBuffers.h \
     graphics/RenderParams.h \
     graphics/RenderState.h \
-    tools/Tool.h \
-    tools/SelectTool.h \
-    views/ModelViewRelay.h \
-    tools/components/Marquee.h \
     graphics/RenderPrimitives.h \
     gui/GuiBar.h \
     panels/ModelViewPanel.h \
     gui/GuiButton.h \
     gui/GuiBarButton.h \
     gui/GuiButtonGroup.h \
-    panels/ToolPanel.h \
-    panels/ToolButton.h \
-    views/PropertyView.h \
-    entity/EntityIntersect.h \
     commands/Command.h \
-    commands/ModifyCommand.h \
-    commands/StoredVariant.h \
     actions/EditActions.h \
     gui/GuiComboBox.h \
-    panels/SidePanel.h \
-    containers/SidePanelContainer.h \
-    containers/ModelViewPanelContainer.h \
-    containers/ToolPanelContainer.h
+    core/Relay.h \
+    containers/ModelViewContainer.h \
+    gui/GuiToolButton.h \
+    gui/GuiLayoutWidget.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

@@ -1,15 +1,15 @@
-#include "ToolButton.h"
+#include "GuiToolButton.h"
 
 #include <QtGui/QPainter>
 
 #include <QtWidgets/QApplication>
 
-ToolButton::ToolButton(const QString &text, const QPixmap &pixmap, QWidget *parent) : GuiButton(parent), text(text), pixmap(pixmap)
+GuiToolButton::GuiToolButton(const QString &text, const QPixmap &pixmap, QWidget *parent) : GuiButton(parent), text(text), pixmap(pixmap)
 {
     setFixedSize(QApplication::instance()->property("gui-tool-width").toInt(), QApplication::instance()->property("gui-tool-height").toInt());
 }
 
-void ToolButton::paintEvent(QPaintEvent *event)
+void GuiToolButton::paintEvent(QPaintEvent *event)
 {
     GuiButton::paintEvent(event);
 

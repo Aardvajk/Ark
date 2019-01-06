@@ -11,8 +11,6 @@
 #include "graphics/RenderState.h"
 
 #include "graphics/buffers/PreviewBuffer.h"
-#include "graphics/buffers/FaceBuffer.h"
-#include "graphics/buffers/PointBuffer.h"
 
 #include <GxMaths/GxColor.h>
 #include <GxMaths/GxRange.h>
@@ -138,12 +136,6 @@ void ModelView::renderModel()
     if(auto r = RenderState(RenderState::Type::Preview, { }, graphics, params))
     {
         model->buffers()->previewBuffer()->renderTriangleList(graphics->device);
-    }
-
-    if(auto r = RenderState(RenderState::Type::Color, { }, graphics, params))
-    {
-        model->buffers()->faceBuffer()->renderLineList(graphics->device);
-        model->buffers()->pointBuffer()->renderPointList(graphics->device);
     }
 
     emit render(this, graphics, params);

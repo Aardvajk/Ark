@@ -6,14 +6,14 @@
 class Model;
 class Graphics;
 class ModelView;
-class ModelViewRelay;
+class Relay;
 
 class ModelViewPanel : public GuiPanel
 {
     Q_OBJECT
 
 public:
-    ModelViewPanel(Model *model, Graphics *graphics, ModelViewRelay *relay, QWidget *parent = nullptr);
+    ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, QWidget *parent = nullptr);
 
     virtual void saveState(QPx::Settings &settings) const override;
     virtual void restoreState(const QPx::Settings &settings) override;
@@ -25,7 +25,7 @@ private:
     Model *model;
     Graphics *graphics;
     ModelView *view;
-    ModelViewRelay *relay;
+    Relay *relay;
 };
 
 #endif // MODELVIEWPANEL_H

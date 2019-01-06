@@ -12,12 +12,12 @@
 
 GuiContainer::GuiContainer(QWidget *parent) : QWidget(parent)
 {
-    new QPx::VBoxLayout(this);
+    new QPx::VBoxLayout(0, 1, this);
 }
 
 GuiContainer::GuiContainer(GuiPanel *panel, QWidget *parent) : QWidget(parent)
 {
-    new QPx::VBoxLayout(this);
+    new QPx::VBoxLayout(0, 1, this);
     layout()->addWidget(panel);
 }
 

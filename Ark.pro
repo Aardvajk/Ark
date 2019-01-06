@@ -74,7 +74,9 @@ SOURCES += \
     core/Relay.cpp \
     containers/ModelViewContainer.cpp \
     gui/GuiToolButton.cpp \
-    gui/GuiLayoutWidget.cpp
+    gui/GuiLayoutWidget.cpp \
+    views/ToolView.cpp \
+    containers/ToolViewContainer.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -115,7 +117,9 @@ HEADERS += \
     core/Relay.h \
     containers/ModelViewContainer.h \
     gui/GuiToolButton.h \
-    gui/GuiLayoutWidget.h
+    gui/GuiLayoutWidget.h \
+    views/ToolView.h \
+    containers/ToolViewContainer.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

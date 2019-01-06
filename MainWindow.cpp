@@ -17,6 +17,7 @@
 #include "gui/GuiBar.h"
 #include "gui/GuiContainer.h"
 
+#include "containers/ToolViewContainer.h"
 #include "containers/ModelViewContainer.h"
 
 #include <QPxWidgets/QPxLayouts.h>
@@ -32,12 +33,16 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     model = new Model(graphics, this);
 
-    auto layout = new QPx::VBoxLayout(5, 5);
+    auto layout = new QPx::VBoxLayout();
     setCentralWidget(new GuiLayoutWidget(layout));
 
-    auto splitter = layout->addTypedWidget(new QPx::Splitter(Qt::Horizontal));
-    splitter->addWidget(new ModelViewContainer(model, graphics, relay), 20);
-    splitter->addWidget(new ModelViewContainer(model, graphics, relay), 20);
+    layout->addTypedWidget(new GuiSeparator(Qt::Horizontal));
+
+    auto horz = layout->addTypedLayout(new QPx::HBoxLayout(0, 1));
+    horz->addWidget(new ToolViewContainer());
+
+    auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
+    split->addWidget(new ModelViewContainer(model, graphics, relay), 20);
 
     new ApplicationActions(actions, this);
     new EditActions(model, actions, this);

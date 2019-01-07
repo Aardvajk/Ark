@@ -1,6 +1,6 @@
 #include "ToolView.h"
 
-#include "gui/GuiToolButton.h"
+#include "gui/GuiLargeButton.h"
 #include "gui/GuiButtonGroup.h"
 
 #include <QPxWidgets/QPxLayouts.h>
@@ -15,9 +15,9 @@ ToolView::ToolView(QWidget *parent) : QWidget(parent), group(new GuiButtonGroup(
     QPx::setPaletteColor(this, QPalette::Window, qvariant_cast<QColor>(QApplication::instance()->property("gui-panel-color")));
     setAutoFillBackground(true);
 
-    layout->addWidget(group->addButton(new GuiToolButton("Select", QPixmap(":/resources/images/ark.png"))));
-    layout->addWidget(group->addButton(new GuiToolButton("Create", QPixmap(":/resources/images/ark.png"))));
-    layout->addWidget(group->addButton(new GuiToolButton("Move", QPixmap(":/resources/images/ark.png"))));
+    layout->addWidget(group->addButton(new GuiLargeButton("Select", QPixmap(":/resources/images/ark.png"))));
+    layout->addWidget(group->addButton(new GuiLargeButton("Create", QPixmap(":/resources/images/ark.png"))));
+    layout->addWidget(group->addButton(new GuiLargeButton("Move", QPixmap(":/resources/images/ark.png"))));
 
     layout->addStretch();
 }

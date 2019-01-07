@@ -2,8 +2,7 @@
 
 #include "gui/GuiSplitter.h"
 #include "gui/GuiBar.h"
-#include "gui/GuiBarButton.h"
-#include "gui/GuiSeparator.h"
+#include "gui/GuiSmallButton.h"
 
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -14,10 +13,9 @@
 
 GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent), close(new QAction("Close", this))
 {
-    auto layout = new QPx::VBoxLayout(this);
+    auto layout = new QPx::VBoxLayout(0, 1, this);
 
     bar = layout->addTypedWidget(new GuiBar());
-    layout->addWidget(new GuiSeparator(Qt::Horizontal));
 
     connect(close, SIGNAL(triggered()), SLOT(closePanel()));
 }

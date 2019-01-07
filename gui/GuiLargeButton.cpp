@@ -1,15 +1,15 @@
-#include "GuiToolButton.h"
+#include "GuiLargeButton.h"
 
 #include <QtGui/QPainter>
 
 #include <QtWidgets/QApplication>
 
-GuiToolButton::GuiToolButton(const QString &text, const QPixmap &pixmap, QWidget *parent) : GuiButton(parent), text(text), pixmap(pixmap)
+GuiLargeButton::GuiLargeButton(const QString &text, const QPixmap &pixmap, QWidget *parent) : GuiButton(parent), text(text), pixmap(pixmap)
 {
     setFixedSize(QApplication::instance()->property("gui-tool-width").toInt(), QApplication::instance()->property("gui-tool-height").toInt());
 }
 
-void GuiToolButton::paintEvent(QPaintEvent *event)
+void GuiLargeButton::paintEvent(QPaintEvent *event)
 {
     GuiButton::paintEvent(event);
 

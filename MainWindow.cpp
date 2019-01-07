@@ -11,13 +11,14 @@
 
 #include "graphics/Graphics.h"
 
-#include "gui/GuiLayoutWidget.h"
+#include "gui/GuiCentralWidget.h"
 #include "gui/GuiSplitter.h"
 #include "gui/GuiSeparator.h"
 #include "gui/GuiBar.h"
 #include "gui/GuiContainer.h"
 
 #include "containers/ToolViewContainer.h"
+#include "containers/SideViewContainer.h"
 #include "containers/ModelViewContainer.h"
 
 #include <QPxWidgets/QPxLayouts.h>
@@ -33,16 +34,17 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     model = new Model(graphics, this);
 
-    auto layout = new QPx::VBoxLayout();
-    setCentralWidget(new GuiLayoutWidget(layout));
+    auto central = setTypedCentralWidget(new GuiCentralWidget());
+    central->layout()->addTypedWidget(new GuiSeparator(Qt::Horizontal));
 
-    layout->addTypedWidget(new GuiSeparator(Qt::Horizontal));
-
-    auto horz = layout->addTypedLayout(new QPx::HBoxLayout(0, 1));
+    auto horz = central->layout()->addTypedLayout(new QPx::HBoxLayout(0, 1));
     horz->addWidget(new ToolViewContainer());
 
     auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
+
+    split->addWidget(new SideViewContainer(), 1);
     split->addWidget(new ModelViewContainer(model, graphics, relay), 20);
+    split->addWidget(new SideViewContainer(), 1);
 
     new ApplicationActions(actions, this);
     new EditActions(model, actions, this);

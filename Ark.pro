@@ -66,17 +66,19 @@ SOURCES += \
     gui/GuiBar.cpp \
     panels/ModelViewPanel.cpp \
     gui/GuiButton.cpp \
-    gui/GuiBarButton.cpp \
     gui/GuiButtonGroup.cpp \
     commands/Command.cpp \
     actions/EditActions.cpp \
     gui/GuiComboBox.cpp \
     core/Relay.cpp \
     containers/ModelViewContainer.cpp \
-    gui/GuiToolButton.cpp \
-    gui/GuiLayoutWidget.cpp \
     views/ToolView.cpp \
-    containers/ToolViewContainer.cpp
+    containers/ToolViewContainer.cpp \
+    gui/GuiCentralWidget.cpp \
+    gui/GuiSmallButton.cpp \
+    gui/GuiLargeButton.cpp \
+    panels/SideViewPanel.cpp \
+    containers/SideViewContainer.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -109,17 +111,19 @@ HEADERS += \
     gui/GuiBar.h \
     panels/ModelViewPanel.h \
     gui/GuiButton.h \
-    gui/GuiBarButton.h \
     gui/GuiButtonGroup.h \
     commands/Command.h \
     actions/EditActions.h \
     gui/GuiComboBox.h \
     core/Relay.h \
     containers/ModelViewContainer.h \
-    gui/GuiToolButton.h \
-    gui/GuiLayoutWidget.h \
     views/ToolView.h \
-    containers/ToolViewContainer.h
+    containers/ToolViewContainer.h \
+    gui/GuiCentralWidget.h \
+    gui/GuiSmallButton.h \
+    gui/GuiLargeButton.h \
+    panels/SideViewPanel.h \
+    containers/SideViewContainer.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

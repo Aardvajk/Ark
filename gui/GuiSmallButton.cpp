@@ -1,16 +1,16 @@
-#include "GuiBarButton.h"
+#include "GuiSmallButton.h"
 
 #include <QtGui/QPainter>
 
 #include <QtWidgets/QApplication>
 
-GuiBarButton::GuiBarButton(const QPixmap &pixmap, QWidget *parent) : GuiButton(parent), pixmap(pixmap)
+GuiSmallButton::GuiSmallButton(const QPixmap &pixmap, QWidget *parent) : GuiButton(parent), pixmap(pixmap)
 {
     int size = QApplication::instance()->property("gui-bar-height").toInt();
     setFixedSize(size, size);
 }
 
-void GuiBarButton::paintEvent(QPaintEvent *event)
+void GuiSmallButton::paintEvent(QPaintEvent *event)
 {
     GuiButton::paintEvent(event);
 

@@ -1,9 +1,9 @@
 #ifndef TOOLVIEWCONTAINER_H
 #define TOOLVIEWCONTAINER_H
 
-#include "gui/GuiLayoutWidget.h"
+#include <QtWidgets/QWidget>
 
-class ToolViewContainer : public GuiLayoutWidget
+class ToolViewContainer : public QWidget
 {
     Q_OBJECT
 

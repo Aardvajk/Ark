@@ -9,6 +9,8 @@ class Relay;
 
 class ModelViewContainer : public GuiContainer
 {
+    Q_OBJECT
+
 public:
     ModelViewContainer(Model *model, Graphics *graphics, Relay *relay, QWidget *parent = nullptr);
 

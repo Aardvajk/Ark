@@ -5,7 +5,7 @@
 #include "views/ModelView.h"
 
 #include "gui/GuiBar.h"
-#include "gui/GuiBarButton.h"
+#include "gui/GuiSmallButton.h"
 
 #include "graphics/Graphics.h"
 
@@ -28,7 +28,7 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
 
     connect(menu, SIGNAL(aboutToShow()), SLOT(menuAboutToShow()));
 
-    auto button = toolBar()->addTypedWidget(new GuiBarButton(QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation)));
+    auto button = toolBar()->addTypedWidget(new GuiSmallButton(QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation)));
     button->setMenu(menu);
 
     connect(graphics, SIGNAL(render()), view, SLOT(update()));

@@ -2,6 +2,8 @@
 
 #include "actions/ActionList.h"
 
+#include "options/LayoutOptionsWidget.h"
+
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QDialogButtonBox>
@@ -16,6 +18,9 @@ OptionsDialog::OptionsDialog(ActionList *actions, QWidget *parent) : QDialog(par
 
     QTabWidget *tabWidget = new QTabWidget(this);
     layout->addWidget(tabWidget);
+
+    auto layoutOptions = new LayoutOptionsWidget(this);
+    tabWidget->addTab(layoutOptions, "Layout");
 
     auto keyboardOptions = new QPx::KeyboardOptionsWidget(actions, this);
     tabWidget->addTab(keyboardOptions, "Keyboard");

@@ -25,6 +25,8 @@
 
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QTimer>
+
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 {
     actions = new ActionList(settings["Actions"], this);
@@ -43,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
     split->addWidget(new SideViewContainer(), 1);
-    split->addWidget(new ModelViewContainer(model, graphics, relay), 20);
+    split->addWidget(new ModelViewContainer(model, graphics, relay), 100);
     split->addWidget(new SideViewContainer(), 1);
 
     new ApplicationActions(actions, this);
@@ -55,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
+
+    QTimer::singleShot(10, actions->find("Application.Options"), SLOT(trigger()));
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

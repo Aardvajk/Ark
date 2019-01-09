@@ -1,6 +1,6 @@
 #include "GuiComboBox.h"
 
-#include <QPxCore/QPxAnimations.h>
+#include <QPxCore/QPxUnitAnimation.h>
 
 #include <QtGui/QPainter>
 
@@ -12,10 +12,10 @@ namespace
 class Cache
 {
 public:
-    Cache(QObject *parent) : open(false), anim(new QPx::UnitAnimation(300, 600, parent)) { }
+    Cache(QObject *parent) : anim(new QPx::UnitAnimation(400, parent)), open(false) { }
 
-    bool open;
     QPx::UnitAnimation *anim;
+    bool open;
 };
 
 void drawArrow(QPainter &painter, const QRect &rect, const QColor &color)
@@ -44,7 +44,7 @@ GuiComboBox::GuiComboBox(QWidget *parent) : QComboBox(parent)
 
     setMinimumWidth(QApplication::instance()->property("gui-bar-icon-size").toInt());
 
-    connect(c.anim, SIGNAL(valueChanged(QVariant)), SLOT(update()));
+    connect(c.anim, SIGNAL(currentValueChanged(float)), SLOT(update()));
 }
 
 void GuiComboBox::showPopup()
@@ -80,7 +80,7 @@ void GuiComboBox::paintEvent(QPaintEvent *event)
     int size = QApplication::instance()->property("gui-bar-icon-size").toInt();
 
     auto hover = qvariant_cast<QColor>(QApplication::instance()->property("gui-hover-color"));
-    hover.setAlphaF(c.anim->currentValue().toFloat());
+    hover.setAlphaF(c.anim->currentValue());
 
     auto text = qvariant_cast<QColor>(QApplication::instance()->property("gui-text-color"));
     auto hilight = qvariant_cast<QColor>(QApplication::instance()->property("gui-hilight-color"));
@@ -102,8 +102,8 @@ bool GuiComboBox::event(QEvent *event)
 
     switch(event->type())
     {
-        case QEvent::HoverEnter: c.anim->activate(); break;
-        case QEvent::HoverLeave: c.anim->deactivate(); break;
+        case QEvent::HoverEnter: c.anim->activate(true); break;
+        case QEvent::HoverLeave: c.anim->activate(false); break;
 
         default: break;
     }

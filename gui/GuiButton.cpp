@@ -1,6 +1,6 @@
 #include "GuiButton.h"
 
-#include <QPxCore/QPxAnimations.h>
+#include <QPxCore/QPxUnitAnimation.h>
 
 #include <QtGui/QPixmap>
 #include <QtGui/QPainter>
@@ -15,7 +15,7 @@ namespace
 class Cache
 {
 public:
-    explicit Cache(QObject *parent) : anim(new QPx::UnitAnimation(300, 600, parent)), menu(nullptr), down(false), within(false), checkable(false), checked(false) { }
+    explicit Cache(QObject *parent) : anim(new QPx::UnitAnimation(400, parent)), menu(nullptr), down(false), within(false), checkable(false), checked(false) { }
 
     QPx::UnitAnimation *anim;
     QMenu *menu;
@@ -29,7 +29,7 @@ GuiButton::GuiButton(QWidget *parent) : QWidget(parent)
     auto &c = cache.alloc<Cache>(this);
     setAttribute(Qt::WA_Hover);
 
-    connect(c.anim, SIGNAL(valueChanged(QVariant)), SLOT(update()));
+    connect(c.anim, SIGNAL(currentValueChanged(float)), SLOT(update()));
 }
 
 QMenu *GuiButton::setMenu(QMenu *menu)
@@ -74,7 +74,7 @@ void GuiButton::paintEvent(QPaintEvent *event)
     QPainter painter(this);
 
     auto hover = qvariant_cast<QColor>(QApplication::instance()->property("gui-hover-color"));
-    hover.setAlphaF(c.anim->currentValue().toFloat());
+    hover.setAlphaF(c.anim->currentValue());
 
     bool down = (c.down && c.within) || c.checked;
 
@@ -87,8 +87,9 @@ bool GuiButton::event(QEvent *event)
 
     switch(event->type())
     {
-        case QEvent::HoverEnter: c.anim->activate(); break;
-        case QEvent::HoverLeave: c.anim->deactivate(); break;
+        case QEvent::HoverEnter: c.anim->activate(true); break;
+        case QEvent::HoverLeave: c.anim->activate(false); break;
+
         case QEvent::MouseButtonPress: if(static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton) buttonPressed(); break;
         case QEvent::MouseButtonRelease: if(static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton) buttonReleased(); break;
         case QEvent::MouseMove: c.within = QRect(QPoint(0, 0), size()).contains(static_cast<QMouseEvent*>(event)->pos()); update(); break;
@@ -105,6 +106,8 @@ void GuiButton::reset()
 
     c.down = false;
     c.anim->reset();
+
+    update();
 }
 
 void GuiButton::buttonPressed()

@@ -12,6 +12,7 @@ SideViewPanel::SideViewPanel(QWidget *parent) : GuiPanel(parent)
 {
     auto view = new QTreeView();
     view->setFrameStyle(QFrame::NoFrame);
+    view->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     layout()->addWidget(view);
 
     auto cb = toolBar()->addTypedWidget(new GuiComboBox());

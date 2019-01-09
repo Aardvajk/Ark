@@ -78,7 +78,9 @@ SOURCES += \
     gui/GuiSmallButton.cpp \
     gui/GuiLargeButton.cpp \
     panels/SideViewPanel.cpp \
-    containers/SideViewContainer.cpp
+    containers/SideViewContainer.cpp \
+    options/LayoutOptionsWidget.cpp \
+    options/components/LayoutDiagram.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -123,7 +125,9 @@ HEADERS += \
     gui/GuiSmallButton.h \
     gui/GuiLargeButton.h \
     panels/SideViewPanel.h \
-    containers/SideViewContainer.h
+    containers/SideViewContainer.h \
+    options/LayoutOptionsWidget.h \
+    options/components/LayoutDiagram.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

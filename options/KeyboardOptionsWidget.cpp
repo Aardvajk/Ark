@@ -10,7 +10,7 @@
 
 KeyboardOptionsWidget::KeyboardOptionsWidget(ActionList *actions, QWidget *parent) : OptionsWidget(parent)
 {
-    auto layout = new QPx::VBoxLayout(8, 8, this);
+    auto layout = new QPx::VBoxLayout({ }, { }, this);
     auto group = new QPx::VBoxLayout(layout->addTypedWidget(new QGroupBox("Shortcuts")));
 
     keyboard = group->addTypedWidget(new QPx::KeyboardOptionsWidget(actions));

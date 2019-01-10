@@ -125,13 +125,12 @@ void drawToolButton(QPainter &painter, const QRect &rect)
 void drawToolButtons(QPainter &painter, const QRect &rect, int height)
 {
     auto button = rect.adjusted(0, 0, 0, -(rect.height() - height));
-    drawToolButton(painter, button);
 
-    button.moveTop(button.top() + height);
-    drawToolButton(painter, button);
-
-    button.moveTop(button.top() + height);
-    drawToolButton(painter, button);
+    for(int i = 0; i < 3; ++i)
+    {
+        drawToolButton(painter, button);
+        button.moveTop(button.top() + height);
+    }
 }
 
 }
@@ -139,8 +138,6 @@ void drawToolButtons(QPainter &painter, const QRect &rect, int height)
 LayoutDiagram::LayoutDiagram(QWidget *parent) : QWidget(parent)
 {
     cache.alloc<Cache>(this);
-
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
     setAttribute(Qt::WA_Hover);
     setAttribute(Qt::WA_MouseTracking);

@@ -18,20 +18,16 @@ static const char *actionIds[] = { "Layout.Left.Tools", "Layout.Right.Tools", "L
 
 LayoutOptionsWidget::LayoutOptionsWidget(ActionList *actions, QWidget *parent) : OptionsWidget(parent), actions(actions)
 {
-    auto layout = new QPx::VBoxLayout(8, 8, this);
-    auto group = new QPx::VBoxLayout(8, 8, layout->addTypedWidget(new QGroupBox("Panels")));
+    auto layout = new QPx::VBoxLayout({ }, { }, this);
+    auto group = new QPx::VBoxLayout({ }, { }, layout->addTypedWidget(new QGroupBox("Panels")));
 
     diagram = group->addTypedWidget(new LayoutDiagram());
 
-    auto buttons = new QPx::HBoxLayout(0, 8);
-    group->addLayout(buttons);
+    auto buttons = new QPx::DialogButtonBox();
+    group->addWidget(buttons);
 
-    showButton = new QPx::ValueButton("&Show All", true);
-    hideButton = new QPx::ValueButton("&Hide All", false);
-
-    buttons->addStretch();
-    connect(buttons->addTypedWidget(showButton), SIGNAL(clicked(QVariant)), SLOT(setStates(QVariant)));
-    connect(buttons->addTypedWidget(hideButton), SIGNAL(clicked(QVariant)), SLOT(setStates(QVariant)));
+    connect(buttons->addTypedButton(showButton = new QPx::ValueButton("&Show All", true)), SIGNAL(clicked(QVariant)), SLOT(setStates(QVariant)));
+    connect(buttons->addTypedButton(hideButton = new QPx::ValueButton("&Hide All", false)), SIGNAL(clicked(QVariant)), SLOT(setStates(QVariant)));
 
     for(int i = 0; i < static_cast<int>(LayoutDiagram::Type::Invalid); ++i)
     {

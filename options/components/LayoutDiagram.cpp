@@ -14,30 +14,17 @@ namespace
 class Section
 {
 public:
-    enum Type { LeftTools, RightTools, LeftSide, RightSide, Invalid };
+    Section(LayoutDiagram::Type type, QWidget *parent);
 
-    Section(Type type, ActionList *actions, QWidget *parent);
-
-    Type type;
-    QString action;
+    LayoutDiagram::Type type;
     QRect rect;
     QPx::UnitAnimation *hoverAnim;
     QPx::UnitAnimation *panelAnim;
     bool hover, state;
 };
 
-Section::Section(Type type, ActionList *actions, QWidget *parent) : type(type), hoverAnim(new QPx::UnitAnimation(150, parent)), panelAnim(new QPx::UnitAnimation(400, parent)), hover(false)
+Section::Section(LayoutDiagram::Type type, QWidget *parent) : type(type), hoverAnim(new QPx::UnitAnimation(150, parent)), panelAnim(new QPx::UnitAnimation(400, parent)), hover(false), state(false)
 {
-    static const char *s[] = { "Layout.Left.Tools", "Layout.Right.Tools", "Layout.Left.Sidebar", "Layout.Right.Sidebar" };
-
-    action = s[static_cast<int>(type)];
-
-    state = actions->find(action)->isChecked();
-    if(state)
-    {
-        panelAnim->setCurrentTime(panelAnim->duration());
-    }
-
     QObject::connect(hoverAnim, SIGNAL(currentValueChanged(float)), parent, SLOT(update()));
     QObject::connect(panelAnim, SIGNAL(currentValueChanged(float)), parent, SLOT(update()));
 }
@@ -45,17 +32,15 @@ Section::Section(Type type, ActionList *actions, QWidget *parent) : type(type), 
 class Cache
 {
 public:
-    Cache(ActionList *actions, QWidget *parent);
+    explicit Cache(QWidget *parent);
 
-    QRect sectionRect(Section::Type type) const;
+    QRect sectionRect(LayoutDiagram::Type type) const;
     void updateMousePosition(const QPoint &pos);
-    Section::Type find(const QPoint &pos) const;
-
-    ActionList *actions;
+    LayoutDiagram::Type find(const QPoint &pos) const;
 
     QRect mainRect;
     QList<Section> sections;
-    Section::Type curr;
+    LayoutDiagram::Type curr;
 
     int barHeight;
     int toolsWidth;
@@ -63,11 +48,11 @@ public:
     int sideWidth;
 };
 
-Cache::Cache(ActionList *actions, QWidget *parent) : actions(actions), curr(Section::Type::Invalid)
+Cache::Cache(QWidget *parent) : curr(LayoutDiagram::Type::Invalid)
 {
-    for(int i = 0; i < Section::Invalid; ++i)
+    for(int i = 0; i < static_cast<int>(LayoutDiagram::Type::Invalid); ++i)
     {
-        sections.append(Section(Section::Type(i), actions, parent));
+        sections.append(Section(static_cast<LayoutDiagram::Type>(i), parent));
     }
 
     barHeight = 12;
@@ -76,10 +61,10 @@ Cache::Cache(ActionList *actions, QWidget *parent) : actions(actions), curr(Sect
     sideWidth = 120;
 }
 
-QRect Cache::sectionRect(Section::Type type) const
+QRect Cache::sectionRect(LayoutDiagram::Type type) const
 {
-    auto rect = sections[type].rect;
-    if(type == Section::LeftTools || type == Section::RightTools)
+    auto rect = sections[static_cast<int>(type)].rect;
+    if(type == LayoutDiagram::Type::LeftTools || type == LayoutDiagram::Type::RightTools)
     {
         rect.moveTop(rect.top() + barHeight);
     }
@@ -100,14 +85,14 @@ void Cache::updateMousePosition(const QPoint &pos)
     }
 }
 
-Section::Type Cache::find(const QPoint &pos) const
+LayoutDiagram::Type Cache::find(const QPoint &pos) const
 {
     for(auto &section: sections)
     {
         if(sectionRect(section.type).contains(pos)) return section.type;
     }
 
-    return Section::Invalid;
+    return LayoutDiagram::Type::Invalid;
 }
 
 void drawCornerButton(QPainter &painter, const QRect &rect)
@@ -153,9 +138,9 @@ void drawToolButtons(QPainter &painter, const QRect &rect, int height)
 
 }
 
-LayoutDiagram::LayoutDiagram(ActionList *actions, QWidget *parent) : QWidget(parent)
+LayoutDiagram::LayoutDiagram(QWidget *parent) : QWidget(parent)
 {
-    cache.alloc<Cache>(actions, this);
+    cache.alloc<Cache>(this);
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
@@ -163,34 +148,19 @@ LayoutDiagram::LayoutDiagram(ActionList *actions, QWidget *parent) : QWidget(par
     setAttribute(Qt::WA_MouseTracking);
 }
 
-void LayoutDiagram::commit()
+bool LayoutDiagram::state(Type type) const
 {
-    auto &c = cache.get<Cache>();
-
-    for(auto &section: c.sections)
-    {
-        c.actions->find(section.action)->setChecked(section.state);
-    }
+    return cache.get<Cache>().sections[static_cast<int>(type)].state;
 }
 
-void LayoutDiagram::showAll(bool state)
+void LayoutDiagram::setState(LayoutDiagram::Type type, bool state)
 {
-    bool any = false;
+    auto &section = cache.get<Cache>().sections[static_cast<int>(type)];
 
-    for(auto &section: cache.get<Cache>().sections)
+    if(section.state != state)
     {
-        if(section.state != state)
-        {
-            section.state = state;
-            section.panelAnim->activate(state);
-
-            any = true;
-        }
-    }
-
-    if(any)
-    {
-        emit changed();
+        section.state = state;
+        section.panelAnim->activate(state);
     }
 }
 
@@ -206,11 +176,11 @@ void LayoutDiagram::resizeEvent(QResizeEvent *event)
 
         switch(section.type)
         {
-            case Section::LeftTools: section.rect.setWidth(c.toolsWidth); break;
-            case Section::RightTools: section.rect.setWidth(c.toolsWidth); section.rect.moveLeft(c.mainRect.right() - (c.toolsWidth - 1)); break;
+            case LayoutDiagram::Type::LeftTools: section.rect.setWidth(c.toolsWidth); break;
+            case LayoutDiagram::Type::RightTools: section.rect.setWidth(c.toolsWidth); section.rect.moveLeft(c.mainRect.right() - (c.toolsWidth - 1)); break;
 
-            case Section::LeftSide: section.rect.setWidth(c.sideWidth); section.rect.moveLeft(c.toolsWidth); break;
-            case Section::RightSide: section.rect.setWidth(c.sideWidth); section.rect.moveLeft(c.mainRect.right() - ((c.toolsWidth - 1) + c.sideWidth)); break;
+            case LayoutDiagram::Type::LeftSidebar: section.rect.setWidth(c.sideWidth); section.rect.moveLeft(c.toolsWidth); break;
+            case LayoutDiagram::Type::RightSidebar: section.rect.setWidth(c.sideWidth); section.rect.moveLeft(c.mainRect.right() - ((c.toolsWidth - 1) + c.sideWidth)); break;
 
             default: break;
         }
@@ -257,7 +227,7 @@ void LayoutDiagram::paintEvent(QPaintEvent *event)
             hover.setAlphaF(0.5f * section.hoverAnim->currentValue());
 
             painter.setBrush(hover);
-            painter.drawRect(section.rect.adjusted(1, section.type == Section::LeftTools || section.type == Section::RightTools ? c.barHeight : 1, 0, 0));
+            painter.drawRect(section.rect.adjusted(1, section.type == LayoutDiagram::Type::LeftTools || section.type == LayoutDiagram::Type::RightTools ? c.barHeight : 1, 0, 0));
         }
     }
 
@@ -277,7 +247,7 @@ void LayoutDiagram::paintEvent(QPaintEvent *event)
         {
             painter.setOpacity(section.panelAnim->currentValue());
 
-            if(section.type == Section::LeftSide || section.type == Section::RightSide)
+            if(section.type == LayoutDiagram::Type::LeftSidebar || section.type == LayoutDiagram::Type::RightSidebar)
             {
                 drawCornerButton(painter, section.rect.adjusted(0, 0, 0, -(section.rect.height() - c.barHeight)));
 
@@ -292,7 +262,7 @@ void LayoutDiagram::paintEvent(QPaintEvent *event)
                 painter.drawRect(rect);
                 drawCornerButton(painter, rect);
             }
-            else if(section.type == Section::LeftTools || section.type == Section::RightTools)
+            else if(section.type == LayoutDiagram::Type::LeftTools || section.type == LayoutDiagram::Type::RightTools)
             {
                 drawToolButtons(painter, section.rect.adjusted(1, c.barHeight + 1, 0, 0), c.toolsHeight);
             }
@@ -335,9 +305,9 @@ void LayoutDiagram::button(QMouseEvent *event, bool down)
     {
         if(c.curr == section)
         {
-            if(section != Section::Invalid)
+            if(section != LayoutDiagram::Type::Invalid)
             {
-                auto &panel = c.sections[section];
+                auto &panel = c.sections[static_cast<int>(section)];
 
                 panel.state = !panel.state;
                 panel.panelAnim->activate(panel.state);

@@ -32,8 +32,8 @@ OptionsDialog::OptionsDialog(ActionList *actions, QWidget *parent) : QDialog(par
     QTabWidget *tabWidget = new QTabWidget(this);
     layout->addWidget(tabWidget);
 
-    addPanel<KeyboardOptionsWidget>(this, tabWidget, "Keyboard", actions);
     addPanel<LayoutOptionsWidget>(this, tabWidget, "Layout", actions);
+    addPanel<KeyboardOptionsWidget>(this, tabWidget, "Keyboard", actions);
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
 

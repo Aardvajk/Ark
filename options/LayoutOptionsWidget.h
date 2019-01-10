@@ -18,6 +18,7 @@ signals:
 
 public slots:
     void commit();
+    void showAll(const QVariant &state);
 
 private:
     LayoutDiagram *diagram;

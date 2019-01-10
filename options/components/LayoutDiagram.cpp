@@ -1,7 +1,5 @@
 #include "LayoutDiagram.h"
 
-#include "actions/ActionList.h"
-
 #include <QPxCore/QPxUnitAnimation.h>
 
 #include <QtGui/QPainter>
@@ -161,6 +159,8 @@ void LayoutDiagram::setState(LayoutDiagram::Type type, bool state)
     {
         section.state = state;
         section.panelAnim->activate(state);
+
+        emit changed();
     }
 }
 

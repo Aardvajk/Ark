@@ -10,9 +10,9 @@ class LayoutDiagram : public QWidget
     Q_OBJECT
 
 public:
-    explicit LayoutDiagram(QWidget *parent = nullptr);
-
     enum class Type { LeftTools, RightTools, LeftSidebar, RightSidebar, Invalid };
+
+    explicit LayoutDiagram(QWidget *parent = nullptr);
 
     bool state(Type type) const;
 

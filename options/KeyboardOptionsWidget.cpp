@@ -8,7 +8,7 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QPushButton>
 
-KeyboardOptionsWidget::KeyboardOptionsWidget(ActionList *actions, QWidget *parent) : QWidget(parent)
+KeyboardOptionsWidget::KeyboardOptionsWidget(ActionList *actions, QWidget *parent) : OptionsWidget(parent)
 {
     auto layout = new QPx::VBoxLayout(8, 8, this);
     auto group = new QPx::VBoxLayout(layout->addTypedWidget(new QGroupBox("Shortcuts")));

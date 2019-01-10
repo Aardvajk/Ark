@@ -4,6 +4,8 @@
 #include <QtWidgets/QDialog>
 
 class ActionList;
+class OptionsWidget;
+class QTabWidget;
 
 class OptionsDialog : public QDialog
 {
@@ -22,6 +24,9 @@ public slots:
     void apply();
 
 private:
+    void addPanel(const QString &title, OptionsWidget *panel);
+
+    QTabWidget *tabs;
     bool changes;
 };
 

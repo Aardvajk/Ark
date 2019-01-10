@@ -82,7 +82,8 @@ SOURCES += \
     options/LayoutOptionsWidget.cpp \
     options/components/LayoutDiagram.cpp \
     actions/LayoutActions.cpp \
-    options/KeyboardOptionsWidget.cpp
+    options/KeyboardOptionsWidget.cpp \
+    options/OptionsWidget.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -131,7 +132,8 @@ HEADERS += \
     options/LayoutOptionsWidget.h \
     options/components/LayoutDiagram.h \
     actions/LayoutActions.h \
-    options/KeyboardOptionsWidget.h
+    options/KeyboardOptionsWidget.h \
+    options/OptionsWidget.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

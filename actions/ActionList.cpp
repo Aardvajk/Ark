@@ -32,6 +32,8 @@ QPx::Action *ActionList::addCheckable(const QString &id, const QString &text, bo
 
 void ActionList::sync()
 {
+    settings.clear();
+
     for(auto a: toList())
     {
         settings[a->id()]["Shortcut"].setValue(a->shortcut().toString(QKeySequence::NativeText));

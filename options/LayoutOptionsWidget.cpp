@@ -5,7 +5,7 @@
 #include "options/components/LayoutDiagram.h"
 
 #include <QPxWidgets/QPxLayouts.h>
-#include <QPxWidgets/QPxValueButtons.h>
+#include <QPxWidgets/QPxValueButton.h>
 
 #include <QtWidgets/QGroupBox>
 

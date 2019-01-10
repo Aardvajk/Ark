@@ -26,9 +26,12 @@ LayoutOptionsWidget::LayoutOptionsWidget(ActionList *actions, QWidget *parent) :
     auto buttons = new QPx::HBoxLayout(0, 8);
     group->addLayout(buttons);
 
+    showButton = new QPx::ValueButton("&Show All", true);
+    hideButton = new QPx::ValueButton("&Hide All", false);
+
     buttons->addStretch();
-    connect(buttons->addTypedWidget(new QPx::ValueButton("&Show All", true)), SIGNAL(clicked(QVariant)), SLOT(setStates(QVariant)));
-    connect(buttons->addTypedWidget(new QPx::ValueButton("&Hide All", false)), SIGNAL(clicked(QVariant)), SLOT(setStates(QVariant)));
+    connect(buttons->addTypedWidget(showButton), SIGNAL(clicked(QVariant)), SLOT(setStates(QVariant)));
+    connect(buttons->addTypedWidget(hideButton), SIGNAL(clicked(QVariant)), SLOT(setStates(QVariant)));
 
     for(int i = 0; i < static_cast<int>(LayoutDiagram::Type::Invalid); ++i)
     {
@@ -36,6 +39,9 @@ LayoutOptionsWidget::LayoutOptionsWidget(ActionList *actions, QWidget *parent) :
     }
 
     connect(diagram, SIGNAL(changed()), SIGNAL(changed()));
+    connect(diagram, SIGNAL(changed()), SLOT(stateChanged()));
+
+    stateChanged();
 }
 
 void LayoutOptionsWidget::commit()
@@ -52,4 +58,16 @@ void LayoutOptionsWidget::setStates(const QVariant &state)
     {
         diagram->setState(static_cast<LayoutDiagram::Type>(i), state.toBool());
     }
+}
+
+void LayoutOptionsWidget::stateChanged()
+{
+    int count = 0;
+    for(int i = 0; i < static_cast<int>(LayoutDiagram::Type::Invalid); ++i)
+    {
+        if(diagram->state(static_cast<LayoutDiagram::Type>(i))) ++count;
+    }
+
+    showButton->setEnabled(count < static_cast<int>(LayoutDiagram::Type::Invalid));
+    hideButton->setEnabled(count > 0);
 }

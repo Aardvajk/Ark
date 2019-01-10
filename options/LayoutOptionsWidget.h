@@ -5,6 +5,7 @@
 
 class ActionList;
 class LayoutDiagram;
+class QPushButton;
 
 class LayoutOptionsWidget : public OptionsWidget
 {
@@ -17,9 +18,15 @@ public slots:
     virtual void commit() override;
     void setStates(const QVariant &state);
 
+private slots:
+    void stateChanged();
+
 private:
     ActionList *actions;
     LayoutDiagram *diagram;
+
+    QPushButton *showButton;
+    QPushButton *hideButton;
 };
 
 #endif // LAYOUTOPTIONSWIDGET_H

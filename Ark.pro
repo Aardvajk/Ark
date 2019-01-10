@@ -80,7 +80,9 @@ SOURCES += \
     panels/SideViewPanel.cpp \
     containers/SideViewContainer.cpp \
     options/LayoutOptionsWidget.cpp \
-    options/components/LayoutDiagram.cpp
+    options/components/LayoutDiagram.cpp \
+    actions/LayoutActions.cpp \
+    options/KeyboardOptionsWidget.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -127,7 +129,9 @@ HEADERS += \
     panels/SideViewPanel.h \
     containers/SideViewContainer.h \
     options/LayoutOptionsWidget.h \
-    options/components/LayoutDiagram.h
+    options/components/LayoutDiagram.h \
+    actions/LayoutActions.h \
+    options/KeyboardOptionsWidget.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

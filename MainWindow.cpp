@@ -5,6 +5,7 @@
 #include "actions/ActionList.h"
 #include "actions/ApplicationActions.h"
 #include "actions/EditActions.h"
+#include "actions/LayoutActions.h"
 
 #include "models/Model.h"
 #include "models/ModelBuffers.h"
@@ -40,16 +41,20 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     central->layout()->addTypedWidget(new GuiSeparator(Qt::Horizontal));
 
     auto horz = central->layout()->addTypedLayout(new QPx::HBoxLayout(0, 1));
-    horz->addWidget(new ToolViewContainer());
+
+    horz->addTypedWidget(new ToolViewContainer());
 
     auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
-    split->addWidget(new SideViewContainer(), 1);
+    auto sv = split->addTypedWidget(new SideViewContainer(), 1);
     split->addWidget(new ModelViewContainer(model, graphics, relay), 100);
     split->addWidget(new SideViewContainer(), 1);
 
+    horz->addWidget(new ToolViewContainer());
+
     new ApplicationActions(actions, this);
     new EditActions(model, actions, this);
+    new LayoutActions(actions, this);
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 
@@ -58,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
 
-    QTimer::singleShot(10, actions->find("Application.Options"), SLOT(trigger()));
+//    QTimer::singleShot(10, actions->find("Application.Options"), SLOT(trigger()));
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

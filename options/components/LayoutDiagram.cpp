@@ -1,5 +1,7 @@
 #include "LayoutDiagram.h"
 
+#include "actions/ActionList.h"
+
 #include <QPxCore/QPxUnitAnimation.h>
 
 #include <QtGui/QPainter>
@@ -14,17 +16,28 @@ class Section
 public:
     enum Type { LeftTools, RightTools, LeftSide, RightSide, Invalid };
 
-    Section(Type type, QWidget *parent);
+    Section(Type type, ActionList *actions, QWidget *parent);
 
     Type type;
+    QString action;
     QRect rect;
     QPx::UnitAnimation *hoverAnim;
     QPx::UnitAnimation *panelAnim;
     bool hover, state;
 };
 
-Section::Section(Type type, QWidget *parent) : type(type), hoverAnim(new QPx::UnitAnimation(400, parent)), panelAnim(new QPx::UnitAnimation(400, parent)), hover(false), state(false)
+Section::Section(Type type, ActionList *actions, QWidget *parent) : type(type), hoverAnim(new QPx::UnitAnimation(150, parent)), panelAnim(new QPx::UnitAnimation(400, parent)), hover(false)
 {
+    static const char *s[] = { "Layout.Left.Tools", "Layout.Right.Tools", "Layout.Left.Sidebar", "Layout.Right.Sidebar" };
+
+    action = s[static_cast<int>(type)];
+
+    state = actions->find(action)->isChecked();
+    if(state)
+    {
+        panelAnim->setCurrentTime(panelAnim->duration());
+    }
+
     QObject::connect(hoverAnim, SIGNAL(currentValueChanged(float)), parent, SLOT(update()));
     QObject::connect(panelAnim, SIGNAL(currentValueChanged(float)), parent, SLOT(update()));
 }
@@ -32,11 +45,13 @@ Section::Section(Type type, QWidget *parent) : type(type), hoverAnim(new QPx::Un
 class Cache
 {
 public:
-    explicit Cache(QWidget *parent);
+    Cache(ActionList *actions, QWidget *parent);
 
     QRect sectionRect(Section::Type type) const;
     void updateMousePosition(const QPoint &pos);
     Section::Type find(const QPoint &pos) const;
+
+    ActionList *actions;
 
     QRect mainRect;
     QList<Section> sections;
@@ -48,11 +63,11 @@ public:
     int sideWidth;
 };
 
-Cache::Cache(QWidget *parent) : curr(Section::Type::Invalid)
+Cache::Cache(ActionList *actions, QWidget *parent) : actions(actions), curr(Section::Type::Invalid)
 {
     for(int i = 0; i < Section::Invalid; ++i)
     {
-        sections.append(Section(Section::Type(i), parent));
+        sections.append(Section(Section::Type(i), actions, parent));
     }
 
     barHeight = 12;
@@ -138,14 +153,45 @@ void drawToolButtons(QPainter &painter, const QRect &rect, int height)
 
 }
 
-LayoutDiagram::LayoutDiagram(QWidget *parent) : QWidget(parent)
+LayoutDiagram::LayoutDiagram(ActionList *actions, QWidget *parent) : QWidget(parent)
 {
-    cache.alloc<Cache>(this);
+    cache.alloc<Cache>(actions, this);
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
     setAttribute(Qt::WA_Hover);
     setAttribute(Qt::WA_MouseTracking);
+}
+
+void LayoutDiagram::commit()
+{
+    auto &c = cache.get<Cache>();
+
+    for(auto &section: c.sections)
+    {
+        c.actions->find(section.action)->setChecked(section.state);
+    }
+}
+
+void LayoutDiagram::showAll(bool state)
+{
+    bool any = false;
+
+    for(auto &section: cache.get<Cache>().sections)
+    {
+        if(section.state != state)
+        {
+            section.state = state;
+            section.panelAnim->activate(state);
+
+            any = true;
+        }
+    }
+
+    if(any)
+    {
+        emit changed();
+    }
 }
 
 void LayoutDiagram::resizeEvent(QResizeEvent *event)
@@ -291,30 +337,13 @@ void LayoutDiagram::button(QMouseEvent *event, bool down)
         {
             if(section != Section::Invalid)
             {
-                auto &state = c.sections[section].state;
+                auto &panel = c.sections[section];
 
-                state = !state;
-                c.sections[section].panelAnim->activate(state);
-
-                if(state)
-                {
-                    auto other = Section::Invalid;
-                    switch(section)
-                    {
-                        case Section::LeftTools: other = Section::RightTools; break;
-                        case Section::RightTools: other = Section::LeftTools; break;
-
-                        default: break;
-                    }
-
-                    if(other != Section::Invalid && c.sections[other].state)
-                    {
-                        c.sections[other].state = false;
-                        c.sections[other].panelAnim->activate(false);
-                    }
-                }
+                panel.state = !panel.state;
+                panel.panelAnim->activate(panel.state);
 
                 update();
+                emit changed();
             }
         }
     }

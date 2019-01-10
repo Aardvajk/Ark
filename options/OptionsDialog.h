@@ -18,8 +18,11 @@ signals:
 public slots:
     virtual void accept() override;
 
-private slots:
+    void changed();
     void apply();
+
+private:
+    bool changes;
 };
 
 #endif // OPTIONSDIALOG_H

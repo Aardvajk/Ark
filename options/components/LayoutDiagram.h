@@ -5,12 +5,21 @@
 
 #include <pcx/aligned_store.h>
 
+class ActionList;
+
 class LayoutDiagram : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit LayoutDiagram(QWidget *parent = nullptr);
+    explicit LayoutDiagram(ActionList *actions, QWidget *parent = nullptr);
+
+signals:
+    void changed();
+
+public slots:
+    void showAll(bool state);
+    void commit();
 
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;

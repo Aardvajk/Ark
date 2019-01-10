@@ -25,7 +25,7 @@ QPx::Action *ActionList::addCheckable(const QString &id, const QString &text, bo
     auto a = add(id, text, enable);
 
     a->setCheckable(true);
-    a->setChecked(state);
+    a->setChecked(settings[id]["Checked"].value(state).toBool());
 
     return a;
 }
@@ -35,5 +35,10 @@ void ActionList::sync()
     for(auto a: toList())
     {
         settings[a->id()]["Shortcut"].setValue(a->shortcut().toString(QKeySequence::NativeText));
+
+        if(a->isCheckable())
+        {
+            settings[a->id()]["Checked"].setValue(a->isChecked());
+        }
     }
 }

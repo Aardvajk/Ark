@@ -24,7 +24,7 @@ void GuiLargeButton::paintEvent(QPaintEvent *event)
 
     auto font = painter.font();
     font.setBold(true);
-    font.setPointSize(7);
+    font.setPointSize(QApplication::instance()->property("gui-tool-font-size").toInt());
 
     painter.setFont(font);
 

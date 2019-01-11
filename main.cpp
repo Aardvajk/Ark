@@ -28,6 +28,7 @@ void setGui()
     QApplication::instance()->setProperty("gui-tool-width", 70);
     QApplication::instance()->setProperty("gui-tool-height", 52);
     QApplication::instance()->setProperty("gui-tool-icon-size", 24);
+    QApplication::instance()->setProperty("gui-tool-font-size", 7);
 }
 
 }

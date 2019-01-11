@@ -8,6 +8,7 @@
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
+#include <QtWidgets/QGraphicsColorizeEffect>
 
 namespace
 {
@@ -15,10 +16,11 @@ namespace
 class Cache
 {
 public:
-    explicit Cache(QObject *parent) : anim(new QPx::UnitAnimation(400, parent)), menu(nullptr), down(false), within(false), checkable(false), checked(false) { }
+    explicit Cache(QObject *parent) : anim(new QPx::UnitAnimation(400, parent)), menu(nullptr), disable(new QGraphicsColorizeEffect(parent)), down(false), within(false), checkable(false), checked(false) { }
 
     QPx::UnitAnimation *anim;
     QMenu *menu;
+    QGraphicsColorizeEffect *disable;
     bool down, within, checkable, checked;
 };
 
@@ -28,6 +30,11 @@ GuiButton::GuiButton(QWidget *parent) : QWidget(parent)
 {
     auto &c = cache.alloc<Cache>(this);
     setAttribute(Qt::WA_Hover);
+
+    c.disable->setColor(QColor(80, 80, 80));
+    c.disable->setEnabled(false);
+
+    setGraphicsEffect(c.disable);
 
     connect(c.anim, SIGNAL(currentValueChanged(float)), SLOT(update()));
 }
@@ -85,16 +92,30 @@ bool GuiButton::event(QEvent *event)
 {
     auto &c = cache.get<Cache>();
 
-    switch(event->type())
+    if(event->type() == QEvent::EnabledChange)
     {
-        case QEvent::HoverEnter: c.anim->activate(true); break;
-        case QEvent::HoverLeave: c.anim->activate(false); break;
+        c.disable->setEnabled(!isEnabled());
 
-        case QEvent::MouseButtonPress: if(static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton) buttonPressed(); break;
-        case QEvent::MouseButtonRelease: if(static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton) buttonReleased(); break;
-        case QEvent::MouseMove: c.within = QRect(QPoint(0, 0), size()).contains(static_cast<QMouseEvent*>(event)->pos()); update(); break;
+        if(!isEnabled())
+        {
+            if(c.menu) c.menu->close();
+            reset();
+        }
+    }
 
-        default: break;
+    if(isEnabled())
+    {
+        switch(event->type())
+        {
+            case QEvent::HoverEnter: c.anim->activate(true); break;
+            case QEvent::HoverLeave: c.anim->activate(false); break;
+
+            case QEvent::MouseButtonPress: if(static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton) buttonPressed(); break;
+            case QEvent::MouseButtonRelease: if(static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton) buttonReleased(); break;
+            case QEvent::MouseMove: c.within = QRect(QPoint(0, 0), size()).contains(static_cast<QMouseEvent*>(event)->pos()); update(); break;
+
+            default: break;
+        }
     }
 
     return QWidget::event(event);

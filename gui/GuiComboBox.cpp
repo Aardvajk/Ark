@@ -5,6 +5,7 @@
 #include <QtGui/QPainter>
 
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGraphicsColorizeEffect>
 
 namespace
 {
@@ -12,9 +13,10 @@ namespace
 class Cache
 {
 public:
-    Cache(QObject *parent) : anim(new QPx::UnitAnimation(400, parent)), open(false) { }
+    Cache(QObject *parent) : anim(new QPx::UnitAnimation(400, parent)), disable(new QGraphicsColorizeEffect(parent)), open(false) { }
 
     QPx::UnitAnimation *anim;
+    QGraphicsColorizeEffect *disable;
     bool open;
 };
 
@@ -36,6 +38,11 @@ void drawArrow(QPainter &painter, const QRect &rect, const QColor &color)
 GuiComboBox::GuiComboBox(QWidget *parent) : QComboBox(parent)
 {
     auto &c = cache.alloc<Cache>(this);
+
+    c.disable->setColor(QColor(80, 80, 80));
+    c.disable->setEnabled(false);
+
+    setGraphicsEffect(c.disable);
 
     setAttribute(Qt::WA_Hover);
 
@@ -100,12 +107,24 @@ bool GuiComboBox::event(QEvent *event)
 {
     auto &c = cache.get<Cache>();
 
-    switch(event->type())
+    if(event->type() == QEvent::EnabledChange)
     {
-        case QEvent::HoverEnter: c.anim->activate(true); break;
-        case QEvent::HoverLeave: c.anim->activate(false); break;
+        c.disable->setEnabled(!isEnabled());
+        if(!isEnabled())
+        {
+            c.anim->reset();
+        }
+    }
 
-        default: break;
+    if(isEnabled())
+    {
+        switch(event->type())
+        {
+            case QEvent::HoverEnter: c.anim->activate(true); break;
+            case QEvent::HoverLeave: c.anim->activate(false); break;
+
+            default: break;
+        }
     }
 
     return QComboBox::event(event);

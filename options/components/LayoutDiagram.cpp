@@ -21,7 +21,7 @@ public:
     bool hover, state;
 };
 
-Section::Section(LayoutDiagram::Type type, QWidget *parent) : type(type), hoverAnim(new QPx::UnitAnimation(150, parent)), panelAnim(new QPx::UnitAnimation(400, parent)), hover(false), state(false)
+Section::Section(LayoutDiagram::Type type, QWidget *parent) : type(type), hoverAnim(new QPx::UnitAnimation(400, parent)), panelAnim(new QPx::UnitAnimation(200, parent)), hover(false), state(false)
 {
     QObject::connect(hoverAnim, SIGNAL(currentValueChanged(float)), parent, SLOT(update()));
     QObject::connect(panelAnim, SIGNAL(currentValueChanged(float)), parent, SLOT(update()));

@@ -20,7 +20,7 @@ protected:
     virtual bool event(QEvent *event) override;
 
 private:
-    pcx::aligned_store<16> cache;
+    pcx::aligned_store<24> cache;
 };
 
 #endif // GUICOMBOBOX_H

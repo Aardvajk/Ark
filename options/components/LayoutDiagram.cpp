@@ -46,17 +46,12 @@ public:
     int sideWidth;
 };
 
-Cache::Cache(QWidget *parent) : curr(LayoutDiagram::Type::Invalid)
+Cache::Cache(QWidget *parent) : curr(LayoutDiagram::Type::Invalid), barHeight(12), toolsWidth(32), toolsHeight(26), sideWidth(120)
 {
     for(int i = 0; i < static_cast<int>(LayoutDiagram::Type::Invalid); ++i)
     {
         sections.append(Section(static_cast<LayoutDiagram::Type>(i), parent));
     }
-
-    barHeight = 12;
-    toolsWidth = 32;
-    toolsHeight = 26;
-    sideWidth = 120;
 }
 
 QRect Cache::sectionRect(LayoutDiagram::Type type) const
@@ -193,9 +188,10 @@ void LayoutDiagram::paintEvent(QPaintEvent *event)
 
     auto panel = QColor(240, 240, 240);
     auto border = QColor(170, 170, 170);
+    auto hilight = QColor(210, 230, 250);
 
     painter.setPen(border);
-    painter.setBrush(QBrush(panel, Qt::DiagCrossPattern));
+    painter.setBrush(QBrush(hilight, Qt::DiagCrossPattern));
 
     painter.drawRect(c.mainRect);
 
@@ -220,8 +216,8 @@ void LayoutDiagram::paintEvent(QPaintEvent *event)
 
         if(section.hoverAnim->currentValue() > 0)
         {
-            auto hover = QColor(210, 230, 250);
-            hover.setAlphaF(0.5f * section.hoverAnim->currentValue());
+            auto hover = hilight;
+            hover.setAlphaF(0.7f * section.hoverAnim->currentValue());
 
             painter.setBrush(hover);
             painter.drawRect(section.rect.adjusted(1, section.type == LayoutDiagram::Type::LeftTools || section.type == LayoutDiagram::Type::RightTools ? c.barHeight : 1, 0, 0));

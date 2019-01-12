@@ -8,12 +8,12 @@
 
 #include <QtWidgets/QApplication>
 
-ToolViewContainer::ToolViewContainer(QWidget *parent) : QWidget(parent)
+ToolViewContainer::ToolViewContainer(Relay *relay, QWidget *parent) : QWidget(parent)
 {
     new QPx::VBoxLayout(0, 1, this);
 
     setFixedWidth(QApplication::instance()->property("gui-tool-width").toInt());
 
     layout()->addWidget(new GuiBar());
-    layout()->addWidget(new ToolView());
+    layout()->addWidget(new ToolView(relay));
 }

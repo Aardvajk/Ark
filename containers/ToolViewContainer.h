@@ -3,12 +3,14 @@
 
 #include <QtWidgets/QWidget>
 
+class Relay;
+
 class ToolViewContainer : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ToolViewContainer(QWidget *parent = nullptr);
+    ToolViewContainer(Relay *relay, QWidget *parent = nullptr);
 };
 
 #endif // TOOLVIEWCONTAINER_H

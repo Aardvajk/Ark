@@ -22,6 +22,10 @@
 #include "containers/SideViewContainer.h"
 #include "containers/ModelViewContainer.h"
 
+#include "tools/ToolList.h"
+#include "tools/SelectTool.h"
+#include "tools/MoveTool.h"
+
 #include <QPxWidgets/QPxLayouts.h>
 
 #include <QtCore/QFileInfo>
@@ -34,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto graphics = new Graphics(this);
     auto relay = new Relay(this);
+    auto tools = new ToolList(relay, this);
 
     model = new Model(graphics, this);
 
@@ -42,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto horz = central->layout()->addTypedLayout(new QPx::HBoxLayout(0, 1));
 
-    horz->addTypedWidget(new ToolViewContainer());
+    horz->addTypedWidget(new ToolViewContainer(relay));
 
     auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
@@ -50,11 +55,14 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     split->addWidget(new ModelViewContainer(model, graphics, relay), 100);
     split->addWidget(new SideViewContainer(), 1);
 
-    horz->addWidget(new ToolViewContainer());
+    horz->addWidget(new ToolViewContainer(relay));
 
     new ApplicationActions(actions, this);
     new EditActions(model, actions, this);
     new LayoutActions(actions, this);
+
+    tools->addTool(new SelectTool(actions, model));
+    tools->addTool(new MoveTool(actions, model));
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 

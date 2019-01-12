@@ -15,6 +15,11 @@ QPx::Action *ActionList::add(const QString &id, const QString &text, const QKeyS
     return QPx::ActionList::add(id, text, QKeySequence(settings[id]["Shortcut"].value(shortcut.toString(QKeySequence::NativeText)).toString()), icon, enable);
 }
 
+QPx::Action *ActionList::add(const QString &id, const QString &text, const QKeySequence &shortcut, ActionList::Enable enable)
+{
+    return add(id, text, shortcut, QIcon(), enable);
+}
+
 QPx::Action *ActionList::add(const QString &id, const QString &text, ActionList::Enable enable)
 {
     return add(id, text, QKeySequence(), QIcon(), enable);

@@ -3,6 +3,7 @@
 
 #include <QtCore/QObject>
 
+class Tool;
 class ModelView;
 class QMouseEvent;
 class Graphics;
@@ -16,6 +17,9 @@ public:
     explicit Relay(QObject *parent = nullptr);
 
 signals:
+    void toolAdded(Tool *tool);
+    void toolSelected(Tool *tool);
+
     void mousePressed(ModelView *view, QMouseEvent *event);
     void mouseMoved(ModelView *view, QMouseEvent *event);
     void mouseReleased(ModelView *view, QMouseEvent *event);

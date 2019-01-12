@@ -83,7 +83,11 @@ SOURCES += \
     options/components/LayoutDiagram.cpp \
     actions/LayoutActions.cpp \
     options/KeyboardOptionsWidget.cpp \
-    options/OptionsWidget.cpp
+    options/OptionsWidget.cpp \
+    tools/MoveTool.cpp \
+    tools/SelectTool.cpp \
+    tools/Tool.cpp \
+    tools/ToolList.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -133,7 +137,11 @@ HEADERS += \
     options/components/LayoutDiagram.h \
     actions/LayoutActions.h \
     options/KeyboardOptionsWidget.h \
-    options/OptionsWidget.h
+    options/OptionsWidget.h \
+    tools/MoveTool.h \
+    tools/SelectTool.h \
+    tools/Tool.h \
+    tools/ToolList.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

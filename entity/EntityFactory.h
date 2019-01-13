@@ -7,7 +7,6 @@ namespace EntityFactory
 {
 
 Entity create(Entity::Type type);
-void updateMesh(Entity &entity);
 
 }
 

@@ -14,8 +14,3 @@ Entity EntityFactory::create(Entity::Type type)
 
     return e;
 }
-
-void EntityFactory::updateMesh(Entity &entity)
-{
-    auto mesh = entity.properties()["Mesh"].toMesh();
-}

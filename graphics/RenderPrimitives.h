@@ -16,7 +16,6 @@ class RenderParams;
 namespace RenderPrimitives
 {
 
-void line(Graphics *graphics, const RenderParams &params, const Gx::Vec3 &start, const Gx::Vec3 &end, const Gx::Color &color);
 void invertBox(Graphics *graphics, const RenderParams &params, const Gx::Vec2 &anc, const Gx::Vec2 &pos);
 
 }

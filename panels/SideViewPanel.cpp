@@ -28,7 +28,7 @@ SideViewPanel::SideViewPanel(QWidget *parent) : GuiPanel(parent)
 
     connect(menu, SIGNAL(aboutToShow()), SLOT(menuAboutToShow()));
 
-    auto button = toolBar()->addTypedWidget(new GuiSmallButton(QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation)));
+    auto button = toolBar()->addTypedWidget(new GuiSmallButton(QPixmap(":/resources/images/splitvert.png")));
     button->setMenu(menu);
 }
 

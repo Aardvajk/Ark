@@ -11,7 +11,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
-GuiPanel::GuiPanel(QWidget *parent) : SplitterPanel(parent), close(new QAction("Close", this))
+GuiPanel::GuiPanel(QWidget *parent) : QPx::SplitterPanel(parent), close(new QAction("Close", this))
 {
     auto layout = new QPx::VBoxLayout(0, 1, this);
 
@@ -47,6 +47,12 @@ void GuiPanel::splitVertical()
 
 void GuiPanel::splitHorizontal()
 {
+    split(Qt::Horizontal, clone());
+}
+
+void GuiPanel::splitGrid()
+{
+    split(Qt::Vertical, clone())->split(Qt::Horizontal, clone());
     split(Qt::Horizontal, clone());
 }
 

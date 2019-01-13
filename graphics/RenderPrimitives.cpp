@@ -10,21 +10,9 @@
 #include <GxGraphics/GxVertexBuffer.h>
 #include <GxGraphics/GxBufferStream.h>
 
-void RenderPrimitives::line(Graphics *graphics, const RenderParams &params, const Gx::Vec3 &start, const Gx::Vec3 &end, const Gx::Color &color)
-{
-    Gx::BufferStream<Gx::VertexBuffer> os(*graphics->genericBuffer, Gx::Graphics::Lock::Flag::Discard);
-
-    os << start << Gx::Rgba(color);
-    os << end << Gx::Rgba(color);
-
-    auto r = RenderState(RenderState::Type::Color, { }, graphics, params);
-    graphics->device.renderLineList(*graphics->genericBuffer, 4);
-}
-
 void RenderPrimitives::invertBox(Graphics *graphics, const RenderParams &params, const Gx::Vec2 &anc, const Gx::Vec2 &pos)
 {
     Gx::BufferStream<Gx::VertexBuffer> os(*graphics->genericBuffer, Gx::Graphics::Lock::Flag::Discard);
-
     auto color = Gx::Color(1, 1, 1);
 
     os << Gx::Vec3(anc.x, anc.y, 0) << Gx::Rgba(color);

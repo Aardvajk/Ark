@@ -36,6 +36,7 @@ private slots:
 
     void splitVertical();
     void splitHorizontal();
+    void splitGrid();
     void closePanel();
 
 private:

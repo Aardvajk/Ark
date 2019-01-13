@@ -87,7 +87,8 @@ SOURCES += \
     tools/MoveTool.cpp \
     tools/SelectTool.cpp \
     tools/Tool.cpp \
-    tools/ToolList.cpp
+    tools/ToolList.cpp \
+    tools/components/Marquee.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -141,7 +142,8 @@ HEADERS += \
     tools/MoveTool.h \
     tools/SelectTool.h \
     tools/Tool.h \
-    tools/ToolList.h
+    tools/ToolList.h \
+    tools/components/Marquee.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

@@ -23,14 +23,14 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     auto m = Mesh::cuboid({ 2, 2, 2 });
 
     e.properties()["Mesh"].setValue(m);
-    entities.append(e);
+    entities.add(e);
 
     e.properties()["Mesh"].setValue(moveMesh(m, { 3, 1, 3}));
-    entities.append(e);
+    entities.add(e);
 
     e.properties()["Mesh"].setValue(moveMesh(m, { -3, 1, 3}));
-    entities.append(e);
+    entities.add(e);
 
     e.properties()["Mesh"].setValue(moveMesh(m, { 0, -2, -3}));
-    entities.append(e);
+    entities.add(e);
 }

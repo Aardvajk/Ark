@@ -3,8 +3,9 @@
 
 #include "entity/Entity.h"
 
+#include <QPxCore/QPxStableList.h>
+
 #include <QtCore/QObject>
-#include <QtCore/QList>
 
 class ModelData : public QObject
 {
@@ -14,7 +15,7 @@ public:
     explicit ModelData(QObject *parent = nullptr);
 
     PropertyMap properties;
-    QList<Entity> entities;
+    QPx::StableList<Entity> entities;
 };
 
 #endif // MODELDATA_H

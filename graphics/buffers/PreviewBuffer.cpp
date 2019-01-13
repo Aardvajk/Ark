@@ -22,7 +22,7 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
 {
     Gx::BufferStream<Gx::VertexBuffer> os(buffer, Gx::Graphics::Lock::Flag::Discard);
 
-    for(auto &e: model->entities())
+    for(const auto &e: model->entities())
     {
         if(e.type() == Entity::Type::Geometry)
         {

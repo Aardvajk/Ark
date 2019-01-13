@@ -20,3 +20,19 @@ QPixmap SelectTool::icon() const
 {
     return QPixmap(":/resources/images/ark.png");
 }
+
+void SelectTool::mousePressed(ModelView *view, QMouseEvent *event)
+{
+}
+
+void SelectTool::mouseMoved(ModelView *view, QMouseEvent *event)
+{
+}
+
+void SelectTool::mouseReleased(ModelView *view, QMouseEvent *event)
+{
+}
+
+void SelectTool::render(ModelView *view, Graphics *graphics, const RenderParams &params)
+{
+}

@@ -19,9 +19,12 @@ public:
 signals:
     void toolAdded(Tool *tool);
 
+private slots:
+    void toolSelected(Tool *tool);
+
 private:
     Relay *relay;
-    QList<Tool*> data;
+    Tool *curr;
 };
 
 #endif // TOOLLIST_H

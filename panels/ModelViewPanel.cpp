@@ -16,15 +16,8 @@
 
 ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, QWidget *parent) : GuiPanel(parent), model(model), graphics(graphics), relay(relay)
 {
-//    view = new ModelView(model, graphics);
-//    layout()->addWidget(view);
-
-    auto w = new QWidget();
-    QPx::setPaletteColor(w, QPalette::Window, QColor(210, 230, 250));
-    w->setAutoFillBackground(true);
-    w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    layout()->addWidget(w);
+    view = new ModelView(model, graphics);
+    layout()->addWidget(view);
 
     toolBar()->addStretch();
 
@@ -40,12 +33,12 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
     auto button = toolBar()->addTypedWidget(new GuiSmallButton(QPixmap(":/resources/images/ark.png").scaledToHeight(16, Qt::SmoothTransformation)));
     button->setMenu(menu);
 
-//    connect(graphics, SIGNAL(render()), view, SLOT(update()));
+    connect(graphics, SIGNAL(render()), view, SLOT(update()));
 
-//    connect(view, SIGNAL(mousePressed(ModelView*,QMouseEvent*)), relay, SIGNAL(mousePressed(ModelView*,QMouseEvent*)));
-//    connect(view, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)));
-//    connect(view, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)));
-//    connect(view, SIGNAL(render(ModelView*,Graphics*,RenderParams)), relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)));
+    connect(view, SIGNAL(mousePressed(ModelView*,QMouseEvent*)), relay, SIGNAL(mousePressed(ModelView*,QMouseEvent*)));
+    connect(view, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)));
+    connect(view, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)));
+    connect(view, SIGNAL(render(ModelView*,Graphics*,RenderParams)), relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)));
 }
 
 void ModelViewPanel::saveState(QPx::Settings &settings) const

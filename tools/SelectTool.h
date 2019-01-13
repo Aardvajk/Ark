@@ -15,6 +15,13 @@ public:
 
     virtual QString name() const override;
     virtual QPixmap icon() const override;
+
+public slots:
+    void mousePressed(ModelView *view, QMouseEvent *event);
+    void mouseMoved(ModelView *view, QMouseEvent *event);
+    void mouseReleased(ModelView *view, QMouseEvent *event);
+
+    void render(ModelView *view, Graphics *graphics, const RenderParams &params);
 };
 
 #endif // SELECTTOOL_H

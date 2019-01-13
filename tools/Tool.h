@@ -5,6 +5,10 @@
 #include <QtCore/QMetaType>
 
 class QPixmap;
+class QMouseEvent;
+class ModelView;
+class Graphics;
+class RenderParams;
 
 class Tool : public QObject
 {
@@ -21,6 +25,12 @@ signals:
 
 public slots:
     void select();
+
+    void mousePressed(ModelView *view, QMouseEvent *event);
+    void mouseMoved(ModelView *view, QMouseEvent *event);
+    void mouseReleased(ModelView *view, QMouseEvent *event);
+
+    void render(ModelView *view, Graphics *graphics, const RenderParams &params);
 };
 
 Q_DECLARE_METATYPE(Tool*)

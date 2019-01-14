@@ -88,7 +88,11 @@ SOURCES += \
     tools/SelectTool.cpp \
     tools/Tool.cpp \
     tools/ToolList.cpp \
-    tools/components/Marquee.cpp
+    tools/components/Marquee.cpp \
+    properties/Element.cpp \
+    properties/custom/Selection.cpp \
+    graphics/buffers/FaceBuffer.cpp \
+    graphics/buffers/PointBuffer.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -143,7 +147,11 @@ HEADERS += \
     tools/SelectTool.h \
     tools/Tool.h \
     tools/ToolList.h \
-    tools/components/Marquee.h
+    tools/components/Marquee.h \
+    properties/custom/Selection.h \
+    properties/Element.h \
+    graphics/buffers/FaceBuffer.h \
+    graphics/buffers/PointBuffer.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

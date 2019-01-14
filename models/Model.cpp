@@ -34,7 +34,7 @@ const PropertyMap &Model::properties() const
     return cache.get<Cache>().data->properties;
 }
 
-const QPx::StableList<Entity> &Model::entities() const
+const QList<Entity> &Model::entities() const
 {
     return cache.get<Cache>().data->entities;
 }

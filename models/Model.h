@@ -1,9 +1,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <QPxCore/QPxStableList.h>
-
 #include <QPxEditor/QPxAbstractEditorModel.h>
+
+#include <QtCore/QList>
 
 #include <pcx/aligned_store.h>
 
@@ -24,7 +24,7 @@ public:
     void beginCommand(Command *command);
 
     const PropertyMap &properties() const;
-    const QPx::StableList<Entity> &entities() const;
+    const QList<Entity> &entities() const;
 
     const ModelBuffers *buffers() const;
 

@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 
 #include "properties/custom/Mesh.h"
+#include "properties/custom/Selection.h"
 
 #include <pcx/process.h>
 
@@ -44,6 +45,8 @@ int main(int argc, char *argv[])
 
     QMetaType::registerComparators<Mesh>();
     qRegisterMetaTypeStreamOperators<Mesh>("Mesh");
+
+    QMetaType::registerComparators<Selection>();
 
     try
     {

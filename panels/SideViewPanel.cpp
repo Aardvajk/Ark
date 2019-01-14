@@ -16,9 +16,8 @@ SideViewPanel::SideViewPanel(QWidget *parent) : GuiPanel(parent)
     layout()->addWidget(view);
 
     auto cb = toolBar()->addTypedWidget(new GuiComboBox());
-    cb->addItem("Model");
-    cb->addItem("Selection");
-    cb->addItem("Elements");
+    cb->addItem("Tools");
+    cb->addItem("Properties");
 
     auto menu = new QMenu(this);
 

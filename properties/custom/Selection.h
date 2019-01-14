@@ -17,6 +17,9 @@ public:
     bool operator!=(const Selection &s) const;
     bool operator<(const Selection &s) const;
 
+    Selection merge(const Selection &s) const;
+    Selection remove(const Selection &s) const;
+
     bool object;
     QHash<Element::Type, QSet<int> > elements;
 };

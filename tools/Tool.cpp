@@ -1,6 +1,10 @@
 #include "Tool.h"
 
-Tool::Tool(QObject *parent) : QObject(parent)
+Tool::Tool(QPx::Settings &settings, QObject *parent) : QObject(parent), settings(settings)
+{
+}
+
+void Tool::addOptions(QPx::VBoxLayout *layout) const
 {
 }
 
@@ -25,3 +29,6 @@ void Tool::render(ModelView *view, Graphics *graphics, const RenderParams &param
 {
 }
 
+void Tool::focusLost()
+{
+}

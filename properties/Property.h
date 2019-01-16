@@ -1,15 +1,12 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
 
-#include "properties/custom/Mesh.h"
-#include "properties/custom/Selection.h"
-
 #include <pcx/flags.h>
 #include <pcx/shared_data.h>
 
-#include <QtCore/QVariant>
+#include <QGxMaths/QGxMathsMetatypes.h>
 
-#include <QtGui/QColor>
+#include <QtCore/QVariant>
 
 class Property
 {
@@ -24,34 +21,12 @@ public:
     using Flags = pcx::flags<Flag>;
 
     Property() = default;
-
-    explicit Property(int value, Flags flags = Flags()) : s(value, flags) { }
-    explicit Property(float value, Flags flags = Flags()) : s(value, flags) { }
-    explicit Property(bool value, Flags flags = Flags()) : s(value, flags) { }
-    explicit Property(const QString &value, Flags flags = Flags()) : s(value, flags) { }
+    template<typename T> explicit Property(const T &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
     explicit Property(const char *value, Flags flags = Flags()) : s(QString(value), flags) { }
-    explicit Property(const QColor &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
-    explicit Property(const Mesh &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
-    explicit Property(const Selection &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
 
-    void setValue(const QVariant &value){ s.value().value = value; }
-    void setValue(int value){ s.value().value = value; }
-    void setValue(float value){ s.value().value = value; }
-    void setValue(bool value){ s.value().value = value; }
-    void setValue(const QString &value){ s.value().value = value; }
-    void setValue(const QColor &value){ s.value().value = QVariant::fromValue(value); }
-    void setValue(const Mesh &value){ s.value().value = QVariant::fromValue(value); }
-    void setValue(const Selection &value){ s.value().value = QVariant::fromValue(value); }
+    template<typename T> void setValue(const T &value){ s.value().value = QVariant::fromValue(value); }
 
-    int toInt() const { return s.value().value.toInt(); }
-    float toFloat() const { return s.value().value.toFloat(); }
-    bool toBool() const { return s.value().value.toBool(); }
-    QString toString() const { return s.value().value.toString(); }
-    QColor toColor() const { return qvariant_cast<QColor>(s.value().value); }
-    Mesh toMesh() const { return qvariant_cast<Mesh>(s.value().value); }
-    Selection toSelection() const { return qvariant_cast<Selection>(s.value().value); }
-
-    QVariant value() const { return s.value().value; }
+    template<typename T> T value() const { return s.value().value.value<T>(); }
     Flags flags() const { return s.value().flags; }
 
 private:

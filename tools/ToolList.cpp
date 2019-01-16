@@ -22,14 +22,11 @@ void updateConnections(QObject *sender, QObject *receiver, void(*func)(QObject*,
     static const char *send[] = { SIGNAL(mousePressed(ModelView*,QMouseEvent*)), SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), SIGNAL(render(ModelView*,Graphics*,const RenderParams&)), "" };
     static const char *recv[] = { SLOT(mousePressed(ModelView*,QMouseEvent*)), SLOT(mouseMoved(ModelView*,QMouseEvent*)), SLOT(mouseReleased(ModelView*,QMouseEvent*)), SLOT(render(ModelView*,Graphics*,const RenderParams&)) };
 
-    if(receiver)
+    auto i = 0;
+    while(send[i][0])
     {
-        auto i = 0;
-        while(send[i][0])
-        {
-            func(sender, send[i], receiver, recv[i]);
-            ++i;
-        }
+        func(sender, send[i], receiver, recv[i]);
+        ++i;
     }
 }
 
@@ -53,7 +50,16 @@ Tool *ToolList::addTool(Tool *tool)
 
 void ToolList::toolSelected(Tool *tool)
 {
-    updateConnections(relay, curr, homogenousDisconnect);
+    if(curr)
+    {
+        curr->focusLost();
+        updateConnections(relay, curr, homogenousDisconnect);
+    }
+
     curr = tool;
-    updateConnections(relay, curr, homogenousConnect);
+
+    if(curr)
+    {
+        updateConnections(relay, curr, homogenousConnect);
+    }
 }

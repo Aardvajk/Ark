@@ -9,6 +9,9 @@
 #include <GxGraphics/GxVertexBuffer.h>
 #include <GxGraphics/GxBufferStream.h>
 
+#include <GxMaths/GxVector.h>
+#include <GxMaths/GxMatrix.h>
+
 #include <QGxMaths/QGxColor.h>
 
 #include "properties/custom/Mesh.h"
@@ -26,7 +29,8 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
     {
         if(e.type() == Entity::Type::Geometry)
         {
-            auto mesh = e.properties()["Mesh"].toMesh();
+            auto mesh = e.properties()["Mesh"].value<Mesh>();
+            auto transform = Gx::Matrix::translation(e.properties()["Position"].value<Gx::Vec3>());
 
             for(int i = 0; i < mesh.faces.count(); ++i)
             {
@@ -36,9 +40,9 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
                 {
                     auto n = mesh.faceNormal(i);
 
-                    os << mesh.vertex(i, 0) << n << Gx::Rgba(c);
-                    os << mesh.vertex(i, j) << n << Gx::Rgba(c);
-                    os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c);
+                    os << mesh.vertex(i, 0).transformedCoord(transform) << n << Gx::Rgba(c);
+                    os << mesh.vertex(i, j).transformedCoord(transform) << n << Gx::Rgba(c);
+                    os << mesh.vertex(i, j + 1).transformedCoord(transform) << n << Gx::Rgba(c);
 
                     ++count;
                 }

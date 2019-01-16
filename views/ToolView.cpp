@@ -16,7 +16,7 @@ ToolView::ToolView(Relay *relay, QWidget *parent) : QWidget(parent), group(new G
 {
     layout = new QPx::VBoxLayout(this);
 
-    QPx::setPaletteColor(this, QPalette::Window, qvariant_cast<QColor>(QApplication::instance()->property("gui-panel-color")));
+    QPx::setPaletteColor(this, QPalette::Window, QApplication::instance()->property("gui-panel-color").value<QColor>());
     setAutoFillBackground(true);
 
     layout->addStretch();
@@ -40,13 +40,14 @@ void ToolView::toolSelected(Tool *tool)
 {
     if(!lock)
     {
+        auto s = pcx::scoped_lock(lock);
         mapping[tool]->setChecked(true);
     }
 }
 
 void ToolView::buttonToggled(bool state)
 {
-    if(state)
+    if(state && !lock)
     {
         auto s = pcx::scoped_lock(lock);
         qvariant_cast<Tool*>(sender()->property("ark-tool"))->select();

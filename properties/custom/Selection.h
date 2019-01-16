@@ -1,7 +1,7 @@
 #ifndef SELECTION_H
 #define SELECTION_H
 
-#include "properties/Element.h"
+#include "core/Element.h"
 
 #include <QtCore/QMetaType>
 #include <QtCore/QHash>

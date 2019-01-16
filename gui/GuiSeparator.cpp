@@ -6,7 +6,7 @@
 
 GuiSeparator::GuiSeparator(Qt::Orientation orientation, QWidget *parent) : QWidget(parent)
 {
-    QPx::setPaletteColor(this, QPalette::Window, qvariant_cast<QColor>(QApplication::instance()->property("gui-border-color")));
+    QPx::setPaletteColor(this, QPalette::Window, QApplication::instance()->property("gui-border-color").value<QColor>());
     setAutoFillBackground(true);
 
     if(orientation == Qt::Vertical)

@@ -6,7 +6,7 @@
 
 #include <QtGui/QPixmap>
 
-MoveTool::MoveTool(ActionList *actions, Model *model, QObject *parent) : Tool(parent)
+MoveTool::MoveTool(ActionList *actions, Model *model, QPx::Settings &settings, QObject *parent) : Tool(settings, parent)
 {
     connect(actions->add("Tools.Move", "Move", QKeySequence("2")), SIGNAL(triggered()), SLOT(select()));
 }

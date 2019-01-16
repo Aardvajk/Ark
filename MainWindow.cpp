@@ -51,9 +51,9 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
-    auto sv = split->addTypedWidget(new SideViewContainer(), 1);
-    split->addWidget(new ModelViewContainer(model, graphics, relay), 100);
-    split->addWidget(new SideViewContainer(), 1);
+    split->addWidget(new SideViewContainer(relay), 1);
+    split->addWidget(new ModelViewContainer(model, graphics, relay), 16);
+    split->addWidget(new SideViewContainer(relay), 1);
 
     horz->addWidget(new ToolViewContainer(relay));
 
@@ -61,8 +61,8 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     new EditActions(model, actions, this);
     new LayoutActions(actions, this);
 
-    tools->addTool(new SelectTool(actions, model));
-    tools->addTool(new MoveTool(actions, model));
+    tools->addTool(new SelectTool(actions, model, settings["Tools"]["Select"]));
+    tools->addTool(new MoveTool(actions, model, settings["Tools"]["Move"]));
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 

@@ -26,7 +26,7 @@ ModelView::ModelView(Model *model, Graphics *graphics, QWidget *parent) : QGx::G
 {
     setAttribute(Qt::WA_MouseTracking);
     setFocusPolicy(Qt::StrongFocus);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     cam = Gx::Transform({ 0, 0, -6}, { 0, 0 });
 }
@@ -131,7 +131,7 @@ void ModelView::updateCamera(float delta)
 void ModelView::renderModel()
 {
     graphics->device.begin(this);
-    graphics->device.clear(QGx::Color(model->properties()["Background"].toColor()), 1.0f);
+    graphics->device.clear(QGx::Color(model->properties()["Background"].value<QColor>()), 1.0f);
 
     auto params = renderParams();
 

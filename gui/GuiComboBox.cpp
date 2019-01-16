@@ -86,11 +86,11 @@ void GuiComboBox::paintEvent(QPaintEvent *event)
 
     int size = QApplication::instance()->property("gui-bar-icon-size").toInt();
 
-    auto hover = qvariant_cast<QColor>(QApplication::instance()->property("gui-hover-color"));
+    auto hover = QApplication::instance()->property("gui-hover-color").value<QColor>();
     hover.setAlphaF(c.anim->currentValue());
 
-    auto text = qvariant_cast<QColor>(QApplication::instance()->property("gui-text-color"));
-    auto hilight = qvariant_cast<QColor>(QApplication::instance()->property("gui-hilight-color"));
+    auto text = QApplication::instance()->property("gui-text-color").value<QColor>();
+    auto hilight = QApplication::instance()->property("gui-hilight-color").value<QColor>();
 
     painter.fillRect(rect(), c.open ? hilight : hover);
 

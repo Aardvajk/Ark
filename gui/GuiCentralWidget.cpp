@@ -9,7 +9,7 @@ GuiCentralWidget::GuiCentralWidget(QWidget *parent) : QWidget(parent)
 {
     new QPx::VBoxLayout(this);
 
-    QPx::setPaletteColor(this, QPalette::Window, qvariant_cast<QColor>(QApplication::instance()->property("gui-border-color")));
+    QPx::setPaletteColor(this, QPalette::Window, QApplication::instance()->property("gui-border-color").value<QColor>());
     setAutoFillBackground(true);
 }
 

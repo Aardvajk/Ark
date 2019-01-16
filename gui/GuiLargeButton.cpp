@@ -30,6 +30,6 @@ void GuiLargeButton::paintEvent(QPaintEvent *event)
 
     QRect r(0, y + size + 2, rect().width(), QFontMetrics(font).height());
 
-    painter.setPen(qvariant_cast<QColor>(QApplication::instance()->property("gui-text-color")));
+    painter.setPen(QApplication::instance()->property("gui-text-color").value<QColor>());
     painter.drawText(r, Qt::AlignCenter | Qt::AlignVCenter, text);
 }

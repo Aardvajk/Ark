@@ -13,11 +13,11 @@
 #include <QtWidgets/QMenu>
 
 #include <QPxWidgets/QPxPalette.h>
+#include <QPxWidgets/QPxLayouts.h>
 
 ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, QWidget *parent) : GuiPanel(parent), model(model), graphics(graphics), relay(relay)
 {
-    view = new ModelView(model, graphics);
-    layout()->addWidget(view);
+    view = layout()->addTypedWidget(new ModelView(model, graphics));
 
     toolBar()->addStretch();
 

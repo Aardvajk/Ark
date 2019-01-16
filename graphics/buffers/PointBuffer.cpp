@@ -1,5 +1,8 @@
 #include "PointBuffer.h"
 
+#include "properties/custom/Mesh.h"
+#include "properties/custom/Selection.h"
+
 #include "graphics/vertices/ColorVertex.h"
 
 #include "models/Model.h"
@@ -8,6 +11,9 @@
 
 #include "properties/custom/Mesh.h"
 #include "properties/custom/Selection.h"
+
+#include <GxMaths/GxVector.h>
+#include <GxMaths/GxMatrix.h>
 
 #include <GxGraphics/GxVertexBuffer.h>
 #include <GxGraphics/GxBufferStream.h>
@@ -27,8 +33,9 @@ void PointBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
     {
         if(e.type() == Entity::Type::Geometry)
         {
-            auto mesh = e.properties()["Mesh"].toMesh();
-            auto sel = e.properties()["Selection"].toSelection();
+            auto mesh = e.properties()["Mesh"].value<Mesh>();
+            auto sel = e.properties()["Selection"].value<Selection>();
+            auto transform = Gx::Matrix::translation(e.properties()["Position"].value<Gx::Vec3>());
 
             auto c = Gx::Color(1.0f, 1.0f, 1.0f);
 
@@ -36,7 +43,7 @@ void PointBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
             {
                 if(sel.elements[Element::Type::Vertex].contains(i))
                 {
-                    os << mesh.vertices[i] << Gx::Rgba(c);
+                    os << mesh.vertices[i].transformedCoord(transform) << Gx::Rgba(c);
                     ++count;
                 }
             }

@@ -89,10 +89,14 @@ SOURCES += \
     tools/Tool.cpp \
     tools/ToolList.cpp \
     tools/components/Marquee.cpp \
-    properties/Element.cpp \
+    core/Element.cpp \
     properties/custom/Selection.cpp \
     graphics/buffers/FaceBuffer.cpp \
-    graphics/buffers/PointBuffer.cpp
+    graphics/buffers/PointBuffer.cpp \
+    gui/GuiTextButton.cpp \
+    controls/SettingsCheckBox.cpp \
+    views/ToolOptionsView.cpp \
+    controls/SettingsElementBox.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -149,9 +153,13 @@ HEADERS += \
     tools/ToolList.h \
     tools/components/Marquee.h \
     properties/custom/Selection.h \
-    properties/Element.h \
+    core/Element.h \
     graphics/buffers/FaceBuffer.h \
-    graphics/buffers/PointBuffer.h
+    graphics/buffers/PointBuffer.h \
+    gui/GuiTextButton.h \
+    controls/SettingsCheckBox.h \
+    views/ToolOptionsView.h \
+    controls/SettingsElementBox.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

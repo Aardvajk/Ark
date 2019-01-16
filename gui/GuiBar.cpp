@@ -25,5 +25,5 @@ void GuiBar::addStretch()
 void GuiBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.fillRect(rect(), qvariant_cast<QColor>(QApplication::instance()->property("gui-panel-color")));
+    painter.fillRect(rect(), QApplication::instance()->property("gui-panel-color").value<QColor>());
 }

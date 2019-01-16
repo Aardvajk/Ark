@@ -80,12 +80,17 @@ void GuiButton::paintEvent(QPaintEvent *event)
 
     QPainter painter(this);
 
-    auto hover = qvariant_cast<QColor>(QApplication::instance()->property("gui-hover-color"));
+    if(autoFillBackground())
+    {
+        painter.fillRect(rect(), palette().color(QPalette::Window));
+    }
+
+    auto hover = QApplication::instance()->property("gui-hover-color").value<QColor>();
     hover.setAlphaF(c.anim->currentValue());
 
     bool down = (c.down && c.within) || c.checked;
 
-    painter.fillRect(rect(), down ? qvariant_cast<QColor>(QApplication::instance()->property("gui-hilight-color")) : hover);
+    painter.fillRect(rect(), down ? QApplication::instance()->property("gui-hilight-color").value<QColor>() : hover);
 }
 
 bool GuiButton::event(QEvent *event)

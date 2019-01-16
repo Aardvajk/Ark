@@ -13,17 +13,21 @@ class SelectTool : public Tool
     Q_OBJECT
 
 public:
-    SelectTool(ActionList *actions, Model *model, QObject *parent = nullptr);
+    SelectTool(ActionList *actions, Model *model, QPx::Settings &settings, QObject *parent = nullptr);
 
     virtual QString name() const override;
     virtual QPixmap icon() const override;
 
-public slots:
-    void mousePressed(ModelView *view, QMouseEvent *event);
-    void mouseMoved(ModelView *view, QMouseEvent *event);
-    void mouseReleased(ModelView *view, QMouseEvent *event);
+    virtual void addOptions(QPx::VBoxLayout *layout) const override;
 
-    void render(ModelView *view, Graphics *graphics, const RenderParams &params);
+public slots:
+    virtual void mousePressed(ModelView *view, QMouseEvent *event) override;
+    virtual void mouseMoved(ModelView *view, QMouseEvent *event) override;
+    virtual void mouseReleased(ModelView *view, QMouseEvent *event) override;
+
+    virtual void render(ModelView *view, Graphics *graphics, const RenderParams &params) override;
+
+    virtual void focusLost() override;
 
 private:
     Marquee mq;

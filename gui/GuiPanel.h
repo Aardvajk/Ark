@@ -7,11 +7,13 @@ namespace QPx
 {
 
 class Settings;
+class VBoxLayout;
 
 }
 
 class GuiBar;
 class QAction;
+class QBoxLayout;
 
 class GuiPanel : public QPx::SplitterPanel
 {
@@ -22,6 +24,8 @@ public:
 
     GuiBar *toolBar() const;
     QAction *closeAction() const;
+
+    QPx::VBoxLayout *layout() const;
 
     virtual void saveState(QPx::Settings &settings) const = 0;
     virtual void restoreState(const QPx::Settings &settings) = 0;

@@ -17,6 +17,8 @@ public:
     bool operator!=(const Selection &s) const;
     bool operator<(const Selection &s) const;
 
+    bool any() const;
+
     Selection merge(const Selection &s) const;
     Selection remove(const Selection &s) const;
 

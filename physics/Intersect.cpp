@@ -5,8 +5,11 @@
 #include "entity/Entity.h"
 
 #include <GxMaths/GxMatrix.h>
+#include <GxMaths/GxRay.h>
 
 #include <QtGui/QPolygonF>
+
+#include <numeric>
 
 namespace
 {
@@ -26,6 +29,73 @@ bool canSelectFace(const Entity &entity, int face, bool visibleOnly)
     return !visibleOnly || entity.subProperties()[Element::Type::Face][face]["Visible"].value<bool>();
 }
 
+}
+
+Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &ray, float &dist, bool visibleOnly)
+{
+    if(entity.properties().find("Mesh") == entity.properties().end())
+    {
+        return Selection();
+    }
+
+    auto mesh = entity.properties()["Mesh"].value<Mesh>();
+    auto pos = Gx::Matrix::translation(entity.properties()["Position"].value<Gx::Vec3>());
+
+    int closest = -1;
+    float min = std::numeric_limits<float>::max();;
+
+    if(type == Element::Type::Object || type == Element::Type::Face)
+    {
+        for(int i = 0; i < mesh.faces.count(); ++i)
+        {
+            for(int j = 1; j < mesh.faces[i].elements.count() - 1; ++j)
+            {
+                if(canSelectFace(entity, i, visibleOnly))
+                {
+                    auto a = mesh.vertex(i, 0).transformedCoord(pos);
+                    auto b = mesh.vertex(i, j).transformedCoord(pos);
+                    auto c = mesh.vertex(i, j + 1).transformedCoord(pos);
+
+                    auto n = Gx::Vec3(b - a).cross(c - a).normalized();;
+
+                    auto d = ray.intersectsTriFacing(a, b, c, n);
+                    if(d && *d < min)
+                    {
+                        min = *d;
+                        closest = i;
+                    }
+                }
+            }
+        }
+    }
+    else if(type == Element::Type::Vertex)
+    {
+        for(int i = 0; i < mesh.vertices.count(); ++i)
+        {
+            auto d = ray.intersectsSphere(mesh.vertices[i].transformedCoord(pos), 0.1f);
+            if(d && *d < min)
+            {
+                min = *d;
+                closest = i;
+            }
+        }
+    }
+
+    if(closest != -1)
+    {
+        dist = min;
+
+        switch(type)
+        {
+            case Element::Type::Object: return Selection(true);
+            case Element::Type::Face: return Selection({ closest }, { });
+            case Element::Type::Vertex: return Selection({ }, { closest });
+
+            default: break;
+        }
+    }
+
+    return Selection();
 }
 
 Selection rectIntersect(Element::Type type, const Entity &entity, const QRectF &clip, const Gx::Matrix &transform, bool visibleOnly)

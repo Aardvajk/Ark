@@ -1,5 +1,7 @@
 #include "Selection.h"
 
+#include <pcx/enum_range.h>
+
 Selection::Selection(bool object) : object(object)
 {
 }
@@ -25,11 +27,21 @@ bool Selection::operator<(const Selection &s) const
     return true;
 }
 
+bool Selection::any() const
+{
+    for(auto &e: elements)
+    {
+        if(!e.isEmpty()) return true;
+    }
+
+    return object;
+}
+
 Selection Selection::merge(const Selection &s) const
 {
     Selection r(object || s.object);
 
-    for(auto t: s.elements.keys())
+    for(auto t: pcx::enum_range(Element::Type::Object, Element::Type::None))
     {
         r.elements[t] = elements[t];
         for(auto i: s.elements[t])

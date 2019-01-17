@@ -20,6 +20,8 @@
 
 #include "physics/Intersect.h"
 
+#include <GxMaths/GxRay.h>
+
 #include <QPxCore/QPxSettings.h>
 
 #include <QPxActions/QPxAction.h>
@@ -34,17 +36,58 @@
 namespace
 {
 
+Selection combine(const Selection &old, const Selection &value, Qt::KeyboardModifiers modifiers)
+{
+    return modifiers & Qt::ControlModifier ? old.remove(value) : (modifiers & Qt::ShiftModifier ? old.merge(value) : value);
+}
+
 void updateSelection(Model *model, QMouseEvent *event, ModifyPropertyCommand *command, int index, const Selection &selection)
 {
     auto old = model->entities()[index].properties()["Selection"].value<Selection>();
+    auto combined = combine(old, selection, event->modifiers());
 
-    if(event->modifiers() & Qt::ControlModifier)
+    command->change(Element::Type::Object, "Selection", index, -1, QVariant::fromValue(combined));
+}
+
+void selectRay(Model *model, QMouseEvent *event, ModifyPropertyCommand *command, const QPx::Settings &settings, const Gx::SizeF &size, const Gx::Matrix &view, const Gx::Matrix &proj)
+{
+    auto ray = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), size, view, proj);
+
+    QMap<std::size_t, Selection> selections;
+    float min = std::numeric_limits<float>::max();;
+
+    for(auto i: pcx::indexed_range(model->entities()))
     {
-        command->change(Element::Type::Object, "Selection", index, -1, QVariant::fromValue(old.remove(selection)));
+        float dist = std::numeric_limits<float>::max();
+        auto selection = rayIntersect(settings["Element.Type"].value<Element::Type>(), i.value, ray, dist, settings["Front.Only"].value<bool>());
+
+        if(selection.any())
+        {
+            int compare = qFuzzyCompare(dist, min) ? 0 : (dist < min ? -1 : 1);
+            if(compare <= 0)
+            {
+                if(compare < 0)
+                {
+                    selections.clear();
+                }
+
+                selections[i.index] = selection;
+                min = dist;
+            }
+        }
     }
-    else
+
+    for(auto i: pcx::indexed_range(model->entities()))
     {
-        command->change(Element::Type::Object, "Selection", index, -1, QVariant::fromValue(event->modifiers() & Qt::ShiftModifier ? old.merge(selection) : selection));
+        updateSelection(model, event, command, i.index, selections.value(i.index));
+    }
+}
+
+void selectMarquee(Model *model, QMouseEvent *event, ModifyPropertyCommand *command, const QPx::Settings &settings, const QRectF &clip, const Gx::Matrix &transform)
+{
+    for(auto i: pcx::indexed_range(model->entities()))
+    {
+        updateSelection(model, event, command, i.index, rectIntersect(settings["Element.Type"].value<Element::Type>(), i.value, clip, transform, settings["Visible.Only"].value<bool>()));
     }
 }
 
@@ -88,22 +131,12 @@ void SelectTool::mouseReleased(ModelView *view, QMouseEvent *event)
 {
     if(mq.active(view) && event->button() == Qt::LeftButton)
     {
-        if(mq.valid(view))
-        {
-            ModifyPropertyCommand *command = new ModifyPropertyCommand("Select", model);
+        auto p = view->renderParams();
 
-            auto p = view->renderParams();
+        auto command = new ModifyPropertyCommand("Select", model);
+        mq.valid(view) ? selectMarquee(model, event, command, settings, mq.clipRect(p.size), p.view * p.proj) : selectRay(model, event, command, settings, p.size, p.view, p.proj);
 
-            auto clip = mq.clipRect(p.size);
-            auto tr = p.view * p.proj;
-
-            for(auto i: pcx::indexed_range(model->entities()))
-            {
-                updateSelection(model, event, command, i.index, rectIntersect(settings["Element.Type"].value<Element::Type>(), i.value, clip, tr, settings["Visible.Only"].value<bool>()));
-            }
-
-            model->endCommand(command);
-        }
+        model->endCommand(command);
 
         mq.end(view);
     }

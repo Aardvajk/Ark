@@ -14,7 +14,7 @@ SettingsElementBox::SettingsElementBox(QPx::Settings &settings, QWidget *parent)
     auto layout = new QPx::HBoxLayout(0, 2, this);
     auto group = new GuiButtonGroup(this);
 
-    for(auto e: pcx::enum_range(Element::Type::Object, Element::Type::Vertex))
+    for(auto e: pcx::enum_range(Element::Type::Object, Element::Type::None))
     {
         auto button = layout->addTypedWidget(group->addButton(new GuiTextButton(Element::toString(e))));
         button->setProperty("ark-element-type", QVariant::fromValue(e));

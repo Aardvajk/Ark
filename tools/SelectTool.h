@@ -30,6 +30,7 @@ public slots:
     virtual void focusLost() override;
 
 private:
+    Model *model;
     Marquee mq;
 };
 

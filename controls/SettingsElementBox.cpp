@@ -19,7 +19,7 @@ SettingsElementBox::SettingsElementBox(QPx::Settings &settings, QWidget *parent)
         auto button = layout->addTypedWidget(group->addButton(new GuiTextButton(Element::toString(e))));
         button->setProperty("ark-element-type", QVariant::fromValue(e));
 
-        if(e == settings.value().value<Element::Type>())
+        if(e == settings.value<Element::Type>())
         {
             button->setChecked(true);
         }

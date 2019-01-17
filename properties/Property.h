@@ -39,6 +39,8 @@ private:
     pcx::shared_data<Data> s;
 };
 
+template<> QVariant Property::value<QVariant>() const { return s.value().value; }
+
 template<> struct pcx_is_flag_enum<Property::Flag> : std::true_type { };
 
 #endif // PROPERTY_H

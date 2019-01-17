@@ -73,7 +73,7 @@ QWidget *GuiContainer::restoreContainerState(const QPx::Settings &settings)
         splitter->addWidget(restoreContainerState(settings[0]));
         splitter->addWidget(restoreContainerState(settings[1]));
 
-        splitter->restoreState(settings.value().toByteArray());
+        splitter->restoreState(settings.value<QByteArray>());
 
         return splitter;
     }

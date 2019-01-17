@@ -4,7 +4,7 @@
 
 SettingsCheckBox::SettingsCheckBox(QPx::Settings &settings, const QString &text, QWidget *parent) : QCheckBox(text, parent), settings(settings)
 {
-    settingsChanged(settings.value());
+    settingsChanged(settings.value<QVariant>());
     connect(this, SIGNAL(toggled(bool)), SLOT(stateChanged(bool)));
     connect(&settings, SIGNAL(valueChanged(QVariant)), SLOT(settingsChanged(QVariant)));
 }

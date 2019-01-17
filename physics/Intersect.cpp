@@ -23,7 +23,7 @@ bool facing(const QPolygonF &p)
 
 bool canSelectFace(const Entity &entity, int face, bool visibleOnly)
 {
-    return true;
+    return !visibleOnly || entity.subProperties()[Element::Type::Face][face]["Visible"].value<bool>();
 }
 
 }

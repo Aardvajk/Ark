@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 
-    restoreGeometry(settings["Application"]["Geometry"].value().toByteArray());
+    restoreGeometry(settings["Application"]["Geometry"].value<QByteArray>());
 
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));

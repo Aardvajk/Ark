@@ -12,7 +12,7 @@ ActionList::ActionList(QPx::Settings &settings, QWidget *parent) : QPx::ActionLi
 
 QPx::Action *ActionList::add(const QString &id, const QString &text, const QKeySequence &shortcut, const QIcon &icon, ActionList::Enable enable)
 {
-    return QPx::ActionList::add(id, text, QKeySequence(settings[id]["Shortcut"].value(shortcut.toString(QKeySequence::NativeText)).toString()), icon, enable);
+    return QPx::ActionList::add(id, text, QKeySequence(settings[id]["Shortcut"].value<QString>(shortcut.toString(QKeySequence::NativeText))), icon, enable);
 }
 
 QPx::Action *ActionList::add(const QString &id, const QString &text, const QKeySequence &shortcut, ActionList::Enable enable)
@@ -30,7 +30,7 @@ QPx::Action *ActionList::addCheckable(const QString &id, const QString &text, bo
     auto a = add(id, text, enable);
 
     a->setCheckable(true);
-    a->setChecked(settings[id]["Checked"].value(state).toBool());
+    a->setChecked(settings[id]["Checked"].value<bool>(state));
 
     return a;
 }

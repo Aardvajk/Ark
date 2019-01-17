@@ -98,7 +98,8 @@ SOURCES += \
     views/ToolOptionsView.cpp \
     controls/SettingsElementBox.cpp \
     physics/Intersect.cpp \
-    properties/PropertyMapList.cpp
+    properties/PropertyMapList.cpp \
+    commands/ModifyPropertyCommand.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -163,7 +164,9 @@ HEADERS += \
     views/ToolOptionsView.h \
     controls/SettingsElementBox.h \
     physics/Intersect.h \
-    properties/PropertyMapList.h
+    properties/PropertyMapList.h \
+    commands/StoredValue.h \
+    commands/ModifyPropertyCommand.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

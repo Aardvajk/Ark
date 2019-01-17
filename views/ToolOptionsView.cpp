@@ -31,13 +31,7 @@ ToolOptionsView::ToolOptionsView(Relay *relay, QWidget *parent) : QScrollArea(pa
 
 void ToolOptionsView::toolChanged(Tool *tool)
 {
-    while(groupLayout->count())
-    {
-        auto item = groupLayout->takeAt(0);
-
-        delete item->widget();
-        delete item;
-    }
+    groupLayout->clear();
 
     if(tool)
     {

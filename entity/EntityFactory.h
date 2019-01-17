@@ -3,10 +3,14 @@
 
 #include "entity/Entity.h"
 
+class PropertyMap;
+
 namespace EntityFactory
 {
 
 Entity create(Entity::Type type);
+
+void defaultFaceProperties(PropertyMap &properties);
 
 }
 

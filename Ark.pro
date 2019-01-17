@@ -96,7 +96,9 @@ SOURCES += \
     gui/GuiTextButton.cpp \
     controls/SettingsCheckBox.cpp \
     views/ToolOptionsView.cpp \
-    controls/SettingsElementBox.cpp
+    controls/SettingsElementBox.cpp \
+    physics/Intersect.cpp \
+    properties/PropertyMapList.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -159,7 +161,9 @@ HEADERS += \
     gui/GuiTextButton.h \
     controls/SettingsCheckBox.h \
     views/ToolOptionsView.h \
-    controls/SettingsElementBox.h
+    controls/SettingsElementBox.h \
+    physics/Intersect.h \
+    properties/PropertyMapList.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

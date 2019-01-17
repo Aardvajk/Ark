@@ -20,12 +20,12 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     e.properties()["Position"].setValue(Gx::Vec3(0, 0, 0));
     entities.append(e);
 
-    e.properties()["Position"].setValue(Gx::Vec3(3, 1, 3));
-    entities.append(e);
+//    e.properties()["Position"].setValue(Gx::Vec3(3, 1, 3));
+//    entities.append(e);
 
-    e.properties()["Position"].setValue(Gx::Vec3(-3, 1, 3));
-    entities.append(e);
+//    e.properties()["Position"].setValue(Gx::Vec3(-3, 1, 3));
+//    entities.append(e);
 
-    e.properties()["Position"].setValue(Gx::Vec3(0, -2, -3));
-    entities.append(e);
+//    e.properties()["Position"].setValue(Gx::Vec3(0, -2, -3));
+//    entities.append(e);
 }

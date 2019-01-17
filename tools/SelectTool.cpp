@@ -36,7 +36,7 @@ QPixmap SelectTool::icon() const
 void SelectTool::addOptions(QPx::VBoxLayout *layout) const
 {
     layout->addWidget(new SettingsElementBox(settings["Element.Type"]));
-    layout->addWidget(new SettingsCheckBox(settings["Front.Only"], "Front Faces Only"));
+    layout->addWidget(new SettingsCheckBox(settings["Visible.Only"], "Visible Only"));
 }
 
 void SelectTool::mousePressed(ModelView *view, QMouseEvent *event)

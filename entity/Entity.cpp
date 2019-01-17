@@ -1,5 +1,7 @@
 #include "Entity.h"
 
+#include "entity/EntityFactory.h"
+
 namespace
 {
 
@@ -7,8 +9,9 @@ const char *types[] = { "Geometry" };
 
 }
 
-Entity::Entity(Type type) : s(type, PropertyMap())
+Entity::Entity(Type type) : s(type, PropertyMap(), SubPropertyMap())
 {
+    s.value().subProps[Element::Type::Face].setDefaultFunction(EntityFactory::defaultFaceProperties);
 }
 
 const char *Entity::typeToString(Type type)

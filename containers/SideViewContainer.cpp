@@ -4,12 +4,12 @@
 
 #include <QtWidgets/QLayout>
 
-SideViewContainer::SideViewContainer(Relay *relay, QWidget *parent) : GuiContainer(parent), relay(relay)
+SideViewContainer::SideViewContainer(Relay *relay, PropertyModel *properties, QWidget *parent) : GuiContainer(parent), relay(relay), properties(properties)
 {
     layout()->addWidget(createPanel());
 }
 
 GuiPanel *SideViewContainer::createPanel() const
 {
-    return new SideViewPanel(relay);
+    return new SideViewPanel(relay, properties);
 }

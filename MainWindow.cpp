@@ -8,7 +8,7 @@
 #include "actions/LayoutActions.h"
 
 #include "models/Model.h"
-#include "models/ModelBuffers.h"
+#include "models/PropertyModel.h"
 
 #include "graphics/Graphics.h"
 
@@ -37,10 +37,12 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     actions = new ActionList(settings["Actions"], this);
 
     auto graphics = new Graphics(this);
-    auto relay = new Relay(this);
-    auto tools = new ToolList(relay, this);
 
     model = new Model(graphics, this);
+
+    auto relay = new Relay(this);
+    auto tools = new ToolList(relay, this);
+    auto properties = new PropertyModel(model, this);
 
     auto central = setTypedCentralWidget(new GuiCentralWidget());
     central->layout()->addTypedWidget(new GuiSeparator(Qt::Horizontal));
@@ -51,9 +53,9 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
-    split->addWidget(new SideViewContainer(relay), 1);
+    split->addWidget(new SideViewContainer(relay, properties), 1);
     split->addWidget(new ModelViewContainer(model, graphics, relay), 16);
-    split->addWidget(new SideViewContainer(relay), 1);
+    split->addWidget(new SideViewContainer(relay, properties), 1);
 
     horz->addWidget(new ToolViewContainer(relay));
 

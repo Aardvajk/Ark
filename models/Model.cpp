@@ -2,6 +2,7 @@
 
 #include "models/ModelData.h"
 #include "models/ModelBuffers.h"
+#include "models/ModelCache.h"
 
 #include "commands/Command.h"
 
@@ -11,10 +12,11 @@ namespace
 class Cache
 {
 public:
-    Cache(Model *model, Graphics *graphics) : data(new ModelData(model)), buffers(new ModelBuffers(model, graphics, model)) { }
+    Cache(Model *model, Graphics *graphics) : data(new ModelData(model)), buffers(new ModelBuffers(model, graphics, model)), cache(new ModelCache(model, model)) { }
 
     ModelData *data;
     ModelBuffers *buffers;
+    ModelCache *cache;
 };
 
 }

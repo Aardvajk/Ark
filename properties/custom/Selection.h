@@ -10,7 +10,7 @@
 class Selection
 {
 public:
-    explicit Selection(bool object = false);
+    Selection() = default;
     Selection(const QSet<int> &faces, const QSet<int> &vertices);
 
     bool operator==(const Selection &s) const;
@@ -22,7 +22,8 @@ public:
     Selection merge(const Selection &s) const;
     Selection remove(const Selection &s) const;
 
-    bool object;
+    static Selection fromElements(Element::Type type, int count);
+
     QHash<Element::Type, QSet<int> > elements;
 };
 

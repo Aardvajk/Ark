@@ -14,7 +14,6 @@ Entity EntityFactory::create(Entity::Type type)
     if(type == Entity::Type::Geometry)
     {
         e.properties()["Name"] = Property("Geometry");
-        e.properties()["Position"] = Property(Gx::Vec3());
         e.properties()["Selection"] = Property(Selection(), Property::Flag::NonPersistent | Property::Flag::Hidden);
         e.properties()["Mesh"] = Property(Mesh(), Property::Flag::Hidden);
     }

@@ -29,6 +29,17 @@ Gx::Vec3 Mesh::faceNormal(int face) const
     return b.cross(c).normalized();
 }
 
+Mesh Mesh::moved(const Gx::Vec3 &distance) const
+{
+    auto r = *this;
+    for(auto &v: r.vertices)
+    {
+        v += distance;
+    }
+
+    return r;
+}
+
 Mesh Mesh::cuboid(const Gx::Vec3 &dims)
 {
     QVector<Gx::Vec3> vertices;

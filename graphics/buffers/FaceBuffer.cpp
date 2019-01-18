@@ -12,7 +12,6 @@
 #include "properties/custom/Selection.h"
 
 #include <GxMaths/GxVector.h>
-#include <GxMaths/GxMatrix.h>
 
 #include <GxGraphics/GxVertexBuffer.h>
 #include <GxGraphics/GxBufferStream.h>
@@ -34,13 +33,12 @@ void FaceBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
         {
             auto mesh = e.properties()["Mesh"].value<Mesh>();
             auto sel = e.properties()["Selection"].value<Selection>();
-            auto transform = Gx::Matrix::translation(e.properties()["Position"].value<Gx::Vec3>());
 
             QSet<EdgeKey> edges;
 
             for(int i = 0; i < mesh.faces.count(); ++i)
             {
-                if(sel.object || sel.elements[Element::Type::Face].contains(i))
+                if(sel.elements[Element::Type::Face].contains(i))
                 {
                     auto &e = mesh.faces[i].elements;
 
@@ -55,8 +53,8 @@ void FaceBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
 
             for(auto &edge: edges)
             {
-                os << mesh.vertices[edge.keys.first].transformedCoord(transform) << Gx::Rgba(c);
-                os << mesh.vertices[edge.keys.second].transformedCoord(transform) << Gx::Rgba(c);
+                os << mesh.vertices[edge.keys.first] << Gx::Rgba(c);
+                os << mesh.vertices[edge.keys.second] << Gx::Rgba(c);
 
                 ++count;
             }

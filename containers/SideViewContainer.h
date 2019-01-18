@@ -4,19 +4,21 @@
 #include "gui/GuiContainer.h"
 
 class Relay;
+class PropertyModel;
 
 class SideViewContainer : public GuiContainer
 {
     Q_OBJECT
 
 public:
-    SideViewContainer(Relay *relay, QWidget *parent = nullptr);
+    SideViewContainer(Relay *relay, PropertyModel *properties, QWidget *parent = nullptr);
 
 protected:
     virtual GuiPanel *createPanel() const override;
 
 private:
     Relay *relay;
+    PropertyModel *properties;
 };
 
 #endif // SIDEVIEWCONTAINER_H

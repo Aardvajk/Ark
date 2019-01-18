@@ -99,7 +99,10 @@ SOURCES += \
     controls/SettingsElementBox.cpp \
     physics/Intersect.cpp \
     properties/PropertyMapList.cpp \
-    commands/ModifyPropertyCommand.cpp
+    commands/ModifyPropertyCommand.cpp \
+    views/PropertyView.cpp \
+    models/PropertyModel.cpp \
+    models/ModelCache.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -166,7 +169,10 @@ HEADERS += \
     physics/Intersect.h \
     properties/PropertyMapList.h \
     commands/StoredValue.h \
-    commands/ModifyPropertyCommand.h
+    commands/ModifyPropertyCommand.h \
+    views/PropertyView.h \
+    models/PropertyModel.h \
+    models/ModelCache.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

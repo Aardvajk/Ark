@@ -41,7 +41,7 @@ signals:
     void changed();
 
 private:
-    pcx::aligned_store<16> cache;
+    pcx::aligned_store<24> cache;
 };
 
 #endif // MODEL_H

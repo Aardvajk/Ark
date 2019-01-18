@@ -39,7 +39,6 @@ Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &
     }
 
     auto mesh = entity.properties()["Mesh"].value<Mesh>();
-    auto pos = Gx::Matrix::translation(entity.properties()["Position"].value<Gx::Vec3>());
 
     int closest = -1;
     float min = std::numeric_limits<float>::max();;
@@ -52,9 +51,9 @@ Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &
             {
                 if(canSelectFace(entity, i, visibleOnly))
                 {
-                    auto a = mesh.vertex(i, 0).transformedCoord(pos);
-                    auto b = mesh.vertex(i, j).transformedCoord(pos);
-                    auto c = mesh.vertex(i, j + 1).transformedCoord(pos);
+                    auto a = mesh.vertex(i, 0);
+                    auto b = mesh.vertex(i, j);
+                    auto c = mesh.vertex(i, j + 1);
 
                     auto n = Gx::Vec3(b - a).cross(c - a).normalized();;
 
@@ -72,7 +71,7 @@ Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &
     {
         for(int i = 0; i < mesh.vertices.count(); ++i)
         {
-            auto d = ray.intersectsSphere(mesh.vertices[i].transformedCoord(pos), 0.1f);
+            auto d = ray.intersectsSphere(mesh.vertices[i], 0.1f);
             if(d && *d < min)
             {
                 min = *d;
@@ -87,7 +86,7 @@ Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &
 
         switch(type)
         {
-            case Element::Type::Object: return Selection(true);
+            case Element::Type::Object: return Selection::fromElements(Element::Type::Face, mesh.faces.count());
             case Element::Type::Face: return Selection({ closest }, { });
             case Element::Type::Vertex: return Selection({ }, { closest });
 
@@ -106,7 +105,6 @@ Selection rectIntersect(Element::Type type, const Entity &entity, const QRectF &
     }
 
     auto mesh = entity.properties()["Mesh"].value<Mesh>();
-    auto pos = Gx::Matrix::translation(entity.properties()["Position"].value<Gx::Vec3>());
 
     if(type == Element::Type::Object || type == Element::Type::Face)
     {
@@ -121,7 +119,7 @@ Selection rectIntersect(Element::Type type, const Entity &entity, const QRectF &
                 QPolygonF pf;
                 for(int j = 0; j < mesh.faces[i].elements.count(); ++j)
                 {
-                    auto v = mesh.vertex(i, j).transformedCoord(pos * transform);
+                    auto v = mesh.vertex(i, j).transformedCoord(transform);
                     if(v.z <= 1.0f)
                     {
                         ahead = true;
@@ -134,7 +132,7 @@ Selection rectIntersect(Element::Type type, const Entity &entity, const QRectF &
                 {
                     if(type == Element::Type::Object)
                     {
-                        return Selection(true);
+                        return Selection::fromElements(Element::Type::Face, mesh.faces.count());
                     }
 
                     faces.insert(i);
@@ -150,7 +148,7 @@ Selection rectIntersect(Element::Type type, const Entity &entity, const QRectF &
 
         for(int i = 0; i < mesh.vertices.count(); ++i)
         {
-            auto v = mesh.vertices[i].transformedCoord(pos * transform);
+            auto v = mesh.vertices[i].transformedCoord(transform);
             if(v.z < 1.0f && clip.contains(v.x, v.y))
             {
                 vertices.insert(i);

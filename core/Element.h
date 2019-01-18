@@ -10,7 +10,7 @@ class Element : public QObject
     Q_OBJECT
 
 public:
-    enum class Type { Object, Face, Vertex, None };
+    enum class Type { Model, Object, Face, Vertex, None };
     Q_ENUM(Type)
 
     Element() = default;

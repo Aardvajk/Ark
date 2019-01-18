@@ -2,11 +2,7 @@
 
 #include <pcx/enum_range.h>
 
-Selection::Selection(bool object) : object(object)
-{
-}
-
-Selection::Selection(const QSet<int> &faces, const QSet<int> &vertices) : object(false)
+Selection::Selection(const QSet<int> &faces, const QSet<int> &vertices)
 {
     elements[Element::Type::Face] = faces;
     elements[Element::Type::Vertex] = vertices;
@@ -14,12 +10,12 @@ Selection::Selection(const QSet<int> &faces, const QSet<int> &vertices) : object
 
 bool Selection::operator==(const Selection &s) const
 {
-    return object == s.object && elements == s.elements;
+    return elements == s.elements;
 }
 
 bool Selection::operator!=(const Selection &s) const
 {
-    return object != s.object || elements != s.elements;
+    return elements != s.elements;
 }
 
 bool Selection::operator<(const Selection &s) const
@@ -34,12 +30,12 @@ bool Selection::any() const
         if(!e.isEmpty()) return true;
     }
 
-    return object;
+    return false;
 }
 
 Selection Selection::merge(const Selection &s) const
 {
-    Selection r(object || s.object);
+    Selection r;
 
     for(auto t: pcx::enum_range(Element::Type::Object, Element::Type::None))
     {
@@ -57,8 +53,6 @@ Selection Selection::remove(const Selection &s) const
 {
     Selection r = *this;
 
-    if(s.object) r.object = false;
-
     for(auto t: s.elements.keys())
     {
         for(auto i: s.elements[t])
@@ -70,3 +64,13 @@ Selection Selection::remove(const Selection &s) const
     return r;
 }
 
+Selection Selection::fromElements(Element::Type type, int count)
+{
+    Selection s;
+    for(int i = 0; i < count; ++i)
+    {
+        s.elements[type].insert(i);
+    }
+
+    return s;
+}

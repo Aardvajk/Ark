@@ -19,10 +19,12 @@ public:
     bool operator!=(const Mesh &m) const;
     bool operator<(const Mesh &m) const;
 
-    static Mesh cuboid(const Gx::Vec3 &dims);
-
     Gx::Vec3 vertex(int face, int index) const;
     Gx::Vec3 faceNormal(int face) const;
+
+    Mesh moved(const Gx::Vec3 &distance) const;
+
+    static Mesh cuboid(const Gx::Vec3 &dims);
 
     QVector<Gx::Vec3> vertices;
     QVector<Face> faces;

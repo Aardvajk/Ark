@@ -9,6 +9,8 @@
 
 #include "entity/Entity.h"
 
+#include "commands/ModifyPropertyCommand.h"
+
 #include <QPxCore/QPxStdHash.h>
 
 #include <QPxPropertyBrowser/QPxPropertyBrowserItem.h>
@@ -39,6 +41,8 @@ PropertyModel::PropertyModel(Element::Type type, Model *model, PropertyTypeFacto
 
 void PropertyModel::selectionChanged()
 {
+    if(lock) return;
+
     pcx::ordered_map<QString, QVector<Property>, QPx::StdHash> merged;
 
     if(type == Element::Type::Model)
@@ -57,7 +61,6 @@ void PropertyModel::selectionChanged()
         for(auto i: model->selected())
         {
             auto &entity = model->entities()[i];
-
             for(auto j: entity.properties()["Selection"].value<Selection>().elements[type])
             {
                 mergeProperties(entity.subProperties()[type][j], merged);
@@ -109,4 +112,32 @@ void PropertyModel::selectionChanged()
 
 void PropertyModel::valueChanged(const QVariant &value)
 {
+    auto s = pcx::scoped_lock(lock);
+
+    auto item = static_cast<QPx::PropertyBrowserItem*>(sender());
+    auto command = new ModifyPropertyCommand("Change Property", model);
+
+    if(type == Element::Type::Model)
+    {
+        command->change(type, item->name(), -1, -1, value);
+    }
+    else if(type == Element::Type::Object)
+    {
+        for(auto i: model->selected())
+        {
+            command->change(type, item->name(), i, -1, value);
+        }
+    }
+    else
+    {
+        for(auto i: model->selected())
+        {
+            for(auto j: model->entities()[i].properties()["Selection"].value<Selection>().elements[type])
+            {
+                command->change(type, item->name(), i, j, value);
+            }
+        }
+    }
+
+    model->endCommand(command);
 }

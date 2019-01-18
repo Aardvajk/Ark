@@ -88,5 +88,5 @@ void MainWindow::updateTitle()
     QString file = QFileInfo(model->path()).fileName();
     QString mod = model->isModified() ? " (modified)" : "";
 
-    setWindowTitle(QString("%1%Ark%3").arg(file).arg(model->path().isEmpty() ? "" : " - ").arg(mod));
+    setWindowTitle(QString("%1%2Ark%3").arg(file).arg(model->path().isEmpty() ? "" : " - ").arg(mod));
 }

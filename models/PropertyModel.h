@@ -5,6 +5,8 @@
 
 #include <QPxPropertyBrowser/QPxPropertyBrowserModel.h>
 
+#include <pcx/scoped_lock.h>
+
 class Model;
 class PropertyTypeFactory;
 
@@ -23,6 +25,7 @@ private:
     Element::Type type;
     Model *model;
     PropertyTypeFactory *factory;
+    pcx::lock lock;
 };
 
 #endif // PROPERTYMODEL_H

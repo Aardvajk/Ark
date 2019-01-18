@@ -102,7 +102,8 @@ SOURCES += \
     commands/ModifyPropertyCommand.cpp \
     views/PropertyView.cpp \
     models/PropertyModel.cpp \
-    models/ModelCache.cpp
+    models/ModelCache.cpp \
+    properties/PropertyTypeFactory.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -172,7 +173,8 @@ HEADERS += \
     commands/ModifyPropertyCommand.h \
     views/PropertyView.h \
     models/PropertyModel.h \
-    models/ModelCache.h
+    models/ModelCache.h \
+    properties/PropertyTypeFactory.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

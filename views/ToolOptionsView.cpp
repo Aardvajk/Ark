@@ -11,7 +11,7 @@
 
 #include <QtWidgets/QPushButton>
 
-ToolOptionsView::ToolOptionsView(Relay *relay, QWidget *parent) : QScrollArea(parent)
+ToolOptionsView::ToolOptionsView(Relay *relay, Tool *tool, QWidget *parent) : QScrollArea(parent)
 {
     setWidgetResizable(true);
     setFrameStyle(QFrame::NoFrame);
@@ -26,10 +26,11 @@ ToolOptionsView::ToolOptionsView(Relay *relay, QWidget *parent) : QScrollArea(pa
     groupBox = layout->addTypedWidget(new QGroupBox("None"));
     groupLayout = new QPx::VBoxLayout({ }, { }, groupBox);
 
-    connect(relay, SIGNAL(toolSelected(Tool*)), SLOT(toolChanged(Tool*)));
+    connect(relay, SIGNAL(toolSelected(Tool*)), SLOT(toolSelected(Tool*)));
+    toolSelected(tool);
 }
 
-void ToolOptionsView::toolChanged(Tool *tool)
+void ToolOptionsView::toolSelected(Tool *tool)
 {
     groupLayout->clear();
 

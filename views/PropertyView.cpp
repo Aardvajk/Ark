@@ -8,6 +8,5 @@ PropertyView::PropertyView(PropertyModel *properties, QWidget *parent) : QTreeVi
 {
     setFrameStyle(QFrame::NoFrame);
     setModel(properties);
-    setRootIsDecorated(false);
     setItemDelegate(new QPx::PropertyBrowserDelegate(this));
 }

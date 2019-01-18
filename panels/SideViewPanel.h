@@ -3,15 +3,24 @@
 
 #include "gui/GuiPanel.h"
 
+namespace QPx
+{
+
+class VBoxLayout;
+
+}
+
+class Model;
 class Relay;
-class PropertyModel;
+class PropertyTypeFactory;
+class Tool;
 
 class SideViewPanel : public GuiPanel
 {
     Q_OBJECT
 
 public:
-    SideViewPanel(Relay *relay, PropertyModel *properties, QWidget *parent = nullptr);
+    SideViewPanel(Model *model, Relay *relay, PropertyTypeFactory *factory, Tool *tool, QWidget *parent = nullptr);
 
     virtual void saveState(QPx::Settings &settings) const override;
     virtual void restoreState(const QPx::Settings &settings) override;
@@ -19,9 +28,16 @@ public:
 protected:
     virtual SideViewPanel *clone() const override;
 
+private slots:
+    void toolSelected(Tool *tool);
+    void comboIndexChanged(int index);
+
 private:
+    Model *model;
     Relay *relay;
-    PropertyModel *properties;
+    PropertyTypeFactory *factory;
+    Tool *currentTool;
+    QPx::VBoxLayout *panelLayout;
 };
 
 #endif // SIDEVIEWPANEL_H

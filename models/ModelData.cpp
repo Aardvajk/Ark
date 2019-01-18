@@ -10,7 +10,8 @@
 
 ModelData::ModelData(QObject *parent) : QObject(parent)
 {
-    properties["Background"].setValue(QColor(200, 220, 240));
+    properties["Name"] = Property("Model");
+    properties["Background"] = Property(QColor(200, 220, 240));
 
     auto m = Mesh::cuboid({ 2, 2, 2 });
 

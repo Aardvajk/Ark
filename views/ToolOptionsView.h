@@ -20,10 +20,10 @@ class ToolOptionsView : public QScrollArea
     Q_OBJECT
 
 public:
-    ToolOptionsView(Relay *relay, QWidget *parent = nullptr);
+    ToolOptionsView(Relay *relay, Tool *tool, QWidget *parent = nullptr);
 
 private slots:
-    void toolChanged(Tool *tool);
+    void toolSelected(Tool *tool);
 
 private:
     QGroupBox *groupBox;

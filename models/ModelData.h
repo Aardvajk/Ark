@@ -6,7 +6,7 @@
 #include "entity/Entity.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QtCore/QVector>
 
 class Entity;
 
@@ -18,7 +18,7 @@ public:
     explicit ModelData(QObject *parent = nullptr);
 
     PropertyMap properties;
-    QList<Entity> entities;
+    QVector<Entity> entities;
 };
 
 #endif // MODELDATA_H

@@ -12,6 +12,7 @@ namespace
 class Section
 {
 public:
+    Section() : type(LayoutDiagram::Type::Invalid) { }
     Section(LayoutDiagram::Type type, QWidget *parent);
 
     LayoutDiagram::Type type;
@@ -37,7 +38,7 @@ public:
     LayoutDiagram::Type find(const QPoint &pos) const;
 
     QRect mainRect;
-    QList<Section> sections;
+    QVector<Section> sections;
     LayoutDiagram::Type curr;
 
     int barHeight;

@@ -12,7 +12,7 @@ namespace
 class Cache
 {
 public:
-    QList<GuiButton*> buttons;
+    QVector<GuiButton*> buttons;
 };
 
 }

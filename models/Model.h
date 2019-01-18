@@ -3,7 +3,7 @@
 
 #include <QPxEditor/QPxAbstractEditorModel.h>
 
-#include <QtCore/QList>
+#include <QtCore/QVector>
 
 #include <pcx/aligned_store.h>
 
@@ -24,7 +24,7 @@ public:
     void beginCommand(Command *command);
 
     const PropertyMap &properties() const;
-    const QList<Entity> &entities() const;
+    const QVector<Entity> &entities() const;
 
     const ModelBuffers *buffers() const;
 

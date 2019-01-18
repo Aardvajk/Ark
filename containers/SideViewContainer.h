@@ -3,22 +3,29 @@
 
 #include "gui/GuiContainer.h"
 
+class Model;
 class Relay;
-class PropertyModel;
+class PropertyTypeFactory;
+class Tool;
 
 class SideViewContainer : public GuiContainer
 {
     Q_OBJECT
 
 public:
-    SideViewContainer(Relay *relay, PropertyModel *properties, QWidget *parent = nullptr);
+    SideViewContainer(Model *model, Relay *relay, PropertyTypeFactory *factory, QWidget *parent = nullptr);
 
 protected:
     virtual GuiPanel *createPanel() const override;
 
+private slots:
+    void toolSelected(Tool *tool);
+
 private:
+    Model *model;
     Relay *relay;
-    PropertyModel *properties;
+    PropertyTypeFactory *factory;
+    Tool *currentTool;
 };
 
 #endif // SIDEVIEWCONTAINER_H

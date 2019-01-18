@@ -2,7 +2,6 @@
 #define TOOLLIST_H
 
 #include <QtCore/QObject>
-#include <QtCore/QList>
 
 class Relay;
 class Tool;

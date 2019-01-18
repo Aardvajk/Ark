@@ -8,7 +8,6 @@
 #include "actions/LayoutActions.h"
 
 #include "models/Model.h"
-#include "models/PropertyModel.h"
 
 #include "graphics/Graphics.h"
 
@@ -21,6 +20,8 @@
 #include "containers/ToolViewContainer.h"
 #include "containers/SideViewContainer.h"
 #include "containers/ModelViewContainer.h"
+
+#include "properties/PropertyTypeFactory.h"
 
 #include "tools/ToolList.h"
 #include "tools/SelectTool.h"
@@ -42,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto relay = new Relay(this);
     auto tools = new ToolList(relay, this);
-    auto properties = new PropertyModel(model, this);
+    auto factory = new PropertyTypeFactory(this);
 
     auto central = setTypedCentralWidget(new GuiCentralWidget());
     central->layout()->addTypedWidget(new GuiSeparator(Qt::Horizontal));
@@ -53,9 +54,9 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
-    split->addWidget(new SideViewContainer(relay, properties), 1);
+    split->addWidget(new SideViewContainer(model, relay, factory), 1);
     split->addWidget(new ModelViewContainer(model, graphics, relay), 16);
-    split->addWidget(new SideViewContainer(relay, properties), 1);
+    split->addWidget(new SideViewContainer(model, relay, factory), 1);
 
     horz->addWidget(new ToolViewContainer(relay));
 
@@ -72,8 +73,6 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
-
-//    QTimer::singleShot(10, actions->find("Application.Options"), SLOT(trigger()));
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

@@ -4,7 +4,7 @@
 #include "commands/Command.h"
 #include "commands/StoredValue.h"
 
-#include <QtCore/QList>
+#include <QtCore/QVector>
 
 class ModifyPropertyCommand : public Command
 {
@@ -22,7 +22,7 @@ public:
     void change(Element::Type type, const QString &id, int index, int subIndex, const QVariant &value);
 
 private:
-    QList<StoredValue> v;
+    QVector<StoredValue> v;
     bool persist;
 };
 

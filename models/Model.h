@@ -28,6 +28,8 @@ public:
 
     const ModelBuffers *buffers() const;
 
+    QVector<int> selected() const;
+
     virtual bool clear() override;
     virtual bool open(const QString &path) override;
     virtual bool save(const QString &path) const override;

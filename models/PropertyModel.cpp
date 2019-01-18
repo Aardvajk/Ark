@@ -5,6 +5,8 @@
 #include "properties/Property.h"
 #include "properties/PropertyTypeFactory.h"
 
+#include "properties/custom/Selection.h"
+
 #include "entity/Entity.h"
 
 #include <QPxCore/QPxStdHash.h>
@@ -42,6 +44,25 @@ void PropertyModel::selectionChanged()
     if(type == Element::Type::Model)
     {
         mergeProperties(model->properties(), merged);
+    }
+    else if(type == Element::Type::Object)
+    {
+        for(auto i: model->selected())
+        {
+            mergeProperties(model->entities()[i].properties(), merged);
+        }
+    }
+    else
+    {
+        for(auto i: model->selected())
+        {
+            auto &entity = model->entities()[i];
+
+            for(auto j: entity.properties()["Selection"].value<Selection>().elements[type])
+            {
+                mergeProperties(entity.subProperties()[type][j], merged);
+            }
+        }
     }
 
     clear();

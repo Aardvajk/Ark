@@ -12,14 +12,19 @@ class ModelCache : public QObject
 public:
     ModelCache(Model *model, QObject *parent = nullptr);
 
+    QVector<int> selected() const;
+
 public slots:
     void invalidate();
 
 private:
+    void refresh() const;
+
     Model *model;
 
     struct Data
     {
+        QVector<int> selected;
     };
 
     mutable Data data;

@@ -46,6 +46,11 @@ const ModelBuffers *Model::buffers() const
     return cache.get<Cache>().buffers;
 }
 
+QVector<int> Model::selected() const
+{
+    return cache.get<Cache>().cache->selected();
+}
+
 bool Model::clear()
 {
     return false;

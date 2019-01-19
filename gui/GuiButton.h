@@ -16,6 +16,10 @@ public:
 
     QMenu *setMenu(QMenu *menu);
 
+    QString text() const;
+    QIcon icon() const;
+    QMenu *menu() const;
+
     bool isChecked() const;
 
 signals:
@@ -23,6 +27,8 @@ signals:
     void toggled(bool state);
 
 public slots:
+    void setText(const QString &text);
+    void setIcon(const QIcon &icon);
     void setCheckable(bool state);
     void setChecked(bool state);
 

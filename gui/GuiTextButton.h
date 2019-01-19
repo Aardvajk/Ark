@@ -12,9 +12,6 @@ public:
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
-
-private:
-    QString text;
 };
 
 #endif // GUITEXTBUTTON_H

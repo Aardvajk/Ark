@@ -26,7 +26,7 @@ public:
     Tool(QPx::Settings &settings, QObject *parent = nullptr);
 
     virtual QString name() const = 0;
-    virtual QPixmap icon() const = 0;
+    virtual QIcon icon() const = 0;
 
     virtual void addOptions(QPx::VBoxLayout *layout) const;
 

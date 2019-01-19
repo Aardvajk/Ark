@@ -103,9 +103,9 @@ QString SelectTool::name() const
     return "Select";
 }
 
-QPixmap SelectTool::icon() const
+QIcon SelectTool::icon() const
 {
-    return QPixmap(":/resources/images/ark.png");
+    return QIcon(":/resources/images/ark.png");
 }
 
 void SelectTool::addOptions(QPx::VBoxLayout *layout) const

@@ -11,6 +11,8 @@
 
 #include "models/PropertyModel.h"
 
+#include <QPxCore/QPxSettings.h>
+
 #include <QPxWidgets/QPxPalette.h>
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -18,7 +20,7 @@
 
 SideViewPanel::SideViewPanel(Model *model, Relay *relay, PropertyTypeFactory *factory, Tool *tool, QWidget *parent) : GuiPanel(parent), model(model), relay(relay), factory(factory), currentTool(tool)
 {
-    auto combo = toolBar()->addTypedWidget(new GuiComboBox());
+    combo = toolBar()->addTypedWidget(new GuiComboBox());
     combo->addItem("Model");
     combo->addItem("Objects");
     combo->addItem("Faces");
@@ -26,13 +28,19 @@ SideViewPanel::SideViewPanel(Model *model, Relay *relay, PropertyTypeFactory *fa
 
     auto menu = new QMenu(this);
 
-    menu->addAction(QIcon(":/resources/images/splitvert.png"), "Split", this, SLOT(splitVertical()));
+    for(int i = 0; i < combo->count(); ++i)
+    {
+        auto a = menu->addAction(QIcon(":/resources/images/splitvert.png"), combo->itemText(i), this, SLOT(splitMenuSelected()));
+        a->setProperty("ark-combo-index", i);
+    }
+
     menu->addSeparator();
+    menu->addAction(maximizeAction());
     menu->addAction(closeAction());
 
     connect(menu, SIGNAL(aboutToShow()), SLOT(menuAboutToShow()));
 
-    auto button = toolBar()->addTypedWidget(new GuiSmallButton(QPixmap(":/resources/images/splitvert.png")));
+    auto button = setPanelButton(toolBar()->addTypedWidget(new GuiSmallButton(QIcon(":/resources/images/splitvert.png"))));
     button->setMenu(menu);
 
     panelLayout = new QPx::VBoxLayout(layout()->addTypedWidget(new QWidget()));
@@ -45,10 +53,12 @@ SideViewPanel::SideViewPanel(Model *model, Relay *relay, PropertyTypeFactory *fa
 
 void SideViewPanel::saveState(QPx::Settings &settings) const
 {
+    settings["index"].setValue(combo->currentIndex());
 }
 
 void SideViewPanel::restoreState(const QPx::Settings &settings)
 {
+    combo->setCurrentIndex(settings["index"].value<int>());
 }
 
 SideViewPanel *SideViewPanel::clone() const
@@ -72,4 +82,12 @@ void SideViewPanel::comboIndexChanged(int index)
         case 2: panelLayout->addWidget(new PropertyView(new PropertyModel(Element::Type::Face, model, factory))); break;
         case 3: panelLayout->addWidget(new ToolOptionsView(relay, currentTool)); break;
     }
+}
+
+void SideViewPanel::splitMenuSelected()
+{
+    auto c = clone();
+    split(Qt::Vertical, c);
+
+    c->combo->setCurrentIndex(sender()->property("ark-combo-index").toInt());
 }

@@ -4,10 +4,12 @@
 
 #include <QtWidgets/QApplication>
 
-GuiSmallButton::GuiSmallButton(const QPixmap &pixmap, QWidget *parent) : GuiButton(parent), pixmap(pixmap)
+GuiSmallButton::GuiSmallButton(const QIcon &icon, QWidget *parent) : GuiButton(parent)
 {
     int size = QApplication::instance()->property("gui-bar-height").toInt();
     setFixedSize(size, size);
+
+    setIcon(icon);
 }
 
 void GuiSmallButton::paintEvent(QPaintEvent *event)
@@ -21,5 +23,5 @@ void GuiSmallButton::paintEvent(QPaintEvent *event)
     int x = (rect().width() - size) / 2;
     int y = (rect().height() - size) / 2;
 
-    painter.drawPixmap(x, y, size, size, pixmap);
+    painter.drawPixmap(x, y, size, size, icon().pixmap(size));
 }

@@ -27,11 +27,12 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
     menu->addAction(QIcon(":/resources/images/splithorz.png"), "Split Horizontal", this, SLOT(splitHorizontal()));
     menu->addAction(QIcon(":/resources/images/splitgrid.png"), "Split Grid", this, SLOT(splitGrid()));
     menu->addSeparator();
+    menu->addAction(maximizeAction());
     menu->addAction(closeAction());
 
     connect(menu, SIGNAL(aboutToShow()), SLOT(menuAboutToShow()));
 
-    auto button = toolBar()->addTypedWidget(new GuiSmallButton(QPixmap(":/resources/images/splitgrid.png")));
+    auto button = setPanelButton(toolBar()->addTypedWidget(new GuiSmallButton(QIcon(":/resources/images/splitgrid.png"))));
     button->setMenu(menu);
 
     connect(graphics, SIGNAL(render()), view, SLOT(update()));

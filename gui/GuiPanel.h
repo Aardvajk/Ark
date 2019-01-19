@@ -3,6 +3,10 @@
 
 #include <QPxWidgets/QPxSplitterPanel.h>
 
+#include <QtGui/QIcon>
+
+#include <pcx/optional.h>
+
 namespace QPx
 {
 
@@ -12,6 +16,7 @@ class VBoxLayout;
 }
 
 class GuiBar;
+class GuiSmallButton;
 class QAction;
 class QBoxLayout;
 
@@ -23,9 +28,14 @@ public:
     explicit GuiPanel(QWidget *parent = nullptr);
 
     GuiBar *toolBar() const;
+    GuiSmallButton *button() const;
+
+    QAction *maximizeAction() const;
     QAction *closeAction() const;
 
     QPx::VBoxLayout *layout() const;
+
+    GuiSmallButton *setPanelButton(GuiSmallButton *button);
 
     virtual void saveState(QPx::Settings &settings) const = 0;
     virtual void restoreState(const QPx::Settings &settings) = 0;
@@ -41,11 +51,17 @@ private slots:
     void splitVertical();
     void splitHorizontal();
     void splitGrid();
+    void maximizePanel();
     void closePanel();
 
 private:
     GuiBar *bar;
+    GuiSmallButton *btn;
+
+    QAction *max;
     QAction *close;
+
+    pcx::optional<QVector<QWidget*> > hidden;
 };
 
 #endif // GUIPANEL_H

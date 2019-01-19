@@ -3,16 +3,18 @@
 
 #include "gui/GuiButton.h"
 
+#include <QtGui/QIcon>
+
 class GuiSmallButton : public GuiButton
 {
 public:
-    GuiSmallButton(const QPixmap &pixmap, QWidget *parent = nullptr);
+    GuiSmallButton(const QIcon &icon, QWidget *parent = nullptr);
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
 
 private:
-    QPixmap pixmap;
+    QIcon image;
 };
 
 #endif // GUISMALLBUTTON_H

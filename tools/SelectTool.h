@@ -16,7 +16,7 @@ public:
     SelectTool(ActionList *actions, Model *model, QPx::Settings &settings, QObject *parent = nullptr);
 
     virtual QString name() const override;
-    virtual QPixmap icon() const override;
+    virtual QIcon icon() const override;
 
     virtual void addOptions(QPx::VBoxLayout *layout) const override;
 

@@ -6,5 +6,6 @@
         <file>resources/images/splitgrid.png</file>
         <file>resources/images/splithorz.png</file>
         <file>resources/images/splitvert.png</file>
+        <file>resources/images/splitnone.png</file>
     </qresource>
 </RCC>

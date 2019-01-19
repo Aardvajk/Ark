@@ -14,6 +14,7 @@ class Model;
 class Relay;
 class PropertyTypeFactory;
 class Tool;
+class GuiComboBox;
 
 class SideViewPanel : public GuiPanel
 {
@@ -31,12 +32,14 @@ protected:
 private slots:
     void toolSelected(Tool *tool);
     void comboIndexChanged(int index);
+    void splitMenuSelected();
 
 private:
     Model *model;
     Relay *relay;
     PropertyTypeFactory *factory;
     Tool *currentTool;
+    GuiComboBox *combo;
     QPx::VBoxLayout *panelLayout;
 };
 

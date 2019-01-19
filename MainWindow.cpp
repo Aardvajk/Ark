@@ -52,11 +52,11 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     horz->addTypedWidget(new ToolViewContainer(relay));
 
-    auto split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
+    split = horz->addTypedWidget(new GuiSplitter(Qt::Horizontal));
 
-    split->addWidget(new SideViewContainer(model, relay, factory), 1);
-    split->addWidget(new ModelViewContainer(model, graphics, relay), 16);
-    split->addWidget(new SideViewContainer(model, relay, factory), 1);
+    gcs[0] = split->addTypedWidget(new SideViewContainer(model, relay, factory), 1);
+    gcs[1] = split->addTypedWidget(new ModelViewContainer(model, graphics, relay), 16);
+    gcs[2] = split->addTypedWidget(new SideViewContainer(model, relay, factory), 1);
 
     horz->addWidget(new ToolViewContainer(relay));
 
@@ -70,6 +70,11 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
 
     restoreGeometry(settings["Application"]["Geometry"].value<QByteArray>());
+    split->restoreState(settings["Application"]["Splitter"].value<QByteArray>());
+
+    gcs[0]->restoreState(settings["Application"]["Left.Sidebar"]);
+    gcs[1]->restoreState(settings["Application"]["Model.View"]);
+    gcs[2]->restoreState(settings["Application"]["Right.Sidebar"]);
 
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
@@ -78,6 +83,11 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     settings["Application"]["Geometry"].setValue(saveGeometry());
+    settings["Application"]["Splitter"].setValue(split->saveState());
+
+    gcs[0]->saveState(settings["Application"]["Left.Sidebar"]);
+    gcs[1]->saveState(settings["Application"]["Model.View"]);
+    gcs[2]->saveState(settings["Application"]["Right.Sidebar"]);
 
     actions->sync();
     settings.sync();

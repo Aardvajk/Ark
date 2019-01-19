@@ -2,9 +2,9 @@
 
 #include <QPxCore/QPxUnitAnimation.h>
 
-#include <QtGui/QPixmap>
 #include <QtGui/QPainter>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QIcon>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
@@ -18,6 +18,8 @@ class Cache
 public:
     explicit Cache(QObject *parent) : anim(new QPx::UnitAnimation(400, parent)), menu(nullptr), disable(new QGraphicsColorizeEffect(parent)), down(false), within(false), checkable(false), checked(false) { }
 
+    QString text;
+    QIcon icon;
     QPx::UnitAnimation *anim;
     QMenu *menu;
     QGraphicsColorizeEffect *disable;
@@ -47,9 +49,36 @@ QMenu *GuiButton::setMenu(QMenu *menu)
     return menu;
 }
 
+QString GuiButton::text() const
+{
+    return cache.get<Cache>().text;
+}
+
+QIcon GuiButton::icon() const
+{
+    return cache.get<Cache>().icon;
+}
+
+QMenu *GuiButton::menu() const
+{
+    return cache.get<Cache>().menu;
+}
+
 bool GuiButton::isChecked() const
 {
     return cache.get<Cache>().checked;
+}
+
+void GuiButton::setText(const QString &text)
+{
+    cache.get<Cache>().text = text;
+    update();
+}
+
+void GuiButton::setIcon(const QIcon &icon)
+{
+    cache.get<Cache>().icon = icon;
+    update();
 }
 
 void GuiButton::setCheckable(bool state)

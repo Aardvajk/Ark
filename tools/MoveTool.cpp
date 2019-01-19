@@ -16,7 +16,7 @@ QString MoveTool::name() const
     return "Move";
 }
 
-QPixmap MoveTool::icon() const
+QIcon MoveTool::icon() const
 {
-    return QPixmap(":/resources/images/ark.png");
+    return QIcon(":/resources/images/ark.png");
 }

@@ -3,19 +3,17 @@
 
 #include "gui/GuiButton.h"
 
+#include <QtGUi/QIcon>
+
 class GuiLargeButton : public GuiButton
 {
     Q_OBJECT
 
 public:
-    GuiLargeButton(const QString &text, const QPixmap &pixmap, QWidget *parent = nullptr);
+    GuiLargeButton(const QString &text, const QIcon &icon, QWidget *parent = nullptr);
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
-
-private:
-    QString text;
-    QPixmap pixmap;
 };
 
 #endif // GUILARGEBUTTON_H

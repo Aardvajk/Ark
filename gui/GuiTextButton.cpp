@@ -6,12 +6,14 @@
 
 #include <QtWidgets/QApplication>
 
-GuiTextButton::GuiTextButton(const QString &text, QWidget *parent) : GuiButton(parent), text(text)
+GuiTextButton::GuiTextButton(const QString &text, QWidget *parent) : GuiButton(parent)
 {
     setFixedHeight(28);
 
     QPx::setPaletteColor(this, QPalette::Window, QApplication::instance()->property("gui-panel-color").value<QColor>());
     setAutoFillBackground(true);
+
+    setText(text);
 }
 
 void GuiTextButton::paintEvent(QPaintEvent *event)
@@ -21,7 +23,7 @@ void GuiTextButton::paintEvent(QPaintEvent *event)
     auto t = rect().adjusted(4, 0, -3, -1);
 
     QPainter painter(this);
-    painter.drawText(t, Qt::AlignCenter | Qt::AlignVCenter, QFontMetrics(painter.font()).elidedText(text, Qt::ElideRight, t.width()));
+    painter.drawText(t, Qt::AlignCenter | Qt::AlignVCenter, QFontMetrics(painter.font()).elidedText(text(), Qt::ElideRight, t.width()));
 
     painter.setPen(QApplication::instance()->property("gui-border-color").value<QColor>());
     painter.setBrush(Qt::NoBrush);

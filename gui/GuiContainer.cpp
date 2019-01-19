@@ -28,13 +28,17 @@ void GuiContainer::addPanel(GuiPanel *panel)
 
 void GuiContainer::saveState(QPx::Settings &settings) const
 {
+    settings.clear();
     saveContainerState(layout()->itemAt(0)->widget(), settings);
 }
 
 void GuiContainer::restoreState(const QPx::Settings &settings)
 {
-    clear();
-    layout()->addWidget(restoreContainerState(settings[0]));
+    if(settings.count() > 0)
+    {
+        clear();
+        layout()->addWidget(restoreContainerState(settings[0]));
+    }
 }
 
 void GuiContainer::clear()

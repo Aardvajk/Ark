@@ -2,7 +2,13 @@
 
 #include "properties/Property.h"
 
+#include "properties/types/VecPropertyBrowserType.h"
+
 #include <QPxPropertyBrowser/QPxPropertyBrowserType.h>
+
+#include <QGxMaths/QGxMathsMetatypes.h>
+
+#include <stdexcept>
 
 namespace
 {
@@ -24,9 +30,19 @@ PropertyTypeFactory::PropertyTypeFactory(QObject *parent) : QObject(parent)
     c.types[QMetaType::Float] = new QPx::FloatPropertyBrowserType(this);
     c.types[QMetaType::Bool] = new QPx::BoolPropertyBrowserType(this);
     c.types[QMetaType::QColor] = new QPx::ColorPropertyBrowserType(this);
+    c.types[QMetaType::QPoint] = new QPx::PointPropertyBrowserType(this);
+    c.types[qMetaTypeId<Gx::Vec3>()] = new Vec3PropertyBrowserType(this);
 }
 
-QPx::PropertyBrowserType *PropertyTypeFactory::type(const Property &property) const
+QPx::PropertyBrowserType *PropertyTypeFactory::type(int typeId) const
 {
-    return cache.get<Cache>().types[property.value<QVariant>().userType()];
+    auto &t = cache.get<Cache>().types;
+
+    auto i = t.find(typeId);
+    if(i == t.end())
+    {
+        throw std::runtime_error("property type id not found");
+    }
+
+    return i.value();
 }

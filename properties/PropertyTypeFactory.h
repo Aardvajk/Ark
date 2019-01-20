@@ -21,7 +21,7 @@ class PropertyTypeFactory : public QObject
 public:
     explicit PropertyTypeFactory(QObject *parent = nullptr);
 
-    QPx::PropertyBrowserType *type(const Property &property) const;
+    QPx::PropertyBrowserType *type(int typeId) const;
 
 private:
     pcx::aligned_store<16> cache;

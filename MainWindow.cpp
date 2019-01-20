@@ -78,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     connect(model, SIGNAL(modifiedStateChanged(bool)), SLOT(updateTitle()));
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
+
+    actions->find("Tools.Select")->trigger();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

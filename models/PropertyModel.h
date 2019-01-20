@@ -19,7 +19,7 @@ public:
 
 private slots:
     void selectionChanged();
-    void valueChanged(const QVariant &value);
+    void itemValueChanged(const QVariant &value);
 
 private:
     Element::Type type;

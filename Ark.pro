@@ -103,7 +103,8 @@ SOURCES += \
     views/PropertyView.cpp \
     models/PropertyModel.cpp \
     models/ModelCache.cpp \
-    properties/PropertyTypeFactory.cpp
+    properties/PropertyTypeFactory.cpp \
+    properties/types/VecPropertyBrowserType.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -174,7 +175,8 @@ HEADERS += \
     views/PropertyView.h \
     models/PropertyModel.h \
     models/ModelCache.h \
-    properties/PropertyTypeFactory.h
+    properties/PropertyTypeFactory.h \
+    properties/types/VecPropertyBrowserType.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

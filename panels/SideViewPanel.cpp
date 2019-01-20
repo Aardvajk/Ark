@@ -75,13 +75,16 @@ void SideViewPanel::comboIndexChanged(int index)
 {
     panelLayout->clear();
 
+    QWidget *view = nullptr;
     switch(index)
     {
-        case 0: panelLayout->addWidget(new PropertyView(new PropertyModel(Element::Type::Model, model, factory))); break;
-        case 1: panelLayout->addWidget(new PropertyView(new PropertyModel(Element::Type::Object, model, factory))); break;
-        case 2: panelLayout->addWidget(new PropertyView(new PropertyModel(Element::Type::Face, model, factory))); break;
-        case 3: panelLayout->addWidget(new ToolOptionsView(relay, currentTool)); break;
+        case 0: view = new PropertyView(new PropertyModel(Element::Type::Model, model, factory), this); break;
+        case 1: view = new PropertyView(new PropertyModel(Element::Type::Object, model, factory), this); break;
+        case 2: view = new PropertyView(new PropertyModel(Element::Type::Face, model, factory), this); break;
+        case 3: view = new ToolOptionsView(relay, currentTool, this); break;
     }
+
+    if(view) panelLayout->addWidget(view);
 }
 
 void SideViewPanel::splitMenuSelected()

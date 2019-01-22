@@ -4,7 +4,7 @@
 #include "core/Element.h"
 
 #include <QtCore/QMetaType>
-#include <QtCore/QHash>
+#include <QtCore/QMap>
 #include <QtCore/QSet>
 
 class Selection
@@ -24,7 +24,7 @@ public:
 
     static Selection fromElements(Element::Type type, int count);
 
-    QHash<Element::Type, QSet<int> > elements;
+    QMap<Element::Type, QSet<int> > elements;
 };
 
 Q_DECLARE_METATYPE(Selection)

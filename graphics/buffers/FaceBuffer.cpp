@@ -32,13 +32,13 @@ void FaceBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
         if(e.type() == Entity::Type::Geometry)
         {
             auto mesh = e.properties()["Mesh"].value<Mesh>();
-            auto sel = e.properties()["Selection"].value<Selection>();
+            auto selection = e.properties()["Selection"].value<Selection>();
 
             QSet<EdgeKey> edges;
 
             for(int i = 0; i < mesh.faces.count(); ++i)
             {
-                if(sel.elements[Element::Type::Face].contains(i))
+                if(selection.elements[Element::Type::Face].contains(i))
                 {
                     auto &e = mesh.faces[i].elements;
 

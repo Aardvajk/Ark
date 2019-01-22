@@ -11,7 +11,6 @@ class PropertyView : public QTreeView
 
 public:
     PropertyView(PropertyModel *properties, QWidget *parent = nullptr);
-    ~PropertyView();
 };
 
 #endif // PROPERTYVIEW_H

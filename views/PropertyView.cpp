@@ -13,8 +13,3 @@ PropertyView::PropertyView(PropertyModel *properties, QWidget *parent) : QTreeVi
 
     setItemDelegate(new QPx::PropertyBrowserDelegate(this));
 }
-
-PropertyView::~PropertyView()
-{
-    qDebug() << "delete propertyview";
-}

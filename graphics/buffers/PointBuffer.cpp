@@ -33,13 +33,13 @@ void PointBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
         if(e.type() == Entity::Type::Geometry)
         {
             auto mesh = e.properties()["Mesh"].value<Mesh>();
-            auto sel = e.properties()["Selection"].value<Selection>();
+            auto selection = e.properties()["Selection"].value<Selection>();
 
             auto c = Gx::Color(1.0f, 1.0f, 1.0f);
 
             for(int i = 0; i < mesh.vertices.count(); ++i)
             {
-                if(sel.elements[Element::Type::Vertex].contains(i))
+                if(selection.elements[Element::Type::Vertex].contains(i))
                 {
                     os << mesh.vertices[i] << Gx::Rgba(c);
                     ++count;

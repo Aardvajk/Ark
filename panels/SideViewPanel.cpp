@@ -24,6 +24,7 @@ SideViewPanel::SideViewPanel(Model *model, Relay *relay, PropertyTypeFactory *fa
     combo->addItem("Model");
     combo->addItem("Objects");
     combo->addItem("Faces");
+    combo->addItem("Vertices");
     combo->addItem("Tools");
 
     auto menu = new QMenu(this);
@@ -81,7 +82,8 @@ void SideViewPanel::comboIndexChanged(int index)
         case 0: view = new PropertyView(new PropertyModel(Element::Type::Model, model, factory), this); break;
         case 1: view = new PropertyView(new PropertyModel(Element::Type::Object, model, factory), this); break;
         case 2: view = new PropertyView(new PropertyModel(Element::Type::Face, model, factory), this); break;
-        case 3: view = new ToolOptionsView(relay, currentTool, this); break;
+        case 3: view = new PropertyView(new PropertyModel(Element::Type::Vertex, model, factory), this); break;
+        case 4: view = new ToolOptionsView(relay, currentTool, this); break;
     }
 
     if(view) panelLayout->addWidget(view);

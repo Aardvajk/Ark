@@ -28,6 +28,8 @@ if(xx == 2)
 ++xx;
         e.properties()["Selection"] = Property(Selection(), Property::Flag::NonPersistent | Property::Flag::Hidden);
         e.properties()["Mesh"] = Property(Mesh(), Property::Flag::Hidden);
+        e.properties()["Vec"] = Property(Gx::Vec3(1, 2, 3));
+        e.properties()["Point"] = Property(QPoint(1, 2));
     }
 
     return e;

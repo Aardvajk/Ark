@@ -4,6 +4,23 @@
 
 #include <QGxMaths/QGxMathsMetatypes.h>
 
+namespace
+{
+
+QVector<QVariant> pointValues(const QVariant &value)
+{
+    if(value.isValid())
+    {
+        auto v = value.value<Gx::Vec3>();
+
+        return { v.x, v.y, v.z };
+    }
+
+    return { QVariant(), QVariant(), QVariant() };
+}
+
+}
+
 Vec3PropertyBrowserType::Vec3PropertyBrowserType(QObject *parent) : QPx::PropertyBrowserType(parent)
 {
     type = new QPx::FloatPropertyBrowserType(this);
@@ -11,11 +28,11 @@ Vec3PropertyBrowserType::Vec3PropertyBrowserType(QObject *parent) : QPx::Propert
 
 void Vec3PropertyBrowserType::addProperties(QPx::PropertyBrowserItem *item, QPx::PropertyBrowserModel *model, const QModelIndex &parent) const
 {
-    auto v = item->value().value<Gx::Vec3>();
+    auto v = pointValues(item->value());
 
-    item->addItem(new QPx::PropertyBrowserItem(type, model, parent, { }, "X", item->flags(), v.x, item));
-    item->addItem(new QPx::PropertyBrowserItem(type, model, parent, { }, "Y", item->flags(), v.y, item));
-    item->addItem(new QPx::PropertyBrowserItem(type, model, parent, { }, "Z", item->flags(), v.z, item));
+    item->addItem(new QPx::PropertyBrowserItem(type, model, parent, { }, "X", item->flags(), v[0], item));
+    item->addItem(new QPx::PropertyBrowserItem(type, model, parent, { }, "Y", item->flags(), v[1], item));
+    item->addItem(new QPx::PropertyBrowserItem(type, model, parent, { }, "Z", item->flags(), v[2], item));
 
     for(auto i: item->items())
     {
@@ -25,11 +42,11 @@ void Vec3PropertyBrowserType::addProperties(QPx::PropertyBrowserItem *item, QPx:
 
 void Vec3PropertyBrowserType::updateProperties(QPx::PropertyBrowserItem *item, const QVariant &value) const
 {
-    auto v = item->value().value<Gx::Vec3>();
+    auto v = pointValues(item->value());
 
-    item->items()[0]->setValue(v.x);
-    item->items()[1]->setValue(v.y);
-    item->items()[2]->setValue(v.z);
+    item->items()[0]->setValue(v[0]);
+    item->items()[1]->setValue(v[1]);
+    item->items()[2]->setValue(v[2]);
 }
 
 QString Vec3PropertyBrowserType::valueText(const QPx::PropertyBrowserItem *item) const
@@ -55,17 +72,23 @@ int Vec3PropertyBrowserType::userType() const
 
 void Vec3PropertyBrowserType::changed(const QVariant &value)
 {
-    auto item = static_cast<QPx::PropertyBrowserItem*>(sender());
-    auto parent = static_cast<QPx::PropertyBrowserItem*>(item->parent());
-
-    auto v = parent->value().value<Gx::Vec3>();
-
-    switch(parent->items().indexOf(item))
+    if(value.isValid())
     {
-        case 0: v.x = value.toFloat(); break;
-        case 1: v.y = value.toFloat(); break;
-        case 2: v.z = value.toFloat(); break;
-    }
+        auto item = static_cast<QPx::PropertyBrowserItem*>(sender());
+        auto parent = static_cast<QPx::PropertyBrowserItem*>(item->parent());
 
-    parent->setValue(QVariant::fromValue(v));
+        auto v = parent->value().value<Gx::Vec3>();
+
+        switch(parent->items().indexOf(item))
+        {
+            case 0: v.x = value.toFloat(); break;
+            case 1: v.y = value.toFloat(); break;
+            case 2: v.z = value.toFloat(); break;
+        }
+
+        auto var = QVariant::fromValue(v);
+
+        parent->setValue(var);
+        updateProperties(parent, var);
+    }
 }

@@ -1,6 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "properties/Property.h"
+
 #include <QPxEditor/QPxAbstractEditorModel.h>
 
 #include <QtCore/QVector>
@@ -23,8 +25,15 @@ public:
 
     void beginCommand(Command *command);
 
-    const PropertyMap &properties() const;
+    QStringList properties() const;
+    Property property(const QString &name) const;
+    void addProperty(const QString &name, const Property &property);
+    template<typename T> void setProperty(const QString &name, const T &value){ setPropertyVariant(name, QVariant::fromValue(value)); }
+
     const QVector<Entity> &entities() const;
+
+    Entity &entity(int index);
+    Entity entity(int index) const;
 
     const ModelBuffers *buffers() const;
 
@@ -43,7 +52,11 @@ signals:
     void changed();
 
 private:
+    void setPropertyVariant(const QString &name, const QVariant &value);
+
     pcx::aligned_store<24> cache;
 };
+
+template<> void Model::setProperty<QVariant>(const QString &name, const QVariant &value){ setPropertyVariant(name, value); }
 
 #endif // MODEL_H

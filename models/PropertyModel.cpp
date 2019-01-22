@@ -22,14 +22,22 @@
 namespace
 {
 
-void mergeProperties(const PropertyMap &properties, pcx::ordered_map<QString, QVector<Property>, QPx::StdHash> &merged)
+//void mergeProperties(const PropertyMap &properties, pcx::ordered_map<QString, QVector<Property>, QPx::StdHash> &merged)
+//{
+//    for(auto &p: properties)
+//    {
+//        if(!(p.second.flags() & Property::Flag::Hidden))
+//        {
+//            merged[p.first].append(p.second);
+//        }
+//    }
+//}
+
+void mergeProperty(const QString &name, const Property &property, pcx::ordered_map<QString, QVector<Property>, QPx::StdHash> &merged)
 {
-    for(auto &p: properties)
+    if(!(property.flags() & Property::Flag::Hidden))
     {
-        if(!(p.second.flags() & Property::Flag::Hidden))
-        {
-            merged[p.first].append(p.second);
-        }
+        merged[name].append(property);
     }
 }
 
@@ -55,20 +63,28 @@ PropertyModel::PropertyModel(Element::Type type, Model *model, PropertyTypeFacto
 void PropertyModel::selectionChanged()
 {
     if(lock) return;
+    auto s = pcx::scoped_lock(lock);
 
     pcx::ordered_map<QString, QVector<Property>, QPx::StdHash> merged;
     int total = 0;
 
     if(type == Element::Type::Model)
     {
-        mergeProperties(model->properties(), merged);
-        total = 1;
+        for(auto id: model->properties())
+        {
+            mergeProperty(id, model->property(id), merged);
+            total = 1;
+        }
     }
     else if(type == Element::Type::Object)
     {
         for(auto i: model->selected())
         {
-            mergeProperties(model->entities()[i].properties(), merged);
+            auto &e = model->entity(i);
+            for(auto id: e.properties())
+            {
+                mergeProperty(id, e.property(id), merged);
+            }
         }
 
         total = model->selected().count();
@@ -77,19 +93,16 @@ void PropertyModel::selectionChanged()
     {
         for(auto i: model->selected())
         {
-            auto &entity = model->entities()[i];
-            auto selection = entity.properties()["Selection"].value<Selection>();
-            auto mesh = entity.properties()["Mesh"].value<Mesh>();
+            auto &entity = model->entity(i);
+            auto selection = entity.property("Selection").value<Selection>();
 
             for(auto j: selection.elements[type])
             {
-                if(type == Element::Type::Vertex)
+                for(auto id: entity.subProperties(type, j))
                 {
-                    merged["Position"].append(Property(mesh.vertices[j]));
+                    mergeProperty(id, entity.subProperty(type, j, id), merged);
+                    ++total;
                 }
-
-                mergeProperties(entity.subProperties()[type][j], merged);
-                ++total;
             }
         }
     }
@@ -191,41 +204,34 @@ void PropertyModel::selectionChanged()
 void PropertyModel::itemValueChanged(const QVariant &value)
 {
     if(lock || !value.isValid()) return;
-
     auto s = pcx::scoped_lock(lock);
 
     auto item = static_cast<QPx::PropertyBrowserItem*>(sender());
 
-    if(type == Element::Type::Vertex && item->name() == "Position")
+    auto command = new ModifyPropertyCommand("Change Property", model);
+
+    if(type == Element::Type::Model)
     {
+        command->change(type, item->name(), -1, -1, value);
+    }
+    else if(type == Element::Type::Object)
+    {
+        for(auto i: model->selected())
+        {
+            command->change(type, item->name(), i, -1, value);
+        }
     }
     else
     {
-        auto command = new ModifyPropertyCommand("Change Property", model);
-
-        if(type == Element::Type::Model)
+        for(auto i: model->selected())
         {
-            command->change(type, item->name(), -1, -1, value);
-        }
-        else if(type == Element::Type::Object)
-        {
-            for(auto i: model->selected())
+            auto selection = model->entity(i).property("Selection").value<Selection>();
+            for(auto j: selection.elements[type])
             {
-                command->change(type, item->name(), i, -1, value);
+                command->change(type, item->name(), i, j, value);
             }
         }
-        else
-        {
-            for(auto i: model->selected())
-            {
-                auto selection = model->entities()[i].properties()["Selection"].value<Selection>();
-                for(auto j: selection.elements[type])
-                {
-                    command->change(type, item->name(), i, j, value);
-                }
-            }
-        }
-
-        model->endCommand(command);
     }
+
+    model->endCommand(command);
 }

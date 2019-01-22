@@ -31,8 +31,8 @@ void FaceBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
     {
         if(e.type() == Entity::Type::Geometry)
         {
-            auto mesh = e.properties()["Mesh"].value<Mesh>();
-            auto selection = e.properties()["Selection"].value<Selection>();
+            auto mesh = e.property("Mesh").value<Mesh>();
+            auto selection = e.property("Selection").value<Selection>();
 
             QSet<EdgeKey> edges;
 

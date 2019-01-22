@@ -47,7 +47,7 @@ void ToolView::toolSelected(Tool *tool)
 
 void ToolView::buttonToggled(bool state)
 {
-    if(state && !lock)
+    if(!lock && state)
     {
         auto s = pcx::scoped_lock(lock);
         qvariant_cast<Tool*>(sender()->property("ark-tool"))->select();

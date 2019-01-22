@@ -16,20 +16,20 @@ Entity EntityFactory::create(Entity::Type type)
     {
 static int xx = 0;
 
-        e.properties()["Name"] = Property("Geometry");
+        e.addProperty("Name", Property("Geometry"));
 if(xx == 1)
 {
-    e.properties()["Burble"] = Property(QPoint(55,23));
+    e.addProperty("Burble", Property(QPoint(55,23)));
 }
 if(xx == 2)
 {
-    e.properties()["Temp"] = Property(QPoint(88, 11));
+    e.addProperty("Temp", Property(QPoint(88, 11)));
 }
 ++xx;
-        e.properties()["Selection"] = Property(Selection(), Property::Flag::NonPersistent | Property::Flag::Hidden);
-        e.properties()["Mesh"] = Property(Mesh(), Property::Flag::Hidden);
-        e.properties()["Vec"] = Property(Gx::Vec3(1, 2, 3));
-        e.properties()["Point"] = Property(QPoint(1, 2));
+        e.addProperty("Selection", Property(Selection(), Property::Flag::NonPersistent | Property::Flag::Hidden));
+        e.addProperty("Mesh", Property(Mesh(), Property::Flag::Hidden));
+        e.addProperty("Vec", Property(Gx::Vec3(1, 2, 3)));
+        e.addProperty("Point", Property(QPoint(1, 2)));
     }
 
     return e;

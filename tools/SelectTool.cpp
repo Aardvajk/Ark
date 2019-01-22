@@ -43,7 +43,7 @@ Selection combine(const Selection &old, const Selection &value, Qt::KeyboardModi
 
 void updateSelection(Model *model, QMouseEvent *event, ModifyPropertyCommand *command, int index, const Selection &selection)
 {
-    auto old = model->entities()[index].properties()["Selection"].value<Selection>();
+    auto old = model->entity(index).property("Selection").value<Selection>();
     auto combined = combine(old, selection, event->modifiers());
 
     command->change(Element::Type::Object, "Selection", index, -1, QVariant::fromValue(combined));

@@ -34,7 +34,7 @@ void ModelCache::refresh() const
 
     for(auto i: pcx::indexed_range(model->entities()))
     {
-        if(i.value.properties()["Selection"].value<Selection>().any())
+        if(i.value.property("Selection").value<Selection>().any())
         {
             data.selected.append(static_cast<int>(i.index));
         }

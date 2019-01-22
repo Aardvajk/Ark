@@ -131,7 +131,7 @@ void ModelView::updateCamera(float delta)
 void ModelView::renderModel()
 {
     graphics->device.begin(this);
-    graphics->device.clear(QGx::Color(model->properties()["Background"].value<QColor>()), 1.0f);
+    graphics->device.clear(QGx::Color(model->property("Background").value<QColor>()), 1.0f);
 
     auto params = renderParams();
 

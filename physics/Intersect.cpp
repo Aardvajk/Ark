@@ -26,19 +26,19 @@ bool facing(const QPolygonF &p)
 
 bool canSelectFace(const Entity &entity, int face, bool visibleOnly)
 {
-    return !visibleOnly || entity.subProperties()[Element::Type::Face][face]["Visible"].value<bool>();
+    return !visibleOnly || entity.subProperty(Element::Type::Face, face, "Visible").value<bool>();
 }
 
 }
 
 Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &ray, float &dist, bool visibleOnly)
 {
-    if(entity.properties().find("Mesh") == entity.properties().end())
+    if(!entity.properties().contains("Mesh"))
     {
         return Selection();
     }
 
-    auto mesh = entity.properties()["Mesh"].value<Mesh>();
+    auto mesh = entity.property("Mesh").value<Mesh>();
 
     int closest = -1;
     float min = std::numeric_limits<float>::max();;
@@ -99,12 +99,12 @@ Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &
 
 Selection rectIntersect(Element::Type type, const Entity &entity, const QRectF &clip, const Gx::Matrix &transform, bool visibleOnly)
 {
-    if(entity.properties().find("Mesh") == entity.properties().end())
+    if(!entity.properties().contains("Mesh"))
     {
         return Selection();
     }
 
-    auto mesh = entity.properties()["Mesh"].value<Mesh>();
+    auto mesh = entity.property("Mesh").value<Mesh>();
 
     if(type == Element::Type::Object || type == Element::Type::Face)
     {

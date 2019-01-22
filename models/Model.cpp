@@ -31,14 +31,37 @@ void Model::beginCommand(Command *command)
     command->data = cache.get<Cache>().data;
 }
 
-const PropertyMap &Model::properties() const
+QStringList Model::properties() const
 {
-    return cache.get<Cache>().data->properties;
+    return cache.get<Cache>().data->properties.keys();
+}
+
+Property Model::property(const QString &name) const
+{
+    return cache.get<Cache>().data->properties[name];
+}
+
+void Model::addProperty(const QString &name, const Property &property)
+{
+    auto &p = cache.get<Cache>().data->properties;
+
+    p[name] = property;
+    p.invalidate();
 }
 
 const QVector<Entity> &Model::entities() const
 {
     return cache.get<Cache>().data->entities;
+}
+
+Entity &Model::entity(int index)
+{
+    return cache.get<Cache>().data->entities[index];
+}
+
+Entity Model::entity(int index) const
+{
+    return cache.get<Cache>().data->entities[index];
 }
 
 const ModelBuffers *Model::buffers() const
@@ -74,4 +97,9 @@ QString Model::filter() const
 void Model::change()
 {
     emit changed();
+}
+
+void Model::setPropertyVariant(const QString &name, const QVariant &value)
+{
+    cache.get<Cache>().data->properties[name].setValue(value);
 }

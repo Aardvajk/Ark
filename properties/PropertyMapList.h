@@ -18,6 +18,8 @@ public:
     PropertyMap &operator[](int index);
     PropertyMap operator[](int index) const;
 
+    int count() const { return data.count(); }
+
 private:
     QMap<int, PropertyMap> data;
     PropertyMapDefaultFunc def;

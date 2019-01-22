@@ -28,15 +28,13 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
     {
         if(e.type() == Entity::Type::Geometry)
         {
-            auto mesh = e.properties()["Mesh"].value<Mesh>();
+            auto mesh = e.property("Mesh").value<Mesh>();
 
             for(int i = 0; i < mesh.faces.count(); ++i)
             {
-                const auto &props = e.subProperties()[Element::Type::Face][i];
-
-                if(props["Visible"].value<bool>())
+                if(e.subProperty(Element::Type::Face, i, "Visible").value<bool>())
                 {
-                    auto c = QGx::Color(props["Color"].value<QColor>());
+                    auto c = QGx::Color(e.subProperty(Element::Type::Face, i, "Color").value<QColor>());
 
                     for(int j = 1; j < mesh.faces[i].elements.count() - 1; ++j)
                     {

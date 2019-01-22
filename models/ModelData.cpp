@@ -16,7 +16,7 @@ void randomise(Entity &e, const Mesh &m)
 {
     for(int i = 0; i < m.faces.count(); ++i)
     {
-        e.subProperties()[Element::Type::Face][i]["Color"] = Property(QColor(std::rand() % 255, std::rand() % 255, std::rand() % 255));
+        e.addSubProperty(Element::Type::Face, i, "Color", Property(QColor(std::rand() % 255, std::rand() % 255, std::rand() % 255)));
     }
 }
 
@@ -32,25 +32,25 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
 
     auto e = EntityFactory::create(Entity::Type::Geometry);
 
-    e.properties()["Mesh"].setValue(m);
+    e.setProperty("Mesh", m);
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.properties()["Mesh"].setValue(m.moved({ 3, 1, 3 }));
+    e.setProperty("Mesh", m.moved({ 3, 1, 3 }));
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.properties()["Mesh"].setValue(m.moved({ -3, 1, 3 }));
+    e.setProperty("Mesh", m.moved({ -3, 1, 3 }));
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.properties()["Mesh"].setValue(m.moved({ 0, -2, -3 }));
+    e.setProperty("Mesh", m.moved({ 0, -2, -3 }));
     randomise(e, m);
 
     entities.append(e);

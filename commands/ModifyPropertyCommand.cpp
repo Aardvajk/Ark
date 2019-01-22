@@ -1,5 +1,7 @@
 #include "ModifyPropertyCommand.h"
 
+#include "properties/custom/Mesh.h"
+
 #include "models/Model.h"
 #include "models/ModelData.h"
 
@@ -14,11 +16,11 @@ void update(ModelData *data, const StoredValue &p, const QVariant &value)
     }
     else if(p.subIndex < 0)
     {
-        data->entities[p.index].properties()[p.id].setValue(value);
+        data->entities[p.index].setProperty(p.id, value);
     }
     else
     {
-        data->entities[p.index].subProperties()[p.type][p.subIndex][p.id].setValue(value);
+        data->entities[p.index].setSubProperty(p.type, p.subIndex, p.id, value);
     }
 }
 
@@ -52,7 +54,7 @@ void ModifyPropertyCommand::redo()
 
 void ModifyPropertyCommand::change(Element::Type type, const QString &id, int index, int subIndex, const QVariant &value)
 {
-    auto &p = index < 0 ? data->properties[id] : (subIndex < 0 ? data->entities[index].properties()[id] : data->entities[index].subProperties()[type][subIndex][id]);
+    auto p = index < 0 ? data->properties[id] : (subIndex < 0 ? data->entities[index].property(id) : data->entities[index].subProperty(type, subIndex, id));
     if(value != p.value<QVariant>())
     {
         if(!(p.flags() & Property::Flag::NonPersistent)) persist = true;

@@ -59,7 +59,7 @@ void selectRay(Model *model, QMouseEvent *event, ModifyPropertyCommand *command,
     for(auto i: pcx::indexed_range(model->entities()))
     {
         float dist = std::numeric_limits<float>::max();
-        auto selection = rayIntersect(settings["Element.Type"].value<Element::Type>(), i.value, ray, dist, settings["Front.Only"].value<bool>());
+        auto selection = rayIntersect(settings["Element.Type"].value<Element::Type>(), i.value, ray, dist, settings["Visible.Only"].value<bool>());
 
         if(selection.any())
         {

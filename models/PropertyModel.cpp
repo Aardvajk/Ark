@@ -80,10 +80,10 @@ void PropertyModel::selectionChanged()
     {
         for(auto i: model->selected())
         {
-            auto &e = model->entity(i);
-            for(auto id: e.properties())
+            auto entity = model->entity(i);
+            for(auto id: entity.properties())
             {
-                mergeProperty(id, e.property(id), merged);
+                mergeProperty(id, entity.property(id), merged);
             }
         }
 
@@ -93,7 +93,7 @@ void PropertyModel::selectionChanged()
     {
         for(auto i: model->selected())
         {
-            auto &entity = model->entity(i);
+            auto entity = model->entity(i);
             auto selection = entity.property("Selection").value<Selection>();
 
             for(auto j: selection.elements[type])
@@ -101,9 +101,10 @@ void PropertyModel::selectionChanged()
                 for(auto id: entity.subProperties(type, j))
                 {
                     mergeProperty(id, entity.subProperty(type, j, id), merged);
-                    ++total;
                 }
             }
+
+            total += selection.elements[type].count();
         }
     }
 

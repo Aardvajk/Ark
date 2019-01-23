@@ -29,7 +29,6 @@ public:
     Property property(const QString &name) const;
 
     const QVector<Entity> &entities() const;
-    Entity entity(int index) const;
 
     const ModelBuffers *buffers() const;
 

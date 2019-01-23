@@ -46,11 +46,6 @@ const QVector<Entity> &Model::entities() const
     return cache.get<Cache>().data->entities;
 }
 
-Entity Model::entity(int index) const
-{
-    return cache.get<Cache>().data->entities[index];
-}
-
 const ModelBuffers *Model::buffers() const
 {
     return cache.get<Cache>().buffers;

@@ -1,6 +1,6 @@
 #include "Intersect.h"
 
-#include "properties/custom/Mesh.h"
+#include "physics/Mesh.h"
 
 #include "entity/Entity.h"
 
@@ -33,12 +33,7 @@ bool canSelectFace(const Entity &entity, int face, bool visibleOnly)
 
 Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &ray, float &dist, bool visibleOnly)
 {
-    if(!entity.properties().contains("Mesh"))
-    {
-        return Selection();
-    }
-
-    auto mesh = entity.property("Mesh").value<Mesh>();
+    auto &mesh = entity.mesh();
 
     int closest = -1;
     float min = std::numeric_limits<float>::max();;
@@ -99,12 +94,7 @@ Selection rayIntersect(Element::Type type, const Entity &entity, const Gx::Ray &
 
 Selection rectIntersect(Element::Type type, const Entity &entity, const QRectF &clip, const Gx::Matrix &transform, bool visibleOnly)
 {
-    if(!entity.properties().contains("Mesh"))
-    {
-        return Selection();
-    }
-
-    auto mesh = entity.property("Mesh").value<Mesh>();
+    auto &mesh = entity.mesh();
 
     if(type == Element::Type::Object || type == Element::Type::Face)
     {

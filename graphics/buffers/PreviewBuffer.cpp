@@ -13,7 +13,7 @@
 
 #include <QGxMaths/QGxColor.h>
 
-#include "properties/custom/Mesh.h"
+#include "physics/Mesh.h"
 
 PreviewBuffer::PreviewBuffer(Model *model, Graphics *graphics, QObject *parent) : Buffer(graphics, 65535, sizeof(PreviewVertex), parent), model(model)
 {
@@ -28,7 +28,7 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
     {
         if(e.type() == Entity::Type::Geometry)
         {
-            auto mesh = e.property("Mesh").value<Mesh>();
+            auto &mesh = e.mesh();
 
             for(int i = 0; i < mesh.faces.count(); ++i)
             {

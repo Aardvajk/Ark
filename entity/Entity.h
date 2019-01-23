@@ -6,6 +6,8 @@
 #include "properties/PropertyMap.h"
 #include "properties/PropertyMapList.h"
 
+#include "physics/Mesh.h"
+
 #include <QtCore/QHash>
 
 #include <pcx/shared_data.h>
@@ -37,6 +39,9 @@ public:
     template<typename T> void setProperty(const QString &name, const T &value){ setPropertyVariant(name, QVariant::fromValue(value)); }
     template<typename T> void setSubProperty(Element::Type type, int index, const QString &name, const T &value){ setSubPropertyVariant(type, index, name, QVariant::fromValue(value)); }
 
+    Mesh &mesh();
+    const Mesh &mesh() const;
+
     static const char *typeToString(Type type);
     static Type typeFromString(const std::string &text);
 
@@ -49,6 +54,7 @@ private:
         Type type;
         PropertyMap props;
         SubPropertyMap subProps;
+        Mesh mesh;
     };
 
     pcx::shared_data<Data> s;

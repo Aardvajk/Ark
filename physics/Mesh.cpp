@@ -1,20 +1,5 @@
 #include "Mesh.h"
 
-bool Mesh::operator==(const Mesh &m) const
-{
-    return vertices == m.vertices && faces == m.faces;
-}
-
-bool Mesh::operator!=(const Mesh &m) const
-{
-    return vertices != m.vertices || faces != m.faces;
-}
-
-bool Mesh::operator<(const Mesh &m) const
-{
-    return true;
-}
-
 Gx::Vec3 Mesh::vertex(int face, int index) const
 {
     return vertices[faces[face].elements[index].index];
@@ -66,60 +51,4 @@ Mesh Mesh::cuboid(const Gx::Vec3 &dims)
     faces.append({ 3, 2, 6, 7 });
 
     return Mesh(vertices, faces);
-}
-
-QDataStream &operator<<(QDataStream &ds, const Mesh &mesh)
-{
-    ds << mesh.vertices.count();
-    for(auto &v: mesh.vertices)
-    {
-        ds << v.x << v.y << v.z;
-    }
-
-    ds << mesh.faces.count();
-    for(auto &f: mesh.faces)
-    {
-        ds << f.elements.count();
-        for(auto &e: f.elements)
-        {
-            ds << e.index;
-        }
-    }
-
-    return ds;
-}
-
-QDataStream &operator>>(QDataStream &ds, Mesh &mesh)
-{
-    mesh = Mesh();
-
-    int n, m;
-
-    ds >> n;
-    for(int i = 0; i < n; ++i)
-    {
-        Gx::Vec3 v;
-        ds >> v.x >> v.y >> v.z;
-
-        mesh.vertices.append(v);
-    }
-
-    ds >> n;
-    for(int i = 0; i < n; ++i)
-    {
-        Face f;
-
-        ds >> m;
-        for(int j = 0; j < m; ++j)
-        {
-            Face::Element e;
-            ds >> e.index;
-
-            f.elements.append(e);
-        }
-
-        mesh.faces.append(f);
-    }
-
-    return ds;
 }

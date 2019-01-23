@@ -2,7 +2,7 @@
 
 #include "entity/EntityFactory.h"
 
-#include "properties/custom/Mesh.h"
+#include "physics/Mesh.h"
 
 #include <GxMaths/GxVector.h>
 
@@ -32,25 +32,25 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
 
     auto e = EntityFactory::create(Entity::Type::Geometry);
 
-    e.setProperty("Mesh", m);
+    e.mesh() = m;
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.setProperty("Mesh", m.moved({ 3, 1, 3 }));
+    e.mesh() = m.moved({ 3, 1, 3 });
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.setProperty("Mesh", m.moved({ -3, 1, 3 }));
+    e.mesh() = m.moved({ -3, 1, 3 });
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.setProperty("Mesh", m.moved({ 0, -2, -3 }));
+    e.mesh() = m.moved({ 0, -2, -3 });
     randomise(e, m);
 
     entities.append(e);

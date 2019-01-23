@@ -1,5 +1,7 @@
 #include "Selection.h"
 
+#include "physics/Mesh.h"
+
 #include <pcx/enum_range.h>
 
 Selection::Selection(const QSet<int> &faces, const QSet<int> &vertices)
@@ -58,6 +60,21 @@ Selection Selection::remove(const Selection &s) const
         for(auto i: s.elements[t])
         {
             r.elements[t].remove(i);
+        }
+    }
+
+    return r;
+}
+
+QSet<int> Selection::selectedVertices(const Mesh &mesh) const
+{
+    auto r = elements[Element::Type::Vertex];
+
+    for(auto v: elements[Element::Type::Face])
+    {
+        for(auto i: mesh.faces[v].elements)
+        {
+            r.insert(i.index);
         }
     }
 

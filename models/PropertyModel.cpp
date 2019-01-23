@@ -6,7 +6,7 @@
 #include "properties/PropertyTypeFactory.h"
 
 #include "properties/custom/Selection.h"
-#include "properties/custom/Mesh.h"
+#include "physics/Mesh.h"
 
 #include "entity/Entity.h"
 
@@ -80,7 +80,7 @@ void PropertyModel::selectionChanged()
     {
         for(auto i: model->selected())
         {
-            auto entity = model->entity(i);
+            auto entity = model->entities()[i];
             for(auto id: entity.properties())
             {
                 mergeProperty(id, entity.property(id), merged);
@@ -93,7 +93,7 @@ void PropertyModel::selectionChanged()
     {
         for(auto i: model->selected())
         {
-            auto entity = model->entity(i);
+            auto entity = model->entities()[i];
             auto selection = entity.property("Selection").value<Selection>();
 
             for(auto j: selection.elements[type])
@@ -226,7 +226,7 @@ void PropertyModel::itemValueChanged(const QVariant &value)
     {
         for(auto i: model->selected())
         {
-            auto selection = model->entity(i).property("Selection").value<Selection>();
+            auto selection = model->entities()[i].property("Selection").value<Selection>();
             for(auto j: selection.elements[type])
             {
                 command->change(type, item->name(), i, j, value);

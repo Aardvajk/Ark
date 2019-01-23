@@ -1,6 +1,6 @@
 #include "PointBuffer.h"
 
-#include "properties/custom/Mesh.h"
+#include "physics/Mesh.h"
 #include "properties/custom/Selection.h"
 
 #include "graphics/vertices/ColorVertex.h"
@@ -9,7 +9,7 @@
 
 #include "entity/Entity.h"
 
-#include "properties/custom/Mesh.h"
+#include "physics/Mesh.h"
 #include "properties/custom/Selection.h"
 
 #include <GxMaths/GxVector.h>
@@ -32,7 +32,7 @@ void PointBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
     {
         if(e.type() == Entity::Type::Geometry)
         {
-            auto mesh = e.property("Mesh").value<Mesh>();
+            auto &mesh = e.mesh();
             auto selection = e.property("Selection").value<Selection>();
 
             auto c = Gx::Color(1.0f, 1.0f, 1.0f);

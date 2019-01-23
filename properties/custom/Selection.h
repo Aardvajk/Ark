@@ -7,6 +7,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QSet>
 
+class Mesh;
+
 class Selection
 {
 public:
@@ -21,6 +23,8 @@ public:
 
     Selection merge(const Selection &s) const;
     Selection remove(const Selection &s) const;
+
+    QSet<int> selectedVertices(const Mesh &mesh) const;
 
     static Selection fromElements(Element::Type type, int count);
 

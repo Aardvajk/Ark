@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-#include "properties/custom/Mesh.h"
+#include "physics/Mesh.h"
 
 #include "entity/EntityFactory.h"
 
@@ -11,7 +11,7 @@ const char *types[] = { "Geometry" };
 
 }
 
-Entity::Entity(Type type) : s(type, PropertyMap(), SubPropertyMap())
+Entity::Entity(Type type) : s(type, PropertyMap(), SubPropertyMap(), Mesh())
 {
     s.value().subProps[Element::Type::Face].setDefaultFunction(EntityFactory::defaultFaceProperties);
 }
@@ -50,7 +50,7 @@ Property Entity::subProperty(Element::Type type, int index, const QString &name)
 {
     if(type == Element::Type::Vertex && name == "Position")
     {
-        return Property(s.value().props["Mesh"].value<Mesh>().vertices[index]);
+        return Property(s.value().mesh.vertices[index]);
     }
 
     return s.value().subProps[type][index][name];
@@ -62,6 +62,16 @@ void Entity::addSubProperty(Element::Type type, int index, const QString &name, 
 
     p[name] = property;
     p.invalidate();
+}
+
+Mesh &Entity::mesh()
+{
+    return s.value().mesh;
+}
+
+const Mesh &Entity::mesh() const
+{
+    return s.value().mesh;
 }
 
 const char *Entity::typeToString(Type type)
@@ -94,10 +104,7 @@ void Entity::setSubPropertyVariant(Element::Type type, int index, const QString 
 {
     if(type == Element::Type::Vertex && name == "Position" && value.userType() == qMetaTypeId<Gx::Vec3>())
     {
-        auto m = s.value().props["Mesh"].value<Mesh>();
-        m.vertices[index] = value.value<Gx::Vec3>();
-
-        s.value().props["Mesh"].setValue(m);
+        s.value().mesh.vertices[index] = value.value<Gx::Vec3>();
     }
     else
     {

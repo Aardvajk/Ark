@@ -55,7 +55,7 @@ SOURCES += \
     models/ModelData.cpp \
     entity/Entity.cpp \
     properties/PropertyMap.cpp \
-    properties/custom/Mesh.cpp \
+	physics/Mesh.cpp \
     entity/EntityFactory.cpp \
     graphics/buffers/Buffer.cpp \
     graphics/buffers/PreviewBuffer.cpp \
@@ -121,8 +121,8 @@ HEADERS += \
     models/ModelData.h \
     entity/Entity.h \
     properties/PropertyMap.h \
-    properties/custom/Mesh.h \
-    properties/custom/Face.h \
+	physics/Mesh.h \
+    physics/Face.h \
     entity/EntityFactory.h \
     graphics/vertices/ColorVertex.h \
     graphics/vertices/PreviewVertex.h \

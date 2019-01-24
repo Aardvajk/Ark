@@ -2,6 +2,15 @@ Menus
 {
     [Menu] = "&File"
     {
+        File.New
+        [Separator]
+        File.Open
+        [Separator]
+        File.Save
+        File.Save.As
+        [Separator]
+        [Recents]
+        [Separator]
         Application.Exit
     }
 

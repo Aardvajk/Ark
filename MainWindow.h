@@ -6,6 +6,7 @@
 #include <QPxWidgets/QPxMainWindow.h>
 
 class ActionList;
+class FileActions;
 class Model;
 class GuiSplitter;
 class GuiContainer;
@@ -18,6 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
 
 protected:
+    void customInterfaceAction(const QString &key, QWidget *parent);
     virtual void closeEvent(QCloseEvent *event) override;
 
 private slots:
@@ -26,8 +28,10 @@ private slots:
 private:
     QPx::ApplicationSettings settings;
 
-    ActionList *actions;
     Model *model;
+
+    ActionList *actions;
+    FileActions *fileActions;
 
     GuiSplitter *split;
     GuiContainer *gcs[3];

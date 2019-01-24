@@ -7,5 +7,8 @@
         <file>resources/images/splithorz.png</file>
         <file>resources/images/splitvert.png</file>
         <file>resources/images/splitnone.png</file>
+        <file>resources/images/new.png</file>
+        <file>resources/images/open.png</file>
+        <file>resources/images/save.png</file>
     </qresource>
 </RCC>

@@ -106,7 +106,8 @@ SOURCES += \
     properties/PropertyTypeFactory.cpp \
     properties/types/VecPropertyBrowserType.cpp \
     core/Projection.cpp \
-    commands/ModifySelectionCommand.cpp
+    commands/ModifySelectionCommand.cpp \
+    actions/FileActions.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -181,7 +182,8 @@ HEADERS += \
     properties/types/VecPropertyBrowserType.h \
     core/Projection.h \
     views/ModelViewState.h \
-    commands/ModifySelectionCommand.h
+    commands/ModifySelectionCommand.h \
+    actions/FileActions.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

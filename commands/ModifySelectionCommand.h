@@ -5,6 +5,8 @@
 
 #include "core/Selection.h"
 
+#include <QPxCore/QPxIndexedPair.h>
+
 #include <QtCore/QHash>
 
 class ModifySelectionCommand : public Command
@@ -23,7 +25,7 @@ public:
     void change(int index, const Selection &value);
 
 private:
-    QHash<int, QPair<Selection, Selection> > v;
+    QHash<int, QPx::IndexedPair<Selection> > v;
 };
 
 #endif // MODIFYSELECTIONCOMMAND_H

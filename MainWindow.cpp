@@ -4,6 +4,7 @@
 
 #include "actions/ActionList.h"
 #include "actions/ApplicationActions.h"
+#include "actions/FileActions.h"
 #include "actions/EditActions.h"
 #include "actions/LayoutActions.h"
 
@@ -31,7 +32,7 @@
 
 #include <QtCore/QFileInfo>
 
-#include <QtCore/QTimer>
+#include <QtWidgets/QMenu>
 
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 {
@@ -61,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     horz->addWidget(new ToolViewContainer(relay));
 
     new ApplicationActions(actions, this);
+    fileActions = new FileActions(model, actions, this);
     new EditActions(model, actions, this);
     new LayoutActions(actions, this);
 
@@ -80,6 +82,14 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
 
     actions->find("Tools.Select")->trigger();
+}
+
+void MainWindow::customInterfaceAction(const QString &key, QWidget *parent)
+{
+    if(key == "[Recents]")
+    {
+        static_cast<QMenu*>(parent)->addMenu(fileActions->recentFilesMenu());
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

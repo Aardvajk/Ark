@@ -6,11 +6,11 @@
 namespace
 {
 
-void update(Model *model, ModelData *data, const QHash<int, QPair<Selection, Selection> > &v, int index)
+void update(Model *model, ModelData *data, const QHash<int, QPx::IndexedPair<Selection> > &v, int index)
 {
     for(auto i = v.begin(); i != v.end(); ++i)
     {
-        data->entities[i.key()].setSelection(index == 0 ? i.value().first : i.value().second);
+        data->entities[i.key()].setSelection(i.value()[index]);
     }
 
     model->change();
@@ -47,6 +47,6 @@ void ModifySelectionCommand::change(int index, const Selection &value)
     auto s = data->entities[index].selection();
     if(s != value)
     {
-        v[index] = qMakePair(s, value);
+        v[index] = { s, value };
     }
 }

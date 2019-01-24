@@ -24,6 +24,7 @@ public:
 Model::Model(Graphics *graphics, QObject *parent) : QPx::AbstractEditorModel(parent)
 {
     cache.alloc<Cache>(this, graphics);
+    setUndoLimit(100);
 }
 
 void Model::beginCommand(Command *command)
@@ -68,7 +69,7 @@ bool Model::open(const QString &path)
 
 bool Model::save(const QString &path) const
 {
-    return false;
+    return true;
 }
 
 QString Model::filter() const

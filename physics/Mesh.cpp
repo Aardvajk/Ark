@@ -25,6 +25,11 @@ Mesh Mesh::moved(const Gx::Vec3 &distance) const
     return r;
 }
 
+Mesh &Mesh::set(const Mesh &value)
+{
+    return (*this) = value;
+}
+
 Mesh Mesh::cuboid(const Gx::Vec3 &dims)
 {
     QVector<Gx::Vec3> vertices;

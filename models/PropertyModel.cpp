@@ -1,11 +1,12 @@
 #include "PropertyModel.h"
 
+#include "core/Selection.h"
+
 #include "models/Model.h"
 
 #include "properties/Property.h"
 #include "properties/PropertyTypeFactory.h"
 
-#include "properties/custom/Selection.h"
 #include "physics/Mesh.h"
 
 #include "entity/Entity.h"
@@ -21,17 +22,6 @@
 
 namespace
 {
-
-//void mergeProperties(const PropertyMap &properties, pcx::ordered_map<QString, QVector<Property>, QPx::StdHash> &merged)
-//{
-//    for(auto &p: properties)
-//    {
-//        if(!(p.second.flags() & Property::Flag::Hidden))
-//        {
-//            merged[p.first].append(p.second);
-//        }
-//    }
-//}
 
 void mergeProperty(const QString &name, const Property &property, pcx::ordered_map<QString, QVector<Property>, QPx::StdHash> &merged)
 {
@@ -94,7 +84,7 @@ void PropertyModel::selectionChanged()
         for(auto i: model->selected())
         {
             auto entity = model->entities()[i];
-            auto selection = entity.property("Selection").value<Selection>();
+            auto selection = entity.selection();
 
             for(auto j: selection.elements[type])
             {
@@ -226,7 +216,7 @@ void PropertyModel::itemValueChanged(const QVariant &value)
     {
         for(auto i: model->selected())
         {
-            auto selection = model->entities()[i].property("Selection").value<Selection>();
+            auto selection = model->entities()[i].selection();
             for(auto j: selection.elements[type])
             {
                 command->change(type, item->name(), i, j, value);

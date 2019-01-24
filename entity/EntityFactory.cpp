@@ -2,9 +2,6 @@
 
 #include "properties/Property.h"
 
-#include "properties/custom/Selection.h"
-#include "physics/Mesh.h"
-
 #include <QtGui/QColor>
 #include <QtCore/QPoint>
 
@@ -26,7 +23,6 @@ if(xx == 2)
     e.addProperty("Temp", Property(QPoint(88, 11)));
 }
 ++xx;
-        e.addProperty("Selection", Property(Selection(), Property::Flag::NonPersistent | Property::Flag::Hidden));
         e.addProperty("Vec", Property(Gx::Vec3(1, 2, 3)));
         e.addProperty("Point", Property(QPoint(1, 2)));
     }

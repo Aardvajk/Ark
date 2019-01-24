@@ -1,10 +1,10 @@
 #include "ModelCache.h"
 
+#include "core/Selection.h"
+
 #include "models/Model.h"
 
 #include "entity/Entity.h"
-
-#include "properties/custom/Selection.h"
 
 #include <pcx/indexed_range.h>
 
@@ -34,7 +34,7 @@ void ModelCache::refresh() const
 
     for(auto i: pcx::indexed_range(model->entities()))
     {
-        if(i.value.property("Selection").value<Selection>().any())
+        if(i.value.selection().any())
         {
             data.selected.append(static_cast<int>(i.index));
         }

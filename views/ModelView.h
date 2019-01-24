@@ -1,6 +1,8 @@
 #ifndef MODELVIEW_H
 #define MODELVIEW_H
 
+#include "views/ModelViewState.h"
+
 #include <QGxGraphics/QGxGraphicsWidget.h>
 
 #include <GxCore/GxTimer.h>
@@ -18,6 +20,7 @@ class ModelView : public QGx::GraphicsWidget
 public:
     ModelView(Model *model, Graphics *graphics, QWidget *parent = nullptr);
 
+    ModelViewState state() const;
     RenderParams renderParams() const;
 
 signals:
@@ -26,6 +29,9 @@ signals:
     void mouseReleased(ModelView *view, QMouseEvent *event);
 
     void render(ModelView *view, Graphics *graphics, const RenderParams &params);
+
+public slots:
+    void setState(const ModelViewState &state);
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
@@ -49,7 +55,8 @@ private:
 
     Gx::Timer timer;
     Gx::Vec2 prevMousePos;
-    Gx::Transform cam;
+
+    ModelViewState st;
 };
 
 #endif // MODELVIEW_H

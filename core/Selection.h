@@ -3,7 +3,6 @@
 
 #include "core/Element.h"
 
-#include <QtCore/QMetaType>
 #include <QtCore/QMap>
 #include <QtCore/QSet>
 
@@ -17,7 +16,6 @@ public:
 
     bool operator==(const Selection &s) const;
     bool operator!=(const Selection &s) const;
-    bool operator<(const Selection &s) const;
 
     bool any() const;
 
@@ -30,7 +28,5 @@ public:
 
     QMap<Element::Type, QSet<int> > elements;
 };
-
-Q_DECLARE_METATYPE(Selection)
 
 #endif // SELECTION_H

@@ -11,12 +11,12 @@
 
 #include "entity/Entity.h"
 
-#include "properties/custom/Selection.h"
+#include "core/Selection.h"
 
 #include "controls/SettingsElementBox.h"
 #include "controls/SettingsCheckBox.h"
 
-#include "commands/ModifyPropertyCommand.h"
+#include "commands/ModifySelectionCommand.h"
 
 #include "physics/Intersect.h"
 
@@ -41,15 +41,15 @@ Selection combine(const Selection &old, const Selection &value, Qt::KeyboardModi
     return modifiers & Qt::ControlModifier ? old.remove(value) : (modifiers & Qt::ShiftModifier ? old.merge(value) : value);
 }
 
-void updateSelection(Model *model, QMouseEvent *event, ModifyPropertyCommand *command, int index, const Selection &selection)
+void updateSelection(Model *model, QMouseEvent *event, ModifySelectionCommand *command, int index, const Selection &selection)
 {
-    auto old = model->entities()[index].property("Selection").value<Selection>();
+    auto old = model->entities()[index].selection();
     auto combined = combine(old, selection, event->modifiers());
 
-    command->change(Element::Type::Object, "Selection", index, -1, QVariant::fromValue(combined));
+    command->change(index, combined);
 }
 
-void selectRay(Model *model, QMouseEvent *event, ModifyPropertyCommand *command, const QPx::Settings &settings, const Gx::SizeF &size, const Gx::Matrix &view, const Gx::Matrix &proj)
+void selectRay(Model *model, QMouseEvent *event, ModifySelectionCommand *command, const QPx::Settings &settings, const Gx::SizeF &size, const Gx::Matrix &view, const Gx::Matrix &proj)
 {
     auto ray = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), size, view, proj);
 
@@ -83,7 +83,7 @@ void selectRay(Model *model, QMouseEvent *event, ModifyPropertyCommand *command,
     }
 }
 
-void selectMarquee(Model *model, QMouseEvent *event, ModifyPropertyCommand *command, const QPx::Settings &settings, const QRectF &clip, const Gx::Matrix &transform)
+void selectMarquee(Model *model, QMouseEvent *event, ModifySelectionCommand *command, const QPx::Settings &settings, const QRectF &clip, const Gx::Matrix &transform)
 {
     for(auto i: pcx::indexed_range(model->entities()))
     {
@@ -133,7 +133,7 @@ void SelectTool::mouseReleased(ModelView *view, QMouseEvent *event)
     {
         auto p = view->renderParams();
 
-        auto command = new ModifyPropertyCommand("Select", model);
+        auto command = new ModifySelectionCommand("Select", model);
         mq.valid(view) ? selectMarquee(model, event, command, settings, mq.clipRect(p.size), p.view * p.proj) : selectRay(model, event, command, settings, p.size, p.view, p.proj);
 
         model->endCommand(command);

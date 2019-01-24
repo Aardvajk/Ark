@@ -21,6 +21,9 @@ public:
 protected:
     virtual ModelViewPanel *clone() const override;
 
+private slots:
+    void projectionChanged(int index);
+
 private:
     Model *model;
     Graphics *graphics;

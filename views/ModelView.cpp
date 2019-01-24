@@ -26,9 +26,13 @@ ModelView::ModelView(Model *model, Graphics *graphics, QWidget *parent) : QGx::G
 {
     setAttribute(Qt::WA_MouseTracking);
     setFocusPolicy(Qt::StrongFocus);
-//    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    cam = Gx::Transform({ 0, 0, -6}, { 0, 0 });
+    st.camera = Gx::Transform({ 0, 0, -6}, { 0, 0 });
+}
+
+ModelViewState ModelView::state() const
+{
+    return st;
 }
 
 RenderParams ModelView::renderParams() const
@@ -37,17 +41,24 @@ RenderParams ModelView::renderParams() const
 
     p.size = sizeF();
     p.fov = M_PI * 0.25f;
-    p.position = cam.position();
+    p.projection = st.projection;
 
-    auto look = Gx::Vec3(0, 0, 1).transformedNormal(cam.rotation().matrix());
-    auto up = Gx::Vec3(0, 1, 0).transformedNormal(cam.rotation().matrix());
+    p.position = st.camera.position();
 
-    p.view = Gx::Matrix::lookAt(cam.position(), cam.position() + look, up);
-    p.proj = Gx::Matrix::perspective(p.fov, p.size.width / p.size.height, { 0.1f, 100.0f });
+    auto look = Gx::Vec3(0, 0, 1).transformedNormal(st.camera.rotation().matrix());
+    auto up = Gx::Vec3(0, 1, 0).transformedNormal(st.camera.rotation().matrix());
 
-    p.light = cam.position();
+    p.view = Gx::Matrix::lookAt(st.camera.position(), st.camera.position() + look, up);
+    p.proj = Projection::matrix(p);
+
+    p.light = st.camera.position();
 
     return p;
+}
+
+void ModelView::setState(const ModelViewState &state)
+{
+    st = state;
 }
 
 void ModelView::paintEvent(QPaintEvent *event)
@@ -87,11 +98,11 @@ void ModelView::mouseMoveEvent(QMouseEvent *event)
             Gx::Vec2 dims = Gx::Vec2(sizeF().width, sizeF().height) * 0.5f;
             Gx::Vec2 diff = mousePos - prevMousePos;
 
-            Gx::Vec2 ang = cam.angle();
+            Gx::Vec2 ang = st.camera.angle();
 
             ang += Gx::Vec2((diff.x / dims.x) * turn, (diff.y / dims.y) * turn);
 
-            cam.setAngle(ang);
+            st.camera.setAngle(ang);
         }
     }
 
@@ -109,11 +120,11 @@ void ModelView::updateCamera(float delta)
 {
     if(buttons.contains(Qt::RightButton))
     {
-        auto pos = cam.position();
+        auto pos = st.camera.position();
         float step = 8.0f * delta;
 
         Gx::Vec3 look, right;
-        cam.flatVectors(look, right);
+        st.camera.flatVectors(look, right);
 
         if(keys.contains(Qt::Key_W)) pos += look * step;
         if(keys.contains(Qt::Key_S)) pos -= look * step;
@@ -124,7 +135,7 @@ void ModelView::updateCamera(float delta)
         if(keys.contains(Qt::Key_R)) pos.y += step;
         if(keys.contains(Qt::Key_F)) pos.y -= step;
 
-        cam.setPosition(pos);
+        st.camera.setPosition(pos);
     }
 }
 

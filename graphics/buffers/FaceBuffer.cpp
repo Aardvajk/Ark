@@ -1,5 +1,7 @@
 #include "FaceBuffer.h"
 
+#include "core/Selection.h"
+
 #include "graphics/vertices/PreviewVertex.h"
 
 #include "graphics/components/EdgeKey.h"
@@ -9,7 +11,6 @@
 #include "entity/Entity.h"
 
 #include "physics/Mesh.h"
-#include "properties/custom/Selection.h"
 
 #include <GxMaths/GxVector.h>
 
@@ -32,7 +33,7 @@ void FaceBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
         if(e.type() == Entity::Type::Geometry)
         {
             auto &mesh = e.mesh();
-            auto selection = e.property("Selection").value<Selection>();
+            auto selection = e.selection();
 
             QSet<EdgeKey> edges;
 

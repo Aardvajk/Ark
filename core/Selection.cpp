@@ -20,11 +20,6 @@ bool Selection::operator!=(const Selection &s) const
     return elements != s.elements;
 }
 
-bool Selection::operator<(const Selection &s) const
-{
-    return true;
-}
-
 bool Selection::any() const
 {
     for(auto &e: elements)

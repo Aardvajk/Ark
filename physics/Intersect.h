@@ -2,8 +2,7 @@
 #define INTERSECT_H
 
 #include "core/Element.h"
-
-#include "properties/custom/Selection.h"
+#include "core/Selection.h"
 
 namespace Gx
 {

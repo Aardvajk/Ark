@@ -18,6 +18,8 @@ public:
 
     Mesh moved(const Gx::Vec3 &distance) const;
 
+    Mesh &set(const Mesh &value);
+
     static Mesh cuboid(const Gx::Vec3 &dims);
 
     QVector<Gx::Vec3> vertices;

@@ -11,7 +11,7 @@ const char *types[] = { "Geometry" };
 
 }
 
-Entity::Entity(Type type) : s(type, PropertyMap(), SubPropertyMap(), Mesh())
+Entity::Entity(Type type) : s(type, PropertyMap(), SubPropertyMap(), Selection(), Mesh())
 {
     s.value().subProps[Element::Type::Face].setDefaultFunction(EntityFactory::defaultFaceProperties);
 }
@@ -64,14 +64,24 @@ void Entity::addSubProperty(Element::Type type, int index, const QString &name, 
     p.invalidate();
 }
 
-Mesh &Entity::mesh()
+const Selection &Entity::selection() const
 {
-    return s.value().mesh;
+    return s.value().selection;
+}
+
+void Entity::setSelection(const Selection &value)
+{
+    s.value().selection = value;
 }
 
 const Mesh &Entity::mesh() const
 {
     return s.value().mesh;
+}
+
+void Entity::setMesh(const Mesh &value)
+{
+    s.value().mesh = value;
 }
 
 const char *Entity::typeToString(Type type)

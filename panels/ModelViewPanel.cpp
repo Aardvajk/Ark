@@ -15,11 +15,17 @@
 #include <QPxWidgets/QPxPalette.h>
 #include <QPxWidgets/QPxLayouts.h>
 
+#include "gui/GuiComboBox.h"
+#include "core/Projection.h"
+
 ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, QWidget *parent) : GuiPanel(parent), model(model), graphics(graphics), relay(relay)
 {
     view = layout()->addTypedWidget(new ModelView(model, graphics));
 
-    toolBar()->addStretch();
+    auto cb = toolBar()->addTypedWidget(new GuiComboBox());
+    cb->addItem("Perspective", QVariant::fromValue(Projection::Type::Perspective));
+    cb->addItem("Orthographic", QVariant::fromValue(Projection::Type::Orthographic));
+    connect(cb, SIGNAL(currentIndexChanged(int)), SLOT(projectionChanged(int)));
 
     auto menu = new QMenu(this);
 
@@ -54,4 +60,12 @@ void ModelViewPanel::restoreState(const QPx::Settings &settings)
 ModelViewPanel *ModelViewPanel::clone() const
 {
     return new ModelViewPanel(model, graphics, relay);
+}
+
+void ModelViewPanel::projectionChanged(int index)
+{
+    auto s = view->state();
+    s.projection = static_cast<const GuiComboBox*>(sender())->itemData(index).value<Projection::Type>();
+
+    view->setState(s);
 }

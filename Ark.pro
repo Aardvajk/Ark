@@ -90,7 +90,7 @@ SOURCES += \
     tools/ToolList.cpp \
     tools/components/Marquee.cpp \
     core/Element.cpp \
-    properties/custom/Selection.cpp \
+	core/Selection.cpp \
     graphics/buffers/FaceBuffer.cpp \
     graphics/buffers/PointBuffer.cpp \
     gui/GuiTextButton.cpp \
@@ -104,7 +104,9 @@ SOURCES += \
     models/PropertyModel.cpp \
     models/ModelCache.cpp \
     properties/PropertyTypeFactory.cpp \
-    properties/types/VecPropertyBrowserType.cpp
+    properties/types/VecPropertyBrowserType.cpp \
+    core/Projection.cpp \
+    commands/ModifySelectionCommand.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -160,7 +162,7 @@ HEADERS += \
     tools/Tool.h \
     tools/ToolList.h \
     tools/components/Marquee.h \
-    properties/custom/Selection.h \
+	core/Selection.h \
     core/Element.h \
     graphics/buffers/FaceBuffer.h \
     graphics/buffers/PointBuffer.h \
@@ -176,7 +178,10 @@ HEADERS += \
     models/PropertyModel.h \
     models/ModelCache.h \
     properties/PropertyTypeFactory.h \
-    properties/types/VecPropertyBrowserType.h
+    properties/types/VecPropertyBrowserType.h \
+    core/Projection.h \
+    views/ModelViewState.h \
+    commands/ModifySelectionCommand.h
 
 DISTFILES += \
     resources/text/mainwindowui.qps

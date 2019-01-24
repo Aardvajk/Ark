@@ -1,8 +1,7 @@
 #include "MainWindow.h"
 
 #include "core/Element.h"
-
-#include "properties/custom/Selection.h"
+#include "core/Projection.h"
 
 #include <pcx/process.h>
 
@@ -45,8 +44,7 @@ int main(int argc, char *argv[])
     setGui();
 
     qRegisterMetaTypeStreamOperators<Element::Type>("Element::Type");
-
-    QMetaType::registerComparators<Selection>();
+    qRegisterMetaTypeStreamOperators<Element::Type>("Projection::Type");
 
     try
     {

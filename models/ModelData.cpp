@@ -29,28 +29,27 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     properties["Position"] = Property(QVariant::fromValue(Gx::Vec3(7, 8, 9)));
 
     auto m = Mesh::cuboid({ 2, 2, 2 });
-
     auto e = EntityFactory::create(Entity::Type::Geometry);
 
-    e.mesh() = m;
+    e.setMesh(m);
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.mesh() = m.moved({ 3, 1, 3 });
+    e.setMesh(m.moved({ 3, 1, 3 }));
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.mesh() = m.moved({ -3, 1, 3 });
+    e.setMesh(m.moved({ -3, 1, 3 }));
     randomise(e, m);
 
     entities.append(e);
 
     e = EntityFactory::create(Entity::Type::Geometry);
-    e.mesh() = m.moved({ 0, -2, -3 });
+    e.setMesh(m.moved({ 0, -2, -3 }));
     randomise(e, m);
 
     entities.append(e);

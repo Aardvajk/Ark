@@ -1,6 +1,6 @@
 #include "Intersect.h"
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 #include "entity/Entity.h"
 

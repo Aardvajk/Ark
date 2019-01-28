@@ -1,7 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "physics/Face.h"
+#include "core/Face.h"
 
 #include <GxMaths/GxVector.h>
 

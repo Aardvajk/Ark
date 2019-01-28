@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     tools->addTool(new SelectTool(actions, model, settings["Tools"]["Select"]));
     tools->addTool(new MoveTool(actions, model, settings["Tools"]["Move"]));
 
-    loadInterface("C:/Projects/Ark/Ark/resources/text/mainwindowui.qps", actions);
+    loadInterface(":/resources/text/mainwindowui.qps", actions);
 
     restoreGeometry(settings["Application"]["Geometry"].value<QByteArray>());
     split->restoreState(settings["Application"]["Splitter"].value<QByteArray>());

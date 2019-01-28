@@ -2,9 +2,13 @@
 
 #include "core/Relay.h"
 
-#include "views/ModelView.h"
+#include "maths/Projection.h"
+
+#include "views/modelview/PerspectiveModelView.h"
+#include "views/modelview/OrthoModelView.h"
 
 #include "gui/GuiBar.h"
+#include "gui/GuiComboBox.h"
 #include "gui/GuiSmallButton.h"
 
 #include "graphics/Graphics.h"
@@ -15,17 +19,20 @@
 #include <QPxWidgets/QPxPalette.h>
 #include <QPxWidgets/QPxLayouts.h>
 
-#include "gui/GuiComboBox.h"
-#include "core/Projection.h"
+#include <pcx/enum_range.h>
 
-ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, QWidget *parent) : GuiPanel(parent), model(model), graphics(graphics), relay(relay)
+ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, QWidget *parent) : GuiPanel(parent), model(model), graphics(graphics), view(nullptr), relay(relay)
 {
-    view = layout()->addTypedWidget(new ModelView(model, graphics));
+    combo = toolBar()->addTypedWidget(new GuiComboBox());
+    for(auto p: pcx::enum_range(Projection::Type::Perspective, Projection::Type::None))
+    {
+        combo->addItem(Projection::toString(p), QVariant::fromValue(p));
 
-    auto cb = toolBar()->addTypedWidget(new GuiComboBox());
-    cb->addItem("Perspective", QVariant::fromValue(Projection::Type::Perspective));
-    cb->addItem("Orthographic", QVariant::fromValue(Projection::Type::Orthographic));
-    connect(cb, SIGNAL(currentIndexChanged(int)), SLOT(projectionChanged(int)));
+        states[p].projection = p;
+        states[p].camera = Projection::camera(p);
+    }
+
+    connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(comboChanged(int)));
 
     auto menu = new QMenu(this);
 
@@ -41,12 +48,7 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
     auto button = setPanelButton(toolBar()->addTypedWidget(new GuiSmallButton(QIcon(":/resources/images/splitgrid.png"))));
     button->setMenu(menu);
 
-    connect(graphics, SIGNAL(render()), view, SLOT(update()));
-
-    connect(view, SIGNAL(mousePressed(ModelView*,QMouseEvent*)), relay, SIGNAL(mousePressed(ModelView*,QMouseEvent*)));
-    connect(view, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)));
-    connect(view, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)));
-    connect(view, SIGNAL(render(ModelView*,Graphics*,RenderParams)), relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)));
+    combo->setCurrentIndex(5);
 }
 
 void ModelViewPanel::saveState(QPx::Settings &settings) const
@@ -62,10 +64,28 @@ ModelViewPanel *ModelViewPanel::clone() const
     return new ModelViewPanel(model, graphics, relay);
 }
 
-void ModelViewPanel::projectionChanged(int index)
+void ModelViewPanel::comboChanged(int index)
 {
-    auto s = view->state();
-    s.projection = static_cast<const GuiComboBox*>(sender())->itemData(index).value<Projection::Type>();
+    if(view)
+    {
+        auto s = view->state();
+        states[s.projection] = s;
 
-    view->setState(s);
+        delete view;
+    }
+
+    auto state = states[combo->itemData(index).value<Projection::Type>()];
+    switch(state.projection)
+    {
+        case Projection::Type::Perspective: view = layout()->addTypedWidget(new PerspectiveModelView(model, graphics, state)); break;
+
+        default: view = layout()->addTypedWidget(new OrthoModelView(model, graphics, state));
+    }
+
+    connect(view, SIGNAL(mousePressed(ModelView*,QMouseEvent*)), relay, SIGNAL(mousePressed(ModelView*,QMouseEvent*)));
+    connect(view, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)), relay, SIGNAL(mouseMoved(ModelView*,QMouseEvent*)));
+    connect(view, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)), relay, SIGNAL(mouseReleased(ModelView*,QMouseEvent*)));
+    connect(view, SIGNAL(render(ModelView*,Graphics*,RenderParams)), relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)));
+
+    connect(graphics, SIGNAL(render()), view, SLOT(update()));
 }

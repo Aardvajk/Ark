@@ -1,8 +1,7 @@
 #include "ActionList.h"
 
+#include <QPxCore/QPxAction.h>
 #include <QPxCore/QPxSettings.h>
-
-#include <QPxActions/QPxAction.h>
 
 #include <QtGui/QKeySequence>
 

@@ -7,6 +7,7 @@
 
 class ActionList;
 class Model;
+class ModelView;
 
 class SelectTool : public Tool
 {

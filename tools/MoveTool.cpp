@@ -2,7 +2,7 @@
 
 #include "actions/ActionList.h"
 
-#include <QPxActions/QPxAction.h>
+#include <QPxCore/QPxAction.h>
 
 #include <QtGui/QPixmap>
 

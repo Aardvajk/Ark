@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 #include "entity/EntityFactory.h"
 

@@ -4,7 +4,7 @@
 
 #include "MainWindow.h"
 
-#include <QPxActions/QPxAction.h>
+#include <QPxCore/QPxAction.h>
 
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QSplitter>

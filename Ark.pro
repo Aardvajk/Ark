@@ -55,11 +55,10 @@ SOURCES += \
     models/ModelData.cpp \
     entity/Entity.cpp \
     properties/PropertyMap.cpp \
-	physics/Mesh.cpp \
+	core/Mesh.cpp \
     entity/EntityFactory.cpp \
     graphics/buffers/Buffer.cpp \
     graphics/buffers/PreviewBuffer.cpp \
-    views/ModelView.cpp \
     models/ModelBuffers.cpp \
     graphics/RenderState.cpp \
     graphics/RenderPrimitives.cpp \
@@ -97,7 +96,7 @@ SOURCES += \
     controls/SettingsCheckBox.cpp \
     views/ToolOptionsView.cpp \
     controls/SettingsElementBox.cpp \
-    physics/Intersect.cpp \
+    maths/Intersect.cpp \
     properties/PropertyMapList.cpp \
     commands/ModifyPropertyCommand.cpp \
     views/PropertyView.cpp \
@@ -105,9 +104,13 @@ SOURCES += \
     models/ModelCache.cpp \
     properties/PropertyTypeFactory.cpp \
     properties/types/VecPropertyBrowserType.cpp \
-    core/Projection.cpp \
     commands/ModifySelectionCommand.cpp \
-    actions/FileActions.cpp
+    actions/FileActions.cpp \
+    maths/Projection.cpp \
+    views/modelview/PerspectiveModelView.cpp \
+    views/modelview/ModelView.cpp \
+    views/modelview/OrthoModelView.cpp \
+    graphics/OrthoGrid.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -124,15 +127,14 @@ HEADERS += \
     models/ModelData.h \
     entity/Entity.h \
     properties/PropertyMap.h \
-	physics/Mesh.h \
-    physics/Face.h \
+	core/Mesh.h \
+    core/Face.h \
     entity/EntityFactory.h \
     graphics/vertices/ColorVertex.h \
     graphics/vertices/PreviewVertex.h \
     graphics/buffers/Buffer.h \
     graphics/buffers/PreviewBuffer.h \
     graphics/components/EdgeKey.h \
-    views/ModelView.h \
     models/ModelBuffers.h \
     graphics/RenderParams.h \
     graphics/RenderState.h \
@@ -171,7 +173,7 @@ HEADERS += \
     controls/SettingsCheckBox.h \
     views/ToolOptionsView.h \
     controls/SettingsElementBox.h \
-    physics/Intersect.h \
+    maths/Intersect.h \
     properties/PropertyMapList.h \
     commands/StoredValue.h \
     commands/ModifyPropertyCommand.h \
@@ -180,13 +182,16 @@ HEADERS += \
     models/ModelCache.h \
     properties/PropertyTypeFactory.h \
     properties/types/VecPropertyBrowserType.h \
-    core/Projection.h \
-    views/ModelViewState.h \
     commands/ModifySelectionCommand.h \
-    actions/FileActions.h
+    actions/FileActions.h \
+    maths/Projection.h \
+    views/modelview/ModelViewState.h \
+    views/modelview/PerspectiveModelView.h \
+    views/modelview/ModelView.h \
+    views/modelview/OrthoModelView.h \
+    graphics/OrthoGrid.h
 
-DISTFILES += \
-    resources/text/mainwindowui.qps
+DISTFILES +=
 
 RESOURCES += \
     resources.qrc

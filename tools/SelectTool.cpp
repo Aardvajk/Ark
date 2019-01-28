@@ -7,7 +7,7 @@
 
 #include "models/Model.h"
 
-#include "views/ModelView.h"
+#include "views/modelview/ModelView.h"
 
 #include "entity/Entity.h"
 
@@ -18,13 +18,12 @@
 
 #include "commands/ModifySelectionCommand.h"
 
-#include "physics/Intersect.h"
+#include "maths/Intersect.h"
 
 #include <GxMaths/GxRay.h>
 
 #include <QPxCore/QPxSettings.h>
-
-#include <QPxActions/QPxAction.h>
+#include <QPxCore/QPxAction.h>
 
 #include <QPxWidgets/QPxLayouts.h>
 

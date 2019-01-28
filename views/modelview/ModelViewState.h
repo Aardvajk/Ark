@@ -1,17 +1,16 @@
 #ifndef MODELVIEWSTATE_H
 #define MODELVIEWSTATE_H
 
-#include "core/Projection.h"
+#include "maths/Projection.h"
 
 #include <GxMaths/GxTransform.h>
 
 class ModelViewState
 {
 public:
-    ModelViewState() : projection(Projection::Type::Perspective) { }
+    ModelViewState() = default;
 
     Projection::Type projection;
-
     Gx::Transform camera;
 };
 

@@ -4,7 +4,7 @@
 
 #include "models/Model.h"
 
-#include <QPxActions/QPxAction.h>
+#include <QPxCore/QPxAction.h>
 
 FileActions::FileActions(Model *model, ActionList *actions, QWidget *parent) : QPx::EditorFileActions(model, parent)
 {

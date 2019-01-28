@@ -7,7 +7,7 @@
 #include "properties/Property.h"
 #include "properties/PropertyTypeFactory.h"
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 #include "entity/Entity.h"
 

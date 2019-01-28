@@ -1,6 +1,6 @@
 #include "Selection.h"
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 #include <pcx/enum_range.h>
 

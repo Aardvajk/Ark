@@ -4,7 +4,7 @@
 
 #include "models/Model.h"
 
-#include <QPxActions/QPxAction.h>
+#include <QPxCore/QPxAction.h>
 
 #include <QtGui/QIcon>
 #include <QtGui/QKeySequence>

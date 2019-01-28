@@ -1,6 +1,6 @@
 #include "ModifyPropertyCommand.h"
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 #include "models/Model.h"
 #include "models/ModelData.h"

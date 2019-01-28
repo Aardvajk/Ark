@@ -3,10 +3,15 @@
 
 #include "gui/GuiPanel.h"
 
+#include "views/modelview/ModelViewState.h"
+
+#include <QtCore/QHash>
+
 class Model;
 class Graphics;
 class ModelView;
 class Relay;
+class GuiComboBox;
 
 class ModelViewPanel : public GuiPanel
 {
@@ -22,13 +27,16 @@ protected:
     virtual ModelViewPanel *clone() const override;
 
 private slots:
-    void projectionChanged(int index);
+    void comboChanged(int index);
 
 private:
     Model *model;
     Graphics *graphics;
     ModelView *view;
     Relay *relay;
+    GuiComboBox *combo;
+
+    QHash<Projection::Type, ModelViewState> states;
 };
 
 #endif // MODELVIEWPANEL_H

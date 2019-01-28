@@ -1,8 +1,8 @@
 #ifndef ACTIONLIST_H
 #define ACTIONLIST_H
 
-#include <QPxActions/QPxActionList.h>
-#include <QPxActions/QPxAction.h>
+#include <QPxCore/QPxActionList.h>
+#include <QPxCore/QPxAction.h>
 
 namespace QPx
 {

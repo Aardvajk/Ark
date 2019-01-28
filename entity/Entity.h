@@ -7,7 +7,7 @@
 #include "properties/PropertyMap.h"
 #include "properties/PropertyMapList.h"
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 #include <QtCore/QHash>
 

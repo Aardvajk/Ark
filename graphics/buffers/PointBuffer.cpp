@@ -2,7 +2,7 @@
 
 #include "core/Selection.h"
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 #include "graphics/vertices/ColorVertex.h"
 
@@ -10,7 +10,7 @@
 
 #include "entity/Entity.h"
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 #include <GxMaths/GxVector.h>
 

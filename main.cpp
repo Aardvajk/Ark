@@ -1,7 +1,8 @@
 #include "MainWindow.h"
 
 #include "core/Element.h"
-#include "core/Projection.h"
+
+#include "maths/Projection.h"
 
 #include <pcx/process.h>
 
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
 
     qRegisterMetaTypeStreamOperators<Element::Type>("Element::Type");
     qRegisterMetaTypeStreamOperators<Element::Type>("Projection::Type");
+    qRegisterMetaTypeStreamOperators<Element::Type>("Projection::Direction");
 
     try
     {

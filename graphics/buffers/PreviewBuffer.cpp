@@ -13,7 +13,7 @@
 
 #include <QGxMaths/QGxColor.h>
 
-#include "physics/Mesh.h"
+#include "core/Mesh.h"
 
 PreviewBuffer::PreviewBuffer(Model *model, Graphics *graphics, QObject *parent) : Buffer(graphics, 65535, sizeof(PreviewVertex), parent), model(model)
 {

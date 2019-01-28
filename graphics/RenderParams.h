@@ -1,11 +1,12 @@
 #ifndef RENDERPARAMS_H
 #define RENDERPARAMS_H
 
-#include "core/Projection.h"
+#include "maths/Projection.h"
 
 #include <GxMaths/GxSize.h>
 #include <GxMaths/GxVector.h>
 #include <GxMaths/GxMatrix.h>
+#include <GxMaths/GxTransform.h>
 
 class RenderParams
 {
@@ -19,7 +20,7 @@ public:
     Gx::Matrix view;
     Gx::Matrix proj;
 
-    Gx::Vec3 position;
+    Gx::Transform camera;
     Gx::Vec3 light;
 };
 

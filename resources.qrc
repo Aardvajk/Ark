@@ -10,5 +10,6 @@
         <file>resources/images/new.png</file>
         <file>resources/images/open.png</file>
         <file>resources/images/save.png</file>
+        <file>resources/text/mainwindowui.qps</file>
     </qresource>
 </RCC>

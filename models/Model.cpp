@@ -59,7 +59,13 @@ QVector<int> Model::selected() const
 
 bool Model::clear()
 {
-    return false;
+    auto &c = cache.get<Cache>();
+
+    delete c.data;
+    c.data = new ModelData();
+
+    emit changed();
+    return true;
 }
 
 bool Model::open(const QString &path)
@@ -69,7 +75,7 @@ bool Model::open(const QString &path)
 
 bool Model::save(const QString &path) const
 {
-    return true;
+    return false;
 }
 
 QString Model::filter() const

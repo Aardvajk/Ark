@@ -31,13 +31,12 @@ public slots:
     void setIcon(const QIcon &icon);
     void setCheckable(bool state);
     void setChecked(bool state);
+    void reset();
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
     virtual bool event(QEvent *event) override;
 
-private slots:
-    void reset();
 
 private:
     void buttonPressed();

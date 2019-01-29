@@ -103,6 +103,16 @@ void GuiButton::setChecked(bool state)
     }
 }
 
+void GuiButton::reset()
+{
+    auto &c = cache.get<Cache>();
+
+    c.down = false;
+    c.anim->reset();
+
+    update();
+}
+
 void GuiButton::paintEvent(QPaintEvent *event)
 {
     auto &c = cache.get<Cache>();
@@ -153,16 +163,6 @@ bool GuiButton::event(QEvent *event)
     }
 
     return QWidget::event(event);
-}
-
-void GuiButton::reset()
-{
-    auto &c = cache.get<Cache>();
-
-    c.down = false;
-    c.anim->reset();
-
-    update();
 }
 
 void GuiButton::buttonPressed()

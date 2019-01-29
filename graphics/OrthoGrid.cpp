@@ -62,7 +62,7 @@ void renderOrthoGrid(Graphics *graphics, const RenderParams &params, float grid,
     Gx::BufferStream<Gx::VertexBuffer> os(*graphics->genericBuffer, Gx::Graphics::Lock::Flag::Discard);
 
     auto m = measure(min, max, grid);
-    while(m.dims.x > 30 || m.dims.y > 30)
+    while(m.dims.x > 50 || m.dims.y > 50)
     {
         grid *= 10;
         m = measure(min, max, grid);

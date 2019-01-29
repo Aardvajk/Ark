@@ -13,13 +13,16 @@ public:
     enum class Type
     {
         Preview,
+        Flat,
         Color,
         Screen
     };
 
     enum class Flag
     {
-        Invert = 1
+        Invert = 1,
+        NoZ = 2,
+        NoZWrite = 4
     };
 
     using Flags = pcx::flags<Flag>;

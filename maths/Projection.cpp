@@ -30,7 +30,9 @@ float orthoUnit(float value)
 
     f = 1.0f - cos((M_PI / 2) * f);
 
-    return static_cast<int>(static_cast<float>(sc) * f);
+    auto i = static_cast<int>(static_cast<float>(sc) * f);
+
+    return i > 0 ? i : 1;
 }
 
 float orthoComponent(Projection::Type type, const Gx::Vec3 &pos)
@@ -91,12 +93,12 @@ Gx::Transform Projection::camera(Type type)
     {
         case Type::Perspective: return Gx::Transform({ 0, 0, -6 }, { 0, 0 });
 
-        case Type::Top: return Gx::Transform({ 0, 0, 0 }, { 0, M_PI / 2 });
-        case Type::Bottom: return Gx::Transform({ 0, 0, 0 }, { 0, -M_PI / 2 });
-        case Type::Left: return Gx::Transform({ 0, 0, 0 }, { M_PI / 2, 0 });
-        case Type::Right: return Gx::Transform({ 0, 0, 0 }, { -M_PI / 2, 0 });
-        case Type::Front: return Gx::Transform({ 0, 0, -2 }, { 0, 0 });
-        case Type::Back: return Gx::Transform({ 0, 0, 0 }, { M_PI, 0 });
+        case Type::Top: return Gx::Transform({ 0, 200, 0 }, { 0, M_PI / 2 });
+        case Type::Bottom: return Gx::Transform({ 0, -200, 0 }, { 0, -M_PI / 2 });
+        case Type::Left: return Gx::Transform({ -200, 0, 0 }, { M_PI / 2, 0 });
+        case Type::Right: return Gx::Transform({ 200, 0, 0 }, { -M_PI / 2, 0 });
+        case Type::Front: return Gx::Transform({ 0, 0, -200 }, { 0, 0 });
+        case Type::Back: return Gx::Transform({ 0, 0, 200 }, { M_PI, 0 });
 
         default: return { };
     }

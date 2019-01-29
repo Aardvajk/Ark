@@ -107,12 +107,12 @@ RenderParams ModelView::beginRender()
 
 void ModelView::renderModel(const RenderParams &params)
 {
-    if(auto r = RenderState(RenderState::Type::Preview, { }, graphics, params))
+    if(auto r = RenderState(params.projection == Projection::Type::Perspective ? RenderState::Type::Preview : RenderState::Type::Flat, { }, graphics, params))
     {
         model->buffers()->previewBuffer()->renderTriangleList(graphics->device);
     }
 
-    if(auto r = RenderState(RenderState::Type::Color, { }, graphics, params))
+    if(auto r = RenderState(RenderState::Type::Color, RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params))
     {
         model->buffers()->faceBuffer()->renderLineList(graphics->device);
         model->buffers()->pointBuffer()->renderPointList(graphics->device);

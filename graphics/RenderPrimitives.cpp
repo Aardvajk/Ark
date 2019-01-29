@@ -27,7 +27,7 @@ void RenderPrimitives::invertBox(Graphics *graphics, const RenderParams &params,
     os << Gx::Vec3(anc.x, pos.y, 0) << Gx::Rgba(color);
     os << Gx::Vec3(anc.x, anc.y, 0) << Gx::Rgba(color);
 
-    auto r = RenderState(RenderState::Type::Screen, RenderState::Flag::Invert, graphics, params);
+    auto r = RenderState(RenderState::Type::Screen, RenderState::Flag::Invert | RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params);
     graphics->device.renderLineList(*graphics->genericBuffer, 4);
 }
 

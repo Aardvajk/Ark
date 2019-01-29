@@ -4,6 +4,8 @@
 
 #include "maths/Projection.h"
 
+#include <QGxMaths/QGxMathsMetatypes.h>
+
 #include <pcx/process.h>
 
 #include <QtWidgets/QApplication>
@@ -44,9 +46,11 @@ int main(int argc, char *argv[])
 
     setGui();
 
+    QGx::registerMathStreamOperators();
+
     qRegisterMetaTypeStreamOperators<Element::Type>("Element::Type");
-    qRegisterMetaTypeStreamOperators<Element::Type>("Projection::Type");
-    qRegisterMetaTypeStreamOperators<Element::Type>("Projection::Direction");
+    qRegisterMetaTypeStreamOperators<Projection::Type>("Projection::Type");
+    qRegisterMetaTypeStreamOperators<Projection::Direction>("Projection::Direction");
 
     try
     {

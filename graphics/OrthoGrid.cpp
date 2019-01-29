@@ -82,6 +82,6 @@ void renderOrthoGrid(Graphics *graphics, const RenderParams &params, float grid,
         os << swizzle(params.projection, Gx::Vec3(max.x, m.pos.y, 1)) << Gx::Rgba(color);
     }
 
-    auto r = RenderState(RenderState::Type::Color, { }, graphics, params);
+    auto r = RenderState(RenderState::Type::Color, RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params);
     graphics->device.renderLineList(*graphics->genericBuffer, n);
 }

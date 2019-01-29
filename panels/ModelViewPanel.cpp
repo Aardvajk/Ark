@@ -16,6 +16,8 @@
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QMenu>
 
+#include <QPxCore/QPxSettings.h>
+
 #include <QPxWidgets/QPxPalette.h>
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -48,15 +50,17 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
     auto button = setPanelButton(toolBar()->addTypedWidget(new GuiSmallButton(QIcon(":/resources/images/splitgrid.png"))));
     button->setMenu(menu);
 
-    combo->setCurrentIndex(5);
+    comboChanged(0);
 }
 
 void ModelViewPanel::saveState(QPx::Settings &settings) const
 {
+    settings["index"].setValue(combo->currentIndex());
 }
 
 void ModelViewPanel::restoreState(const QPx::Settings &settings)
 {
+    combo->setCurrentIndex(settings["index"].value<int>());
 }
 
 ModelViewPanel *ModelViewPanel::clone() const

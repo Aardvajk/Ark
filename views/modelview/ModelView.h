@@ -32,6 +32,9 @@ signals:
 
     void render(ModelView *view, Graphics *graphics, const RenderParams &params);
 
+public slots:
+    void setState(const ModelViewState &value);
+
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
 

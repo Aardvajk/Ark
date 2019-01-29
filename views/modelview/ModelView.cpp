@@ -50,6 +50,11 @@ RenderParams ModelView::renderParams() const
     return p;
 }
 
+void ModelView::setState(const ModelViewState &value)
+{
+    st = value;
+}
+
 void ModelView::paintEvent(QPaintEvent *event)
 {
     updateCamera(timer.elapsed(Gx::Timer::Flag::Restart));

@@ -118,23 +118,20 @@ void ModelView::renderModel(const RenderParams &params)
         {
             model->buffers()->previewBuffer()->renderTriangleList(graphics->device);
         }
+
+        if(auto r = RenderState(RenderState::Type::Color, RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params))
+        {
+            model->buffers()->faceBuffer()->renderLineList(graphics->device);
+            model->buffers()->pointBuffer()->renderPointList(graphics->device);
+        }
     }
     else if(st.render == Render::Type::Wireframe)
     {
         if(auto r = RenderState(RenderState::Type::Color, { }, graphics, params))
         {
             model->buffers()->wireframeBuffer()->renderLineList(graphics->device);
+            model->buffers()->pointBuffer()->renderPointList(graphics->device);
         }
-    }
-
-    if(auto r = RenderState(RenderState::Type::Color, RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params))
-    {
-        if(st.render != Render::Type::Wireframe)
-        {
-            model->buffers()->faceBuffer()->renderLineList(graphics->device);
-        }
-
-        model->buffers()->pointBuffer()->renderPointList(graphics->device);
     }
 }
 

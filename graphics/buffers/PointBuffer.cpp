@@ -35,7 +35,7 @@ void PointBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
             auto &mesh = e.mesh();
             auto selection = e.selection();
 
-            auto c = Gx::Color(1.0f, 1.0f, 1.0f);
+            auto c = Gx::Color(1.0f, 0.0f, 0.0f);
 
             for(int i = 0; i < mesh.vertices.count(); ++i)
             {

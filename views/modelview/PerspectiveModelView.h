@@ -17,6 +17,8 @@ protected:
     virtual void updateCamera(float delta) override;
 
     virtual void render() override;
+
+    virtual Gx::Color background() const override;
 };
 
 #endif // PERSPECTIVEMODELVIEW_H

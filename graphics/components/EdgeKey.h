@@ -7,11 +7,12 @@
 class EdgeKey
 {
 public:
-    EdgeKey(int a, int b) : keys(a < b ? qMakePair(a, b) : qMakePair(b, a)) { }
+    EdgeKey(int a, int b, bool selected) : keys(a < b ? qMakePair(a, b) : qMakePair(b, a)), selected(selected) { }
 
     bool operator==(const EdgeKey &o) const { return keys == o.keys; }
 
     QPair<int, int> keys;
+    bool selected;
 };
 
 inline uint qHash(const EdgeKey &key){ return qHash(key.keys); }

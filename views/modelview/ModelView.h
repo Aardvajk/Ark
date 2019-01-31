@@ -9,6 +9,8 @@
 
 #include <GxCore/GxTimer.h>
 
+#include <GxMaths/GxColor.h>
+
 #include <pcx/optional.h>
 
 class Model;
@@ -51,6 +53,8 @@ protected:
     virtual void updateCamera(float delta) = 0;
 
     virtual void render() = 0;
+
+    virtual Gx::Color background() const = 0;
 
     virtual RenderParams beginRender();
     virtual void renderModel(const RenderParams &params);

@@ -1,7 +1,7 @@
 #ifndef GUIPOPUPWINDOW_H
 #define GUIPOPUPWINDOW_H
 
-#include <QtWidgets/QFrame>
+#include <QtWidgets/QWidget>
 
 namespace QPx
 {
@@ -10,7 +10,7 @@ class UnitAnimation;
 
 }
 
-class GuiPopupWindow : public QFrame
+class GuiPopupWindow : public QWidget
 {
     Q_OBJECT
 
@@ -21,7 +21,7 @@ signals:
     void hidden();
 
 public slots:
-    void unfold();
+    void fadeIn(QWidget *widget);
 
 protected:
     virtual void showEvent(QShowEvent *event) override;
@@ -32,8 +32,6 @@ private slots:
 
 private:
     QWidget *w;
-    QSize ss, ts;
-
     QPx::UnitAnimation *anim;
 };
 

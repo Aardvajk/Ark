@@ -23,6 +23,7 @@ public:
     bool isChecked() const;
 
 signals:
+    void pressed();
     void clicked();
     void toggled(bool state);
 

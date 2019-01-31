@@ -6,10 +6,12 @@
 
 #include "views/modelview/PerspectiveModelView.h"
 #include "views/modelview/OrthoModelView.h"
+#include "views/modelview/ModelViewSettingsWidget.h"
 
 #include "gui/GuiBar.h"
 #include "gui/GuiComboBox.h"
 #include "gui/GuiSmallButton.h"
+#include "gui/GuiPopupWindow.h"
 
 #include "graphics/Graphics.h"
 
@@ -25,12 +27,16 @@
 
 ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, QWidget *parent) : GuiPanel(parent), model(model), graphics(graphics), view(nullptr), relay(relay)
 {
+    connect(toolBar()->addTypedWidget(new GuiSmallButton(QIcon(":/resources/images/ark.png"))), SIGNAL(pressed()), SLOT(settingsPressed()));
+
     combo = toolBar()->addTypedWidget(new GuiComboBox());
     for(auto p: pcx::enum_range(Projection::Type::Perspective, Projection::Type::None))
     {
         combo->addItem(Projection::toString(p), QVariant::fromValue(p));
 
         states[p].projection = p;
+        states[p].render = p == Projection::Type::Perspective ? Render::Type::Flat : Render::Type::Wireframe;
+
         states[p].camera = Projection::camera(p);
     }
 
@@ -66,6 +72,19 @@ void ModelViewPanel::restoreState(const QPx::Settings &settings)
 ModelViewPanel *ModelViewPanel::clone() const
 {
     return new ModelViewPanel(model, graphics, relay);
+}
+
+void ModelViewPanel::settingsPressed()
+{
+    if(auto b = qobject_cast<GuiButton*>(sender()))
+    {
+        auto w = new GuiPopupWindow(new ModelViewSettingsWidget(view), this);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+
+        connect(w, SIGNAL(hidden()), b, SLOT(reset()));
+
+        w->fadeIn(b);
+    }
 }
 
 void ModelViewPanel::comboChanged(int index)

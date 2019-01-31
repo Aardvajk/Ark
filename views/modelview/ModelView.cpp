@@ -105,21 +105,35 @@ void ModelView::updateMousePos(QMouseEvent *event, const Gx::Vec2 &mousePos, con
 RenderParams ModelView::beginRender()
 {
     graphics->device.begin(this);
-    graphics->device.clear(QGx::Color(model->property("Background").value<QColor>()), 1.0f);
+    graphics->device.clear(background(), 1.0f);
 
     return renderParams();
 }
 
 void ModelView::renderModel(const RenderParams &params)
 {
-    if(auto r = RenderState(params.projection == Projection::Type::Perspective ? RenderState::Type::Preview : RenderState::Type::Flat, { }, graphics, params))
+    if(st.render == Render::Type::Flat || st.render == Render::Type::Textured)
     {
-        model->buffers()->previewBuffer()->renderTriangleList(graphics->device);
+        if(auto r = RenderState(params.projection == Projection::Type::Perspective ? RenderState::Type::Preview : RenderState::Type::Flat, { }, graphics, params))
+        {
+            model->buffers()->previewBuffer()->renderTriangleList(graphics->device);
+        }
+    }
+    else if(st.render == Render::Type::Wireframe)
+    {
+        if(auto r = RenderState(RenderState::Type::Color, { }, graphics, params))
+        {
+            model->buffers()->wireframeBuffer()->renderLineList(graphics->device);
+        }
     }
 
     if(auto r = RenderState(RenderState::Type::Color, RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params))
     {
-        model->buffers()->faceBuffer()->renderLineList(graphics->device);
+        if(st.render != Render::Type::Wireframe)
+        {
+            model->buffers()->faceBuffer()->renderLineList(graphics->device);
+        }
+
         model->buffers()->pointBuffer()->renderPointList(graphics->device);
     }
 }

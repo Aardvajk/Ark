@@ -27,6 +27,7 @@ protected:
     virtual ModelViewPanel *clone() const override;
 
 private slots:
+    void settingsPressed();
     void comboChanged(int index);
 
 private:

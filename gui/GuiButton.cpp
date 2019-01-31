@@ -176,6 +176,10 @@ void GuiButton::buttonPressed()
     {
         c.menu->exec(mapToGlobal(QPoint(0, height())));
     }
+    else
+    {
+        emit pressed();
+    }
 }
 
 void GuiButton::buttonReleased()

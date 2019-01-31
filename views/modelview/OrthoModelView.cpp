@@ -41,8 +41,13 @@ void OrthoModelView::render()
 {
     auto params = beginRender();
 
-    renderOrthoGrid(graphics, params, 1.0f, { 60, 80, 100 });
+    renderOrthoGrid(graphics, params, 1.0f, { 0.6f, 0.6f, 0.6f });
     renderModel(params);
     endRender(params);
+}
+
+Gx::Color OrthoModelView::background() const
+{
+    return Gx::Color(0.7f, 0.7f, 0.7f);
 }
 

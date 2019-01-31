@@ -69,7 +69,7 @@ void Projection::orthoDirections(Type type, Gx::Vec3 &up, Gx::Vec3 &right, Gx::V
 
 Gx::Matrix Projection::orthoMatrix(Type type, const Gx::SizeF &size, const Gx::Vec3 &pos)
 {
-    return Gx::Matrix::ortho(orthoSize(size, orthoUnit(orthoComponent(type, pos))), { -32767.0f, 32767.0f });
+    return Gx::Matrix::ortho(orthoSize(size, orthoUnit(orthoComponent(type, pos))), { -1000.0f, 1000.0f });
 }
 
 void Projection::clampOrthoZ(Type type, Gx::Vec3 &pos)

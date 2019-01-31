@@ -111,7 +111,9 @@ SOURCES += \
     views/modelview/ModelView.cpp \
     views/modelview/OrthoModelView.cpp \
     graphics/OrthoGrid.cpp \
-    gui/GuiPopupWindow.cpp
+    gui/GuiPopupWindow.cpp \
+    views/modelview/ModelViewSettingsWidget.cpp \
+    core/Render.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -191,7 +193,9 @@ HEADERS += \
     views/modelview/ModelView.h \
     views/modelview/OrthoModelView.h \
     graphics/OrthoGrid.h \
-    gui/GuiPopupWindow.h
+    gui/GuiPopupWindow.h \
+    views/modelview/ModelViewSettingsWidget.h \
+    core/Render.h
 
 DISTFILES +=
 

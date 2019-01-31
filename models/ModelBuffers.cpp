@@ -9,10 +9,12 @@
 ModelBuffers::ModelBuffers(Model *model, Graphics *graphics, QObject *parent)
 {
     preview = new PreviewBuffer(model, graphics, this);
-    faces = new FaceBuffer(model, graphics, this);
+    faces = new FaceBuffer(FaceBuffer::Type::Selection, model, graphics, this);
+    wires = new FaceBuffer(FaceBuffer::Type::Wireframe, model, graphics, this);
     points = new PointBuffer(model, graphics, this);
 
     connect(model, SIGNAL(changed()), preview, SLOT(invalidate()));
     connect(model, SIGNAL(changed()), faces, SLOT(invalidate()));
+    connect(model, SIGNAL(changed()), wires, SLOT(invalidate()));
     connect(model, SIGNAL(changed()), points, SLOT(invalidate()));
 }

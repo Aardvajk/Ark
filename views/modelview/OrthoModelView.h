@@ -17,6 +17,8 @@ protected:
 
     virtual void render() override;
 
+    virtual Gx::Color background() const override;
+
 private:
     void renderGrid(const RenderParams &params);
 };

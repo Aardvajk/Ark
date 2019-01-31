@@ -1,7 +1,11 @@
 #include "PerspectiveModelView.h"
 
+#include "models/Model.h"
+
 #include <GxMaths/GxMatrix.h>
 #include <GxMaths/GxRange.h>
+
+#include <QGxMaths/QGxColor.h>
 
 #include <QtGui/QMouseEvent>
 
@@ -63,4 +67,9 @@ void PerspectiveModelView::render()
 
     renderModel(p);
     endRender(p);
+}
+
+Gx::Color PerspectiveModelView::background() const
+{
+    return QGx::Color(model->property("Background").value<QColor>());
 }

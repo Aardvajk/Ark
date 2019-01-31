@@ -19,11 +19,13 @@ public:
 
     PreviewBuffer *previewBuffer() const { return preview; }
     FaceBuffer *faceBuffer() const { return faces; }
+    FaceBuffer *wireframeBuffer() const { return wires; }
     PointBuffer *pointBuffer() const { return points; }
 
 private:
     PreviewBuffer *preview;
     FaceBuffer *faces;
+    FaceBuffer *wires;
     PointBuffer *points;
 };
 

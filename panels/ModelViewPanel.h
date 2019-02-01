@@ -12,6 +12,7 @@ class Graphics;
 class ModelView;
 class Relay;
 class GuiComboBox;
+class QMenu;
 
 class ModelViewPanel : public GuiPanel
 {
@@ -27,8 +28,10 @@ protected:
     virtual ModelViewPanel *clone() const override;
 
 private slots:
-    void settingsPressed();
+    void updateMenu();
+
     void comboChanged(int index);
+    void renderChanged(bool state);
 
 private:
     Model *model;
@@ -36,6 +39,7 @@ private:
     ModelView *view;
     Relay *relay;
     GuiComboBox *combo;
+    QMenu *render;
 
     QHash<Projection::Type, ModelViewState> states;
 };

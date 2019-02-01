@@ -1,17 +1,16 @@
 #include "ModelViewPanel.h"
 
 #include "core/Relay.h"
+#include "core/Render.h"
 
 #include "maths/Projection.h"
 
 #include "views/modelview/PerspectiveModelView.h"
 #include "views/modelview/OrthoModelView.h"
-#include "views/modelview/ModelViewSettingsWidget.h"
 
 #include "gui/GuiBar.h"
 #include "gui/GuiComboBox.h"
 #include "gui/GuiSmallButton.h"
-#include "gui/GuiPopupWindow.h"
 
 #include "graphics/Graphics.h"
 
@@ -27,8 +26,6 @@
 
 ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, QWidget *parent) : GuiPanel(parent), model(model), graphics(graphics), view(nullptr), relay(relay)
 {
-    connect(toolBar()->addTypedWidget(new GuiSmallButton(QIcon(":/resources/images/ark.png"))), SIGNAL(pressed()), SLOT(settingsPressed()));
-
     combo = toolBar()->addTypedWidget(new GuiComboBox());
     for(auto p: pcx::enum_range(Projection::Type::Perspective, Projection::Type::None))
     {
@@ -48,13 +45,17 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
     menu->addAction(QIcon(":/resources/images/splithorz.png"), "Split Horizontal", this, SLOT(splitHorizontal()));
     menu->addAction(QIcon(":/resources/images/splitgrid.png"), "Split Grid", this, SLOT(splitGrid()));
     menu->addSeparator();
+
+    render = menu->addMenu("Render");
+
+    menu->addSeparator();
     menu->addAction(maximizeAction());
     menu->addAction(closeAction());
 
     connect(menu, SIGNAL(aboutToShow()), SLOT(menuAboutToShow()));
+    connect(menu, SIGNAL(aboutToShow()), SLOT(updateMenu()));
 
-    auto button = setPanelButton(toolBar()->addTypedWidget(new GuiSmallButton(QIcon(":/resources/images/splitgrid.png"))));
-    button->setMenu(menu);
+    setPanelButton(toolBar()->addTypedWidget(new GuiSmallButton(QIcon(":/resources/images/splitgrid.png"))))->setMenu(menu);
 
     comboChanged(0);
 }
@@ -62,11 +63,17 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
 void ModelViewPanel::saveState(QPx::Settings &settings) const
 {
     settings["index"].setValue(combo->currentIndex());
+    settings["render"].setValue(QVariant::fromValue(view->state().render));
 }
 
 void ModelViewPanel::restoreState(const QPx::Settings &settings)
 {
     combo->setCurrentIndex(settings["index"].value<int>());
+
+    auto s = view->state();
+    s.render = settings["render"].value<Render::Type>();
+
+    view->setState(s);
 }
 
 ModelViewPanel *ModelViewPanel::clone() const
@@ -74,16 +81,23 @@ ModelViewPanel *ModelViewPanel::clone() const
     return new ModelViewPanel(model, graphics, relay);
 }
 
-void ModelViewPanel::settingsPressed()
+void ModelViewPanel::updateMenu()
 {
-    if(auto b = qobject_cast<GuiButton*>(sender()))
+    render->clear();
+    for(auto r: pcx::enum_range(Render::Type::Wireframe, Render::Type::None))
     {
-        auto w = new GuiPopupWindow(new ModelViewSettingsWidget(view), this);
-        w->setAttribute(Qt::WA_DeleteOnClose);
+        auto a = new QAction(Render::toString(r), render);
+        render->addAction(a);
 
-        connect(w, SIGNAL(hidden()), b, SLOT(reset()));
+        a->setData(QVariant::fromValue(r));
+        a->setCheckable(true);
 
-        w->fadeIn(b);
+        if(r == view->state().render)
+        {
+            a->setChecked(true);
+        }
+
+        connect(a, SIGNAL(toggled(bool)), SLOT(renderChanged(bool)));
     }
 }
 
@@ -111,4 +125,12 @@ void ModelViewPanel::comboChanged(int index)
     connect(view, SIGNAL(render(ModelView*,Graphics*,RenderParams)), relay, SIGNAL(render(ModelView*,Graphics*,RenderParams)));
 
     connect(graphics, SIGNAL(render()), view, SLOT(update()));
+}
+
+void ModelViewPanel::renderChanged(bool state)
+{
+    auto s = view->state();
+    s.render = static_cast<QAction*>(sender())->data().value<Render::Type>();
+
+    view->setState(s);
 }

@@ -8,7 +8,15 @@ class GuiSeparator : public QWidget
     Q_OBJECT
 
 public:
-    GuiSeparator(Qt::Orientation orientation, QWidget *parent = nullptr);
+    enum class Style { Line, StyledLine };
+
+    GuiSeparator(Style style, Qt::Orientation orientation, QWidget *parent = nullptr);
+
+protected:
+    virtual void paintEvent(QPaintEvent *event) override;
+
+private:
+    Style style;
 };
 
 #endif // GUISEPARATOR_H

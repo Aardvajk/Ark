@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     auto factory = new PropertyTypeFactory(this);
 
     auto central = setTypedCentralWidget(new GuiCentralWidget());
-    central->layout()->addTypedWidget(new GuiSeparator(Qt::Horizontal));
+    central->layout()->addTypedWidget(new GuiSeparator(GuiSeparator::Style::Line, Qt::Horizontal));
 
     auto horz = central->layout()->addTypedLayout(new QPx::HBoxLayout(0, 1));
 

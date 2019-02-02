@@ -112,7 +112,8 @@ SOURCES += \
     views/modelview/OrthoModelView.cpp \
     graphics/OrthoGrid.cpp \
     core/Render.cpp \
-    commands/MoveSelectionCommand.cpp
+    commands/MoveSelectionCommand.cpp \
+    maths/Grid.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -193,7 +194,8 @@ HEADERS += \
     views/modelview/OrthoModelView.h \
     graphics/OrthoGrid.h \
     core/Render.h \
-    commands/MoveSelectionCommand.h
+    commands/MoveSelectionCommand.h \
+    maths/Grid.h
 
 DISTFILES +=
 

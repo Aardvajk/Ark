@@ -8,6 +8,8 @@
 
 #include "views/modelview/ModelView.h"
 
+#include "maths/Grid.h"
+
 #include "commands/MoveSelectionCommand.h"
 
 #include <QPxCore/QPxAction.h>
@@ -59,7 +61,15 @@ void MoveTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
-        command->move(pos - start);
+        auto value = pos - start;
+        auto grid = model->property("Grid");
+
+        if(grid.value<QVariant>().isValid())
+        {
+            value = snapToGrid(value, grid.value<float>());
+        }
+
+        command->move(value);
     }
 }
 

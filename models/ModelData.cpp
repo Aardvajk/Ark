@@ -26,7 +26,7 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
 {
     properties["Name"] = Property("Model");
     properties["Background"] = Property(QColor(200, 220, 240));
-    properties["Position"] = Property(QVariant::fromValue(Gx::Vec3(7, 8, 9)));
+    properties["Grid"] = Property(1.0f);
 
     auto m = Mesh::cuboid({ 2, 2, 2 });
     auto e = EntityFactory::create(Entity::Type::Geometry);

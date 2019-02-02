@@ -33,7 +33,6 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
 
         states[p].projection = p;
         states[p].render = p == Projection::Type::Perspective ? Render::Type::Flat : Render::Type::Wireframe;
-
         states[p].camera = Projection::camera(p);
     }
 
@@ -47,6 +46,16 @@ ModelViewPanel::ModelViewPanel(Model *model, Graphics *graphics, Relay *relay, Q
     menu->addSeparator();
 
     render = menu->addMenu("Render");
+    for(auto r: pcx::enum_range(Render::Type::Wireframe, Render::Type::None))
+    {
+        auto a = new QAction(Render::toString(r), render);
+        render->addAction(a);
+
+        a->setData(QVariant::fromValue(r));
+        a->setCheckable(true);
+
+        connect(a, SIGNAL(toggled(bool)), SLOT(renderChanged(bool)));
+    }
 
     menu->addSeparator();
     menu->addAction(maximizeAction());
@@ -83,21 +92,10 @@ ModelViewPanel *ModelViewPanel::clone() const
 
 void ModelViewPanel::updateMenu()
 {
-    render->clear();
-    for(auto r: pcx::enum_range(Render::Type::Wireframe, Render::Type::None))
+    auto s = pcx::scoped_lock(lock);
+    for(auto a: render->actions())
     {
-        auto a = new QAction(Render::toString(r), render);
-        render->addAction(a);
-
-        a->setData(QVariant::fromValue(r));
-        a->setCheckable(true);
-
-        if(r == view->state().render)
-        {
-            a->setChecked(true);
-        }
-
-        connect(a, SIGNAL(toggled(bool)), SLOT(renderChanged(bool)));
+        a->setChecked(a->data().value<Render::Type>() == view->state().render);
     }
 }
 
@@ -129,8 +127,11 @@ void ModelViewPanel::comboChanged(int index)
 
 void ModelViewPanel::renderChanged(bool state)
 {
-    auto s = view->state();
-    s.render = static_cast<QAction*>(sender())->data().value<Render::Type>();
+    if(!lock)
+    {
+        auto s = view->state();
+        s.render = static_cast<QAction*>(sender())->data().value<Render::Type>();
 
-    view->setState(s);
+        view->setState(s);
+    }
 }

@@ -3,8 +3,11 @@
 
 #include "tools/Tool.h"
 
+#include <GxMaths/GxVector.h>
+
 class ActionList;
 class Model;
+class MoveSelectionCommand;
 
 class MoveTool : public Tool
 {
@@ -15,6 +18,18 @@ public:
 
     virtual QString name() const override;
     virtual QIcon icon() const override;
+
+public slots:
+    virtual void mousePressed(ModelView *view, QMouseEvent *event) override;
+    virtual void mouseMoved(ModelView *view, QMouseEvent *event) override;
+    virtual void mouseReleased(ModelView *view, QMouseEvent *event) override;
+
+    virtual void focusLost() override;
+
+private:
+    Model *model;
+    MoveSelectionCommand *command;
+    Gx::Vec3 start;
 };
 
 #endif // MOVETOOL_H

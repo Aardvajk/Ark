@@ -74,6 +74,11 @@ void Entity::setSelection(const Selection &value)
     s.value().selection = value;
 }
 
+Mesh &Entity::mesh()
+{
+    return s.value().mesh;
+}
+
 const Mesh &Entity::mesh() const
 {
     return s.value().mesh;

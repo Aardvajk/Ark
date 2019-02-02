@@ -43,6 +43,7 @@ public:
     const Selection &selection() const;
     void setSelection(const Selection &value);
 
+    Mesh &mesh();
     const Mesh &mesh() const;
     void setMesh(const Mesh &value);
 

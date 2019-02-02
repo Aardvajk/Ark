@@ -41,7 +41,7 @@ void OrthoModelView::render()
 {
     auto params = beginRender();
 
-    renderOrthoGrid(graphics, params, 1.0f, { 0.6f, 0.6f, 0.6f });
+    renderOrthoGrid(graphics, params, 1.0f, { 0.65f, 0.65f, 0.65f });
     renderModel(params);
     endRender(params);
 }

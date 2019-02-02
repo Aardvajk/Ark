@@ -7,6 +7,8 @@
 
 #include <QtCore/QHash>
 
+#include <pcx/scoped_lock.h>
+
 class Model;
 class Graphics;
 class ModelView;
@@ -42,6 +44,7 @@ private:
     QMenu *render;
 
     QHash<Projection::Type, ModelViewState> states;
+    pcx::lock lock;
 };
 
 #endif // MODELVIEWPANEL_H

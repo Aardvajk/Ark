@@ -2,6 +2,8 @@
 
 #include "maths/Projection.h"
 
+#include "models/Model.h"
+
 #include "graphics/OrthoGrid.h"
 
 OrthoModelView::OrthoModelView(Model *model, Graphics *graphics, const ModelViewState &state, QWidget *parent) : ModelView(model, graphics, state, parent)
@@ -41,7 +43,12 @@ void OrthoModelView::render()
 {
     auto params = beginRender();
 
-    renderOrthoGrid(graphics, params, 1.0f, { 0.65f, 0.65f, 0.65f });
+    auto grid = model->property("Grid");
+    if(grid.value<QVariant>().isValid())
+    {
+        renderOrthoGrid(graphics, params, grid.value<float>(), { 0.65f, 0.65f, 0.65f });
+    }
+
     renderModel(params);
     endRender(params);
 }

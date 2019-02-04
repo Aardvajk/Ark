@@ -21,6 +21,7 @@ public:
     Mesh &set(const Mesh &value);
 
     static Mesh cuboid(const Gx::Vec3 &dims);
+    static Mesh cuboidFromCorners(const Gx::Vec3 &min, const Gx::Vec3 &max);
 
     QVector<Gx::Vec3> vertices;
     QVector<Face> faces;

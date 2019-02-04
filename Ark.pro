@@ -113,7 +113,9 @@ SOURCES += \
     graphics/OrthoGrid.cpp \
     core/Render.cpp \
     commands/MoveSelectionCommand.cpp \
-    maths/Grid.cpp
+    maths/Grid.cpp \
+    tools/CreateTool.cpp \
+    commands/CreateEntityCommand.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -195,7 +197,9 @@ HEADERS += \
     graphics/OrthoGrid.h \
     core/Render.h \
     commands/MoveSelectionCommand.h \
-    maths/Grid.h
+    maths/Grid.h \
+    tools/CreateTool.h \
+    commands/CreateEntityCommand.h
 
 DISTFILES +=
 

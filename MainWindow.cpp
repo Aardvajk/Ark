@@ -27,6 +27,7 @@
 #include "tools/ToolList.h"
 #include "tools/SelectTool.h"
 #include "tools/MoveTool.h"
+#include "tools/CreateTool.h"
 
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -68,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     tools->addTool(new SelectTool(actions, model, settings["Tools"]["Select"]));
     tools->addTool(new MoveTool(actions, model, settings["Tools"]["Move"]));
+    tools->addTool(new CreateTool(actions, model, settings["Tools"]["Create"]));
 
     loadInterface(":/resources/text/mainwindowui.qps", actions);
 

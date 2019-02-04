@@ -78,14 +78,17 @@ void MoveTool::mouseReleased(ModelView *view, QMouseEvent *event)
     if(command)
     {
         model->endCommand(command);
-
-        start = { };
         command = nullptr;
     }
 }
 
 void MoveTool::focusLost()
 {
-    delete command;
-    command = nullptr;
+    if(command)
+    {
+        command->undo();
+
+        delete command;
+        command = nullptr;
+    }
 }

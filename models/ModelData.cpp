@@ -31,26 +31,27 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     auto m = Mesh::cuboid({ 2, 2, 2 });
     auto e = EntityFactory::create(Entity::Type::Geometry);
 
-    e.setMesh(m);
-    randomise(e, m);
+//    e.setMesh(m);
+//    randomise(e, m);
 
-    entities.append(e);
+//    entities.append(e);
 
-    e = EntityFactory::create(Entity::Type::Geometry);
-    e.setMesh(m.moved({ 3, 1, 3 }));
-    randomise(e, m);
+//    e = EntityFactory::create(Entity::Type::Geometry);
+//    e.setMesh(m.moved({ 3, 1, 3 }));
+//    randomise(e, m);
 
-    entities.append(e);
+//    entities.append(e);
 
-    e = EntityFactory::create(Entity::Type::Geometry);
-    e.setMesh(m.moved({ -3, 1, 3 }));
-    randomise(e, m);
+//    e = EntityFactory::create(Entity::Type::Geometry);
+//    e.setMesh(m.moved({ -3, 1, 3 }));
+//    randomise(e, m);
 
-    entities.append(e);
+//    entities.append(e);
 
-    e = EntityFactory::create(Entity::Type::Geometry);
-    e.setMesh(m.moved({ 0, -1, -3 }));
-    randomise(e, m);
+//    e = EntityFactory::create(Entity::Type::Geometry);
+//    e.setMesh(m.moved({ 0, -1, -3 }));
+//    e.setMesh(Mesh::cuboidFromCorners(Gx::Vec3(-1, -1, -1), Gx::Vec3(1, 1, 1)));
+//    randomise(e, m);
 
-    entities.append(e);
+//    entities.append(e);
 }

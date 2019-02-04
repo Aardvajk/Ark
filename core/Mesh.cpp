@@ -57,3 +57,32 @@ Mesh Mesh::cuboid(const Gx::Vec3 &dims)
 
     return Mesh(vertices, faces);
 }
+
+Mesh Mesh::cuboidFromCorners(const Gx::Vec3 &min, const Gx::Vec3 &max)
+{
+    auto a = min;
+    auto b = max;
+
+    QVector<Gx::Vec3> vertices;
+
+    vertices.append(Gx::Vec3(a.x, b.y, a.z));
+    vertices.append(Gx::Vec3(b.x, b.y, a.z));
+    vertices.append(Gx::Vec3(b.x, a.y, a.z));
+    vertices.append(Gx::Vec3(a.x, a.y, a.z));
+
+    vertices.append(Gx::Vec3(a.x, b.y, b.z));
+    vertices.append(Gx::Vec3(b.x, b.y, b.z));
+    vertices.append(Gx::Vec3(b.x, a.y, b.z));
+    vertices.append(Gx::Vec3(a.x, a.y, b.z));
+
+    QVector<Face> faces;
+
+    faces.append({ 0, 1, 2, 3 });
+    faces.append({ 1, 5, 6, 2 });
+    faces.append({ 4, 0, 3, 7 });
+    faces.append({ 5, 4, 7, 6 });
+    faces.append({ 4, 5, 1, 0 });
+    faces.append({ 3, 2, 6, 7 });
+
+    return Mesh(vertices, faces);
+}

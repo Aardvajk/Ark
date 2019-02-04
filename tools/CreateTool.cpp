@@ -28,7 +28,7 @@ void randomise(Entity &e, const Mesh &m)
     }
 }
 
-Mesh mesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, float grid)
+Mesh mesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid)
 {
     auto a = start;
     auto b = pos;
@@ -36,9 +36,6 @@ Mesh mesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &po
     if(a.x > b.x) qSwap(a.x, b.x);
     if(a.y > b.y) qSwap(a.y, b.y);
     if(a.z > b.z) qSwap(a.z, b.z);
-
-    auto ag = snapToGridCorner(a, grid);
-    auto bg = snapToGridCorner(b, grid);
 
     int x = 0, y = 1, z = 2;
 
@@ -53,18 +50,29 @@ Mesh mesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &po
         default: break;
     }
 
-    if(a[x] < 0) ag[x] -= grid;
-    if(b[x] > 0) bg[x] += grid;
+    if(grid.isValid())
+    {
+        auto g = grid.value<float>();
 
-    if(a[y] < 0) ag[y] -= grid;
-    if(b[y] < 0) bg[y] -= grid;
+        auto ag = snapToGridCorner(a, g);
+        auto bg = snapToGridCorner(b, g);
 
-    bg[y] += grid;
+        if(a[x] < 0) ag[x] -= g;
+        if(b[x] > 0) bg[x] += g;
 
-    ag[z] = -1;
-    bg[z] = 1;
+        if(a[y] < 0) ag[y] -= g;
+        if(b[y] < 0) bg[y] -= g;
 
-    return Mesh::cuboidFromCorners(ag, bg);
+        bg[y] += g;
+
+        a = ag;
+        b = bg;
+    }
+
+    a[z] = -1;
+    b[z] = 1;
+
+    return Mesh::cuboidFromCorners(a, b);
 }
 
 }
@@ -91,13 +99,12 @@ void CreateTool::mousePressed(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
         start = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
-        auto m = mesh(view->state().projection, start, start, model->property("Grid").value<float>());
+        auto m = mesh(view->state().projection, start, start, model->property("Grid").value<QVariant>());
 
         auto e = EntityFactory::create(Entity::Type::Geometry);
         randomise(e, m);
 
         e.setMesh(m);
-        e.setSelection(Selection::fromElements(Element::Type::Vertex, m.vertices.count()));
 
         command = new CreateEntityCommand("Create", e, model);
     }
@@ -111,7 +118,7 @@ void CreateTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
         auto e = command->entity();
-        e.setMesh(mesh(view->state().projection, start, pos, model->property("Grid").value<float>()));
+        e.setMesh(mesh(view->state().projection, start, pos, model->property("Grid").value<QVariant>()));
 
         command->update(e);
     }

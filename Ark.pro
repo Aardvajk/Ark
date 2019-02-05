@@ -115,7 +115,8 @@ SOURCES += \
     commands/MoveSelectionCommand.cpp \
     maths/Grid.cpp \
     tools/CreateTool.cpp \
-    commands/CreateEntityCommand.cpp
+    commands/CreateEntityCommand.cpp \
+    commands/CompositeCommand.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -199,7 +200,8 @@ HEADERS += \
     commands/MoveSelectionCommand.h \
     maths/Grid.h \
     tools/CreateTool.h \
-    commands/CreateEntityCommand.h
+    commands/CreateEntityCommand.h \
+    commands/CompositeCommand.h
 
 DISTFILES +=
 

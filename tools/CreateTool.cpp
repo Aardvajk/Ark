@@ -6,8 +6,12 @@
 
 #include "maths/Grid.h"
 
+#include "graphics/RenderPrimitives.h"
+
 #include "views/modelview/ModelView.h"
 
+#include "commands/CompositeCommand.h"
+#include "commands/ModifySelectionCommand.h"
 #include "commands/CreateEntityCommand.h"
 
 #include "entity/EntityFactory.h"
@@ -28,7 +32,7 @@ void randomise(Entity &e, const Mesh &m)
     }
 }
 
-Mesh mesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid)
+Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid)
 {
     auto a = start;
     auto b = pos;
@@ -77,7 +81,7 @@ Mesh mesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &po
 
 }
 
-CreateTool::CreateTool(ActionList *actions, Model *model, QPx::Settings &settings, QObject *parent) : Tool(settings, parent), model(model), command(nullptr)
+CreateTool::CreateTool(ActionList *actions, Model *model, QPx::Settings &settings, QObject *parent) : Tool(settings, parent), model(model)
 {
     connect(actions->add("Tools.Create", "Create", QKeySequence("3")), SIGNAL(triggered()), SLOT(select()));
 }
@@ -97,49 +101,62 @@ void CreateTool::mousePressed(ModelView *view, QMouseEvent *event)
     if(view->state().projection != Projection::Type::Perspective && event->button() == Qt::LeftButton)
     {
         auto p = view->renderParams();
+
         start = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
-
-        auto m = mesh(view->state().projection, start, start, model->property("Grid").value<QVariant>());
-
-        auto e = EntityFactory::create(Entity::Type::Geometry);
-        randomise(e, m);
-
-        e.setMesh(m);
-
-        command = new CreateEntityCommand("Create", e, model);
+        mesh = blockMesh(view->state().projection, start, start, model->property("Grid").value<QVariant>());
     }
 }
 
 void CreateTool::mouseMoved(ModelView *view, QMouseEvent *event)
 {
-    if(command)
+    if(mesh)
     {
         auto p = view->renderParams();
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
-        auto e = command->entity();
-        e.setMesh(mesh(view->state().projection, start, pos, model->property("Grid").value<QVariant>()));
-
-        command->update(e);
+        mesh = blockMesh(view->state().projection, start, pos, model->property("Grid").value<QVariant>());
     }
 }
 
 void CreateTool::mouseReleased(ModelView *view, QMouseEvent *event)
 {
-    if(command)
+    if(mesh)
     {
-        model->endCommand(command);
-        command = nullptr;
+        auto composite = new CompositeCommand("Create", model);
+
+        if(!(event->modifiers() & Qt::ShiftModifier))
+        {
+            auto command = new ModifySelectionCommand("", model);
+            composite->add(command);
+
+            for(auto i: model->selected())
+            {
+                command->change(i, Selection());
+            }
+        }
+
+        auto e = EntityFactory::create(Entity::Type::Geometry);
+
+        e.setMesh(*mesh);
+        e.setSelection(Selection::fromElements(Element::Type::Face, mesh->faces.count()));
+
+        composite->add(new CreateEntityCommand("", e, model));
+        model->endCommand(composite);
+
+        mesh = { };
+    }
+}
+
+void CreateTool::render(ModelView *view, Graphics *graphics, const RenderParams &params)
+{
+    if(mesh)
+    {
+        auto p = view->renderParams();
+        RenderPrimitives::wireframeMesh(graphics, p, { }, *mesh, Gx::Color(1, 1, 1));
     }
 }
 
 void CreateTool::focusLost()
 {
-    if(command)
-    {
-        command->undo();
-
-        delete command;
-        command = nullptr;
-    }
+    mesh = { };
 }

@@ -20,9 +20,6 @@ public:
     virtual void undo() override;
     virtual void redo() override;
 
-    Entity entity() const;
-    void update(const Entity &entity);
-
 private:
     pcx::optional<Entity> v;
 };

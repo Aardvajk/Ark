@@ -36,14 +36,3 @@ void CreateEntityCommand::redo()
         model->change();
     }
 }
-
-Entity CreateEntityCommand::entity() const
-{
-    return data->entities.back();
-}
-
-void CreateEntityCommand::update(const Entity &entity)
-{
-    data->entities.back() = entity;
-    model->change();
-}

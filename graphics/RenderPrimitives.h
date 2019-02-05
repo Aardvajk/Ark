@@ -1,6 +1,8 @@
 #ifndef RENDERPRIMITIVES_H
 #define RENDERPRIMITIVES_H
 
+#include "graphics/RenderState.h"
+
 namespace Gx
 {
 
@@ -12,11 +14,13 @@ class Color;
 
 class Graphics;
 class RenderParams;
+class Mesh;
 
 namespace RenderPrimitives
 {
 
-void invertBox(Graphics *graphics, const RenderParams &params, const Gx::Vec2 &anc, const Gx::Vec2 &pos);
+void screenBox(Graphics *graphics, const RenderParams &params, RenderState::Flags flags, const Gx::Vec2 &anc, const Gx::Vec2 &pos, const Gx::Color &color);
+void wireframeMesh(Graphics *graphics, const RenderParams &params, RenderState::Flags flags, const Mesh &mesh, const Gx::Color &color);
 
 }
 

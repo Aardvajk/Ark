@@ -145,7 +145,7 @@ void SelectTool::render(ModelView *view, Graphics *graphics, const RenderParams 
 {
     if(mq.active(view))
     {
-        RenderPrimitives::invertBox(graphics, params, mq.anchor(), mq.position());
+        RenderPrimitives::screenBox(graphics, params, RenderState::Flag::Invert | RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, mq.anchor(), mq.position(), Gx::Color(1, 1, 1));
     }
 }
 

@@ -3,11 +3,14 @@
 
 #include "tools/Tool.h"
 
+#include "core/Mesh.h"
+
 #include <GxMaths/GxVector.h>
+
+#include <pcx/optional.h>
 
 class ActionList;
 class Model;
-class CreateEntityCommand;
 
 class CreateTool : public Tool
 {
@@ -24,12 +27,14 @@ public slots:
     virtual void mouseMoved(ModelView *view, QMouseEvent *event) override;
     virtual void mouseReleased(ModelView *view, QMouseEvent *event) override;
 
+    virtual void render(ModelView *view, Graphics *graphics, const RenderParams &params) override;
+
     virtual void focusLost() override;
 
 private:
     Model *model;
-    CreateEntityCommand *command;
     Gx::Vec3 start;
+    pcx::optional<Mesh> mesh;
 };
 
 #endif // CREATETOOL_H

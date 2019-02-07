@@ -1,23 +1,40 @@
 #include "Grid.h"
 
-float snapToGrid(float value, float grid)
+float Grid::snap(float value, float grid)
 {
     auto mod = std::fmod(value, grid);
     return (value - mod) + (mod >= (grid / 2) ? grid : 0);
 }
 
-Gx::Vec3 snapToGrid(const Gx::Vec3 &value, float grid)
+Gx::Vec3 Grid::snap(const Gx::Vec3 &value, float grid)
 {
-    return Gx::Vec3(snapToGrid(value.x, grid), snapToGrid(value.y, grid), snapToGrid(value.z, grid));
+    return Gx::Vec3(snap(value.x, grid), snap(value.y, grid), snap(value.z, grid));
 }
 
-float snapToGridCorner(float value, float grid)
+float Grid::snapCorner(float value, float grid)
 {
     return value - std::fmod(value, grid);
 }
 
-Gx::Vec3 snapToGridCorner(const Gx::Vec3 &value, float grid)
+Gx::Vec3 Grid::snapCorner(const Gx::Vec3 &value, float grid)
 {
-    return Gx::Vec3(snapToGridCorner(value.x, grid), snapToGridCorner(value.y, grid), snapToGridCorner(value.z, grid));
+    return Gx::Vec3(snapCorner(value.x, grid), snapCorner(value.y, grid), snapCorner(value.z, grid));
+}
+
+QDataStream &operator<<(QDataStream &ds, const Grid &g)
+{
+    return ds << g.valid() << g.value();
+}
+
+QDataStream &operator>>(QDataStream &ds, Grid &g)
+{
+    bool valid;
+    float value;
+
+    ds >> valid >> value;
+
+    g = valid ? Grid(value) : Grid();
+
+    return ds;
 }
 

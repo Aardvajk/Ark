@@ -32,7 +32,7 @@ void randomise(Entity &e, const Mesh &m)
     }
 }
 
-Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid)
+Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const Grid &grid)
 {
     auto a = start;
     auto b = pos;
@@ -54,12 +54,12 @@ Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec
         default: break;
     }
 
-    if(grid.isValid())
+    if(grid.valid())
     {
-        auto g = grid.value<float>();
+        auto g = grid.value();
 
-        auto ag = snapToGridCorner(a, g);
-        auto bg = snapToGridCorner(b, g);
+        auto ag = Grid::snapCorner(a, g);
+        auto bg = Grid::snapCorner(b, g);
 
         if(a[x] < 0) ag[x] -= g;
         if(b[x] > 0) bg[x] += g;
@@ -103,7 +103,7 @@ void CreateTool::mousePressed(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
 
         start = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
-        mesh = blockMesh(view->state().projection, start, start, model->property("Grid").value<QVariant>());
+        mesh = blockMesh(view->state().projection, start, start, model->property("Grid").value<Grid>());
     }
 }
 
@@ -114,7 +114,7 @@ void CreateTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
-        mesh = blockMesh(view->state().projection, start, pos, model->property("Grid").value<QVariant>());
+        mesh = blockMesh(view->state().projection, start, pos, model->property("Grid").value<Grid>());
     }
 }
 

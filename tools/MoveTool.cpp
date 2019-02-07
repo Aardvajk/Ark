@@ -62,11 +62,11 @@ void MoveTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
         auto value = pos - start;
-        auto grid = model->property("Grid");
+        auto grid = model->property("Grid").value<Grid>();
 
-        if(grid.value<QVariant>().isValid())
+        if(grid.valid())
         {
-            value = snapToGrid(value, grid.value<float>());
+            value = Grid::snap(value, grid.value());
         }
 
         command->move(value);

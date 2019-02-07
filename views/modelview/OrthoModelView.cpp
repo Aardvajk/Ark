@@ -1,6 +1,7 @@
 #include "OrthoModelView.h"
 
 #include "maths/Projection.h"
+#include "maths/Grid.h"
 
 #include "models/Model.h"
 
@@ -43,10 +44,10 @@ void OrthoModelView::render()
 {
     auto params = beginRender();
 
-    auto grid = model->property("Grid");
-    if(grid.value<QVariant>().isValid())
+    auto grid = model->property("Grid").value<Grid>();
+    if(grid.valid())
     {
-        renderOrthoGrid(graphics, params, grid.value<float>(), { 0.65f, 0.65f, 0.65f });
+        renderOrthoGrid(graphics, params, grid.value(), { 0.65f, 0.65f, 0.65f });
     }
 
     renderModel(params);

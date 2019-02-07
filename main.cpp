@@ -4,6 +4,7 @@
 #include "core/Render.h"
 
 #include "maths/Projection.h"
+#include "maths/Grid.h"
 
 #include <QGxMaths/QGxMathsMetatypes.h>
 
@@ -53,6 +54,7 @@ int main(int argc, char *argv[])
     qRegisterMetaTypeStreamOperators<Projection::Type>("Projection::Type");
     qRegisterMetaTypeStreamOperators<Projection::Direction>("Projection::Direction");
     qRegisterMetaTypeStreamOperators<Render::Type>("Render::Type");
+    qRegisterMetaTypeStreamOperators<Grid>("Grid");
 
     try
     {

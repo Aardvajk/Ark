@@ -4,6 +4,8 @@
 
 #include "core/Mesh.h"
 
+#include "maths/Grid.h"
+
 #include <GxMaths/GxVector.h>
 
 #include <QtGui/QColor>
@@ -26,7 +28,7 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
 {
     properties["Name"] = Property("Model");
     properties["Background"] = Property(QColor(200, 220, 240));
-    properties["Grid"] = Property(1.0f);
+    properties["Grid"] = Property(Grid(1.0f));
 
     auto m = Mesh::cuboid({ 2, 2, 2 });
     auto e = EntityFactory::create(Entity::Type::Geometry);

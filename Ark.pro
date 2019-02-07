@@ -116,7 +116,8 @@ SOURCES += \
     maths/Grid.cpp \
     tools/CreateTool.cpp \
     commands/CreateEntityCommand.cpp \
-    commands/CompositeCommand.cpp
+    commands/CompositeCommand.cpp \
+    properties/types/GridPropertyBrowserType.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -201,7 +202,8 @@ HEADERS += \
     maths/Grid.h \
     tools/CreateTool.h \
     commands/CreateEntityCommand.h \
-    commands/CompositeCommand.h
+    commands/CompositeCommand.h \
+    properties/types/GridPropertyBrowserType.h
 
 DISTFILES +=
 

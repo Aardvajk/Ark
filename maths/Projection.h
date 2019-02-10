@@ -30,6 +30,9 @@ public:
 
     static Gx::Transform camera(Type type);
 
+    static Gx::Vec2 worldToScreen(const RenderParams &params, const Gx::Vec3 &position);
+    static Gx::Vec3 merge(Type type, const Gx::Vec3 &pos, const Gx::Vec3 &mod);
+
     static const char *toString(Type type);
 };
 

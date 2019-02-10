@@ -6,6 +6,7 @@
 #include "actions/ApplicationActions.h"
 #include "actions/FileActions.h"
 #include "actions/EditActions.h"
+#include "actions/SelectActions.h"
 #include "actions/LayoutActions.h"
 
 #include "models/Model.h"
@@ -28,6 +29,7 @@
 #include "tools/SelectTool.h"
 #include "tools/MoveTool.h"
 #include "tools/CreateTool.h"
+#include "tools/CursorTool.h"
 
 #include <QPxWidgets/QPxLayouts.h>
 
@@ -65,11 +67,13 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     new ApplicationActions(actions, this);
     fileActions = new FileActions(model, actions, this);
     new EditActions(model, actions, this);
+    new SelectActions(model, actions, this);
     new LayoutActions(actions, this);
 
     tools->addTool(new SelectTool(actions, model, settings["Tools"]["Select"]));
     tools->addTool(new MoveTool(actions, model, settings["Tools"]["Move"]));
     tools->addTool(new CreateTool(actions, model, settings["Tools"]["Create"]));
+    tools->addTool(new CursorTool(actions, model, settings["Tools"]["Cursor"]));
 
     loadInterface(":/resources/text/mainwindowui.qps", actions);
 

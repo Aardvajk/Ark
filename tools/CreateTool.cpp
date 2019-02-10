@@ -4,9 +4,9 @@
 
 #include "models/Model.h"
 
-#include "maths/Grid.h"
-
 #include "graphics/RenderPrimitives.h"
+
+#include "maths/Grid.h"
 
 #include "views/modelview/ModelView.h"
 
@@ -32,7 +32,7 @@ void randomise(Entity &e, const Mesh &m)
     }
 }
 
-Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const Grid &grid)
+Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid)
 {
     auto a = start;
     auto b = pos;
@@ -54,9 +54,9 @@ Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec
         default: break;
     }
 
-    if(grid.valid())
+    if(grid.isValid())
     {
-        auto g = grid.value();
+        auto g = grid.value<float>();
 
         auto ag = Grid::snapCorner(a, g);
         auto bg = Grid::snapCorner(b, g);
@@ -103,7 +103,7 @@ void CreateTool::mousePressed(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
 
         start = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
-        mesh = blockMesh(view->state().projection, start, start, model->property("Grid").value<Grid>());
+        mesh = blockMesh(view->state().projection, start, start, model->property("Grid").value<QVariant>());
     }
 }
 
@@ -114,13 +114,13 @@ void CreateTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
-        mesh = blockMesh(view->state().projection, start, pos, model->property("Grid").value<Grid>());
+        mesh = blockMesh(view->state().projection, start, pos, model->property("Grid").value<QVariant>());
     }
 }
 
 void CreateTool::mouseReleased(ModelView *view, QMouseEvent *event)
 {
-    if(mesh)
+    if(mesh && event->button() == Qt::LeftButton)
     {
         auto composite = new CompositeCommand("Create", model);
 
@@ -139,6 +139,8 @@ void CreateTool::mouseReleased(ModelView *view, QMouseEvent *event)
 
         e.setMesh(*mesh);
         e.setSelection(Selection::fromElements(Element::Type::Face, mesh->faces.count()));
+
+        randomise(e, *mesh);
 
         composite->add(new CreateEntityCommand("", e, model));
         model->endCommand(composite);

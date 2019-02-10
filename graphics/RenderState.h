@@ -15,7 +15,8 @@ public:
         Preview,
         Flat,
         Color,
-        Screen
+        Screen,
+        Ndc
     };
 
     enum class Flag

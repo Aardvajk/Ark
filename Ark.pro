@@ -117,7 +117,8 @@ SOURCES += \
     tools/CreateTool.cpp \
     commands/CreateEntityCommand.cpp \
     commands/CompositeCommand.cpp \
-    properties/types/GridPropertyBrowserType.cpp
+    actions/SelectActions.cpp \
+    tools/CursorTool.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -203,7 +204,8 @@ HEADERS += \
     tools/CreateTool.h \
     commands/CreateEntityCommand.h \
     commands/CompositeCommand.h \
-    properties/types/GridPropertyBrowserType.h
+    actions/SelectActions.h \
+    tools/CursorTool.h
 
 DISTFILES +=
 

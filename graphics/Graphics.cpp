@@ -40,6 +40,7 @@ Graphics::Graphics(QObject *parent) : QObject(parent)
     previewShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/previewvertex.dat")));
     colorShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/colorvertex.dat")));
     screenShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/screenvertex.dat")));
+    ndcShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/ndcvertex.dat")));
 
     genericBuffer = resources.add(new Gx::VertexBuffer(device, { 25600, sizeof(ColorVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
 

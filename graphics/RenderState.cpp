@@ -41,6 +41,12 @@ RenderState::RenderState(Type type, Flags flags, Graphics *graphics, const Rende
         graphics->screenShader->setFloat(graphics->device, "dx", params.size.width);
         graphics->screenShader->setFloat(graphics->device, "dy", params.size.height);
     }
+    else if(type == Type::Ndc)
+    {
+        graphics->device.setVertexDeclaration(*graphics->colorVertexDec);
+
+        graphics->device.setVertexShader(*graphics->ndcShader);
+    }
 
     if(flags & Flag::Invert)
     {

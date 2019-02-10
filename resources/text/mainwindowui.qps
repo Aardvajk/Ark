@@ -18,6 +18,14 @@ Menus
     {
         Edit.Undo
         Edit.Redo
+        [Separator]
+        [Menu] = "&Select"
+        {
+            Select.Prev.Face
+            Select.Next.Face
+            [Separator]
+            Select.All.Faces
+        }
     }
 
     [Menu] = "&Tools"

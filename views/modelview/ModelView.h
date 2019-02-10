@@ -46,11 +46,12 @@ protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
+    virtual void wheelEvent(QWheelEvent *event) override;
 
     virtual Gx::Matrix projectionMatrix(const RenderParams &params) const = 0;
 
     virtual void updateMousePos(QMouseEvent *event, const Gx::Vec2 &mousePos, const Gx::Vec2 &prevMousePos);
-    virtual void updateCamera(float delta) = 0;
+    virtual void updateCamera(float delta);
 
     virtual void render() = 0;
 
@@ -63,6 +64,8 @@ protected:
     Model *model;
     Graphics *graphics;
     ModelViewState st;
+
+    QMap<QString, QVariant> params;
 
     QSet<Qt::MouseButton> buttons;
     QSet<int> keys;

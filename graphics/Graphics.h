@@ -36,6 +36,7 @@ public:
     Handle<Gx::VertexShader> previewShader;
     Handle<Gx::VertexShader> colorShader;
     Handle<Gx::VertexShader> screenShader;
+    Handle<Gx::VertexShader> ndcShader;
 
     Handle<Gx::VertexBuffer> genericBuffer;
 

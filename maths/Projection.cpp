@@ -104,6 +104,32 @@ Gx::Transform Projection::camera(Type type)
     }
 }
 
+Gx::Vec2 Projection::worldToScreen(const RenderParams &params, const Gx::Vec3 &position)
+{
+    auto v = position.transformedCoord(params.view * params.proj);
+
+    return Gx::Vec2(params.size.width * (v.x + 1.0f) / 2.0f, params.size.height * (-v.y + 1.0f) / 2.0f);
+}
+
+Gx::Vec3 Projection::merge(Type type, const Gx::Vec3 &pos, const Gx::Vec3 &mod)
+{
+    switch(type)
+    {
+        case Type::Top:
+        case Type::Bottom: return Gx::Vec3(mod.x, pos.y, mod.z);
+
+        case Type::Left:
+        case Type::Right: return Gx::Vec3(pos.x, mod.y, mod.z);
+
+        case Type::Front:
+        case Type::Back: return Gx::Vec3(mod.x, mod.y, pos.z);
+
+        default: break;
+    }
+
+    return pos;
+}
+
 const char *Projection::toString(Type type)
 {
     static const char *s[] = { "Perspective", "Top", "Bottom", "Left", "Right", "Front", "Back", "None" };

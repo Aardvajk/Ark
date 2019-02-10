@@ -4,11 +4,11 @@
 
 #include "models/Model.h"
 
+#include "maths/Grid.h"
+
 #include "entity/Entity.h"
 
 #include "views/modelview/ModelView.h"
-
-#include "maths/Grid.h"
 
 #include "commands/MoveSelectionCommand.h"
 
@@ -62,11 +62,11 @@ void MoveTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
         auto value = pos - start;
-        auto grid = model->property("Grid").value<Grid>();
+        auto grid = model->property("Grid").value<QVariant>();
 
-        if(grid.valid())
+        if(grid.isValid())
         {
-            value = Grid::snap(value, grid.value());
+            value = Grid::snap(value, grid.value<float>());
         }
 
         command->move(value);

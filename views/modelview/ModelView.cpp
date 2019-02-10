@@ -98,7 +98,15 @@ void ModelView::mouseReleaseEvent(QMouseEvent *event)
     emit mouseReleased(this, event);
 }
 
+void ModelView::wheelEvent(QWheelEvent *event)
+{
+}
+
 void ModelView::updateMousePos(QMouseEvent *event, const Gx::Vec2 &mousePos, const Gx::Vec2 &prevMousePos)
+{
+}
+
+void ModelView::updateCamera(float delta)
 {
 }
 

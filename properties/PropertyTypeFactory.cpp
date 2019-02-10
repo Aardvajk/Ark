@@ -1,11 +1,8 @@
 #include "PropertyTypeFactory.h"
 
-#include "maths/Grid.h"
-
 #include "properties/Property.h"
 
 #include "properties/types/VecPropertyBrowserType.h"
-#include "properties/types/GridPropertyBrowserType.h"
 
 #include <QPxPropertyBrowser/QPxPropertyBrowserType.h>
 
@@ -35,7 +32,6 @@ PropertyTypeFactory::PropertyTypeFactory(QObject *parent) : QObject(parent)
     c.types[QMetaType::QColor] = new QPx::ColorPropertyBrowserType(this);
     c.types[QMetaType::QPoint] = new QPx::PointPropertyBrowserType(this);
     c.types[qMetaTypeId<Gx::Vec3>()] = new Vec3PropertyBrowserType(this);
-    c.types[qMetaTypeId<Grid>()] = new GridPropertyBrowserType(this);
 }
 
 QPx::PropertyBrowserType *PropertyTypeFactory::type(int typeId) const

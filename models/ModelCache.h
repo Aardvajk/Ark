@@ -13,6 +13,7 @@ public:
     ModelCache(Model *model, QObject *parent = nullptr);
 
     QVector<int> selected() const;
+    QVector<int> objects() const;
 
 public slots:
     void invalidate();
@@ -25,6 +26,7 @@ private:
     struct Data
     {
         QVector<int> selected;
+        QVector<int> objects;
     };
 
     mutable Data data;

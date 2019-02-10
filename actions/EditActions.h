@@ -14,7 +14,10 @@ public:
     EditActions(Model *model, ActionList *actions, QObject *parent);
 
 private slots:
+    void modelChanged();
     void undoStateChanged();
+
+    void del();
 
 private:
     Model *model;

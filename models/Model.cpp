@@ -57,6 +57,11 @@ QVector<int> Model::selected() const
     return cache.get<Cache>().cache->selected();
 }
 
+QVector<int> Model::objects() const
+{
+    return cache.get<Cache>().cache->objects();
+}
+
 bool Model::clear()
 {
     auto &c = cache.get<Cache>();

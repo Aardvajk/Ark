@@ -23,6 +23,16 @@ QVector<int> ModelCache::selected() const
     return data.selected;
 }
 
+QVector<int> ModelCache::objects() const
+{
+    if(!valid)
+    {
+        refresh();
+    }
+
+    return data.objects;
+}
+
 void ModelCache::invalidate()
 {
     valid = false;
@@ -30,13 +40,18 @@ void ModelCache::invalidate()
 
 void ModelCache::refresh() const
 {
-    data.selected.clear();
+    data = { };
 
     for(auto i: pcx::indexed_range(model->entities()))
     {
         if(i.value.selection().any())
         {
             data.selected.append(static_cast<int>(i.index));
+        }
+
+        if(i.value.selection().elements[Element::Type::Face].count() && i.value.selection().elements[Element::Type::Face].count() == i.value.mesh().faces.count())
+        {
+            data.objects.append(static_cast<int>(i.index));
         }
     }
 

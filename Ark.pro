@@ -118,7 +118,8 @@ SOURCES += \
     commands/CreateEntityCommand.cpp \
     commands/CompositeCommand.cpp \
     actions/SelectActions.cpp \
-    tools/CursorTool.cpp
+    tools/CursorTool.cpp \
+    commands/DeleteEntityCommand.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -205,7 +206,8 @@ HEADERS += \
     commands/CreateEntityCommand.h \
     commands/CompositeCommand.h \
     actions/SelectActions.h \
-    tools/CursorTool.h
+    tools/CursorTool.h \
+    commands/DeleteEntityCommand.h
 
 DISTFILES +=
 

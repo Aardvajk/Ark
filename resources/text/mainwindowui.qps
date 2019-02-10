@@ -26,6 +26,8 @@ Menus
             [Separator]
             Select.All.Faces
         }
+        [Separator]
+        Edit.Delete
     }
 
     [Menu] = "&Tools"

@@ -3,7 +3,7 @@
 float Grid::snap(float value, float grid)
 {
     auto mod = std::fmod(value, grid);
-    return (value - mod) + (mod >= (grid / 2) ? grid : 0);
+    return (value - mod) + (std::fabs(mod) >= (grid / 2) ? (mod < 0 ? -grid : grid) : 0);
 }
 
 Gx::Vec3 Grid::snap(const Gx::Vec3 &value, float grid)

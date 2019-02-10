@@ -24,15 +24,7 @@
 namespace
 {
 
-void randomise(Entity &e, const Mesh &m)
-{
-    for(int i = 0; i < m.faces.count(); ++i)
-    {
-        e.addSubProperty(Element::Type::Face, i, "Color", Property(QColor(std::rand() % 255, std::rand() % 255, std::rand() % 255)));
-    }
-}
-
-Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid)
+Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid, const Gx::Vec3 &cursor)
 {
     auto a = start;
     auto b = pos;
@@ -73,8 +65,8 @@ Mesh blockMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec
         b = bg;
     }
 
-    a[z] = -1;
-    b[z] = 1;
+    b[z] = cursor[z];
+    a[z] = b[z] - (grid.isValid() ? grid.value<float>() : 1.0f);
 
     return Mesh::cuboidFromCorners(a, b);
 }
@@ -103,7 +95,7 @@ void CreateTool::mousePressed(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
 
         start = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
-        mesh = blockMesh(view->state().projection, start, start, model->property("Grid").value<QVariant>());
+        mesh = blockMesh(view->state().projection, start, start, model->property("Grid").value<QVariant>(), model->property("Cursor").value<Gx::Vec3>());
     }
 }
 
@@ -114,7 +106,7 @@ void CreateTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
-        mesh = blockMesh(view->state().projection, start, pos, model->property("Grid").value<QVariant>());
+        mesh = blockMesh(view->state().projection, start, pos, model->property("Grid").value<QVariant>(), model->property("Cursor").value<Gx::Vec3>());
     }
 }
 
@@ -139,8 +131,6 @@ void CreateTool::mouseReleased(ModelView *view, QMouseEvent *event)
 
         e.setMesh(*mesh);
         e.setSelection(Selection::fromElements(Element::Type::Face, mesh->faces.count()));
-
-        randomise(e, *mesh);
 
         composite->add(new CreateEntityCommand("", e, model));
         model->endCommand(composite);

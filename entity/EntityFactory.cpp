@@ -12,8 +12,6 @@ Entity EntityFactory::create(Entity::Type type)
     if(type == Entity::Type::Geometry)
     {
         e.addProperty("Name", Property("Geometry"));
-        e.addProperty("Vec", Property(Gx::Vec3(1, 2, 3)));
-        e.addProperty("Point", Property(QPoint(1, 2)));
     }
 
     return e;
@@ -21,6 +19,6 @@ Entity EntityFactory::create(Entity::Type type)
 
 void EntityFactory::defaultFaceProperties(PropertyMap &properties)
 {
-    properties["Color"] = Property(QColor(std::rand() % 256, std::rand() % 256, std::rand() % 256));
+    properties["Color"] = Property(QColor(200, 200, 200));
     properties["Visible"] = Property(true);
 }

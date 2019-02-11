@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include <QGxMaths/QGxMathsMetatypes.h>
+
 Gx::Vec3 Mesh::vertex(int face, int index) const
 {
     return vertices[faces[face].elements[index].index];
@@ -86,3 +88,60 @@ Mesh Mesh::cuboidFromCorners(const Gx::Vec3 &min, const Gx::Vec3 &max)
 
     return Mesh(vertices, faces);
 }
+
+QDataStream &operator<<(QDataStream &ds, const Mesh &mesh)
+{
+    ds << mesh.vertices.count();
+    for(auto &v: mesh.vertices)
+    {
+        ds << v;
+    }
+
+    ds << mesh.faces.count();
+    for(auto &f: mesh.faces)
+    {
+        ds << f.elements.count();
+        for(auto &e: f.elements)
+        {
+            ds << e.index;
+        }
+    }
+
+    return ds;
+}
+
+QDataStream &operator>>(QDataStream &ds, Mesh &mesh)
+{
+    mesh = Mesh();
+
+    int n, m;
+
+    ds >> n;
+    for(int i = 0; i < n; ++i)
+    {
+        Gx::Vec3 v;
+        ds >> v;
+
+        mesh.vertices.append(v);
+    }
+
+    ds >> n;
+    for(int i = 0; i < n; ++i)
+    {
+        Face f;
+
+        ds >> m;
+        for(int j = 0; j < m; ++j)
+        {
+            Face::Element e;
+            ds >> e.index;
+
+            f.elements.append(e);
+        }
+
+        mesh.faces.append(f);
+    }
+
+    return ds;
+}
+

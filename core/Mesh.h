@@ -6,6 +6,8 @@
 #include <GxMaths/GxVector.h>
 
 #include <QtCore/QVector>
+#include <QtCore/QMetaType>
+#include <QtCore/QDataStream>
 
 class Mesh
 {
@@ -26,5 +28,10 @@ public:
     QVector<Gx::Vec3> vertices;
     QVector<Face> faces;
 };
+
+Q_DECLARE_METATYPE(Mesh)
+
+QDataStream &operator<<(QDataStream &ds, const Mesh &mesh);
+QDataStream &operator>>(QDataStream &ds, Mesh &mesh);
 
 #endif // MESH_H

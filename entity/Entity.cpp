@@ -110,6 +110,33 @@ Entity::Type Entity::typeFromString(const std::string &text)
     return Type::Invalid;
 }
 
+void Entity::saveToStream(QDataStream &ds) const
+{
+    ds << s.value().props << s.value().mesh;
+
+    ds << s.value().subProps.keys().count();
+    for(auto element: s.value().subProps.keys())
+    {
+        ds << element << s.value().subProps[element];
+    }
+}
+
+void Entity::loadFromStream(QDataStream &ds)
+{
+    ds >> s.value().props >> s.value().mesh;
+
+    int n;
+    ds >> n;
+
+    for(int i = 0; i < n; ++i)
+    {
+        Element::Type element;
+        ds >> element;
+
+        ds >> s.value().subProps[element];
+    }
+}
+
 void Entity::setPropertyVariant(const QString &name, const QVariant &value)
 {
     s.value().props[name].setValue(value);
@@ -127,3 +154,21 @@ void Entity::setSubPropertyVariant(Element::Type type, int index, const QString 
     }
 }
 
+QDataStream &operator<<(QDataStream &ds, const Entity &entity)
+{
+    ds << entity.type();
+
+    entity.saveToStream(ds);
+    return ds;
+}
+
+QDataStream &operator>>(QDataStream &ds, Entity &entity)
+{
+    Entity::Type type;
+    ds >> type;
+
+    entity = EntityFactory::create(type);
+    entity.loadFromStream(ds);
+
+    return ds;
+}

@@ -9,7 +9,10 @@
 
 #include "core/Mesh.h"
 
+#include <QPxCore/QPxMetaType.h>
+
 #include <QtCore/QHash>
+#include <QtCore/QDataStream>
 
 #include <pcx/shared_data.h>
 
@@ -47,6 +50,9 @@ public:
     const Mesh &mesh() const;
     void setMesh(const Mesh &value);
 
+    void saveToStream(QDataStream &ds) const;
+    void loadFromStream(QDataStream &ds);
+
     static const char *typeToString(Type type);
     static Type typeFromString(const std::string &text);
 
@@ -68,5 +74,10 @@ private:
 
 template<> void Entity::setProperty<QVariant>(const QString &name, const QVariant &value){ setPropertyVariant(name, value); }
 template<> void Entity::setSubProperty<QVariant>(Element::Type type, int index, const QString &name, const QVariant &value){ setSubPropertyVariant(type, index, name, value); }
+
+template<> struct qpx_is_meta_enum<Entity::Type> : std::true_type { };
+
+QDataStream &operator<<(QDataStream &ds, const Entity &entity);
+QDataStream &operator>>(QDataStream &ds, Entity &entity);
 
 #endif // ENTITY_H

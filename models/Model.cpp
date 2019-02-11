@@ -6,6 +6,8 @@
 
 #include "commands/Command.h"
 
+#include <pcx/scoped_ptr.h>
+
 namespace
 {
 
@@ -75,12 +77,27 @@ bool Model::clear()
 
 bool Model::open(const QString &path)
 {
+    pcx::scoped_ptr<ModelData> data(new ModelData());
+
+    if(data->load(path))
+    {
+        auto &c = cache.get<Cache>();
+
+        auto old = c.data;
+        c.data = data.release();
+
+        delete old;
+
+        emit changed();
+        return true;
+    }
+
     return false;
 }
 
 bool Model::save(const QString &path) const
 {
-    return false;
+    return cache.get<Cache>().data->save(path);
 }
 
 QString Model::filter() const

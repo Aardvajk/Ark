@@ -35,6 +35,8 @@
 
 #include <QtCore/QFileInfo>
 
+#include <QtGui/QCloseEvent>
+
 #include <QtWidgets/QMenu>
 
 MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
@@ -79,6 +81,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     restoreGeometry(settings["Application"]["Geometry"].value<QByteArray>());
     split->restoreState(settings["Application"]["Splitter"].value<QByteArray>());
+    fileActions->setRecentFiles(settings["Application"]["RecentFiles"].value<QStringList>());
 
     gcs[0]->restoreState(settings["Application"]["Left.Sidebar"]);
     gcs[1]->restoreState(settings["Application"]["Model.View"]);
@@ -100,8 +103,15 @@ void MainWindow::customInterfaceAction(const QString &key, QWidget *parent)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    if(!fileActions->canClose())
+    {
+        event->ignore();
+        return;
+    }
+
     settings["Application"]["Geometry"].setValue(saveGeometry());
     settings["Application"]["Splitter"].setValue(split->saveState());
+    settings["Application"]["RecentFiles"].setValue(fileActions->recentFiles());
 
     gcs[0]->saveState(settings["Application"]["Left.Sidebar"]);
     gcs[1]->saveState(settings["Application"]["Model.View"]);

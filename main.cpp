@@ -6,6 +6,8 @@
 
 #include "maths/Projection.h"
 
+#include "entity/Entity.h"
+
 #include <QGxMaths/QGxMathsMetatypes.h>
 
 #include <pcx/process.h>
@@ -55,6 +57,7 @@ int main(int argc, char *argv[])
     qRegisterMetaTypeStreamOperators<Projection::Direction>("Projection::Direction");
     qRegisterMetaTypeStreamOperators<Render::Type>("Render::Type");
     qRegisterMetaTypeStreamOperators<Mesh>("Mesh");
+    qRegisterMetaTypeStreamOperators<Entity::Type>("Entity::Type");
 
     try
     {

@@ -45,3 +45,38 @@ PropertyMap PropertyMapList::operator[](int index) const
 
     return it.value();
 }
+
+void PropertyMapList::saveToStream(QDataStream &ds) const
+{
+    ds << data.keys().count();
+    for(int i: data.keys())
+    {
+        ds << i << data[i];
+    }
+}
+
+void PropertyMapList::loadFromStream(QDataStream &ds)
+{
+    int n;
+    ds >> n;
+
+    for(int i = 0; i < n; ++i)
+    {
+        int index;
+        ds >> index;
+
+        ds >> (*this)[index];
+    }
+}
+
+QDataStream &operator<<(QDataStream &ds, const PropertyMapList &map)
+{
+    map.saveToStream(ds);
+    return ds;
+}
+
+QDataStream &operator>>(QDataStream &ds, PropertyMapList &map)
+{
+    map.loadFromStream(ds);
+    return ds;
+}

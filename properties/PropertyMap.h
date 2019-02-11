@@ -8,6 +8,7 @@
 #include <QPxCore/QPxStdHash.h>
 
 #include <QtCore/QStringList>
+#include <QtCore/QDataStream>
 
 #include <pcx/optional.h>
 
@@ -26,5 +27,8 @@ public:
 private:
     mutable pcx::optional<QStringList> cache;
 };
+
+QDataStream &operator<<(QDataStream &ds, const PropertyMap &pm);
+QDataStream &operator>>(QDataStream &ds, PropertyMap &pm);
 
 #endif // PROPERTYMAP_H

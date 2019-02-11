@@ -17,6 +17,9 @@ class ModelData : public QObject
 public:
     explicit ModelData(QObject *parent = nullptr);
 
+    bool save(const QString &path) const;
+    bool load(const QString &path);
+
     PropertyMap properties;
     QVector<Entity> entities;
 };

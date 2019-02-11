@@ -29,7 +29,7 @@ bool ModelData::save(const QString &path) const
 
     QDataStream ds(&file);
 
-    ds << properties;
+    ds << 1 << properties;
 
     ds << entities.count();
     for(auto &e: entities)
@@ -49,6 +49,9 @@ bool ModelData::load(const QString &path)
     }
 
     QDataStream ds(&file);
+
+    int version;
+    ds >> version;
 
     ds >> properties;
 

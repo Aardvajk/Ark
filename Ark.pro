@@ -119,7 +119,9 @@ SOURCES += \
     commands/CompositeCommand.cpp \
     actions/SelectActions.cpp \
     tools/CursorTool.cpp \
-    commands/DeleteEntityCommand.cpp
+    commands/DeleteEntityCommand.cpp \
+    actions/ClipboardActions.cpp \
+    commands/CopyEntitiesCommand.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -207,7 +209,9 @@ HEADERS += \
     commands/CompositeCommand.h \
     actions/SelectActions.h \
     tools/CursorTool.h \
-    commands/DeleteEntityCommand.h
+    commands/DeleteEntityCommand.h \
+    actions/ClipboardActions.h \
+    commands/CopyEntitiesCommand.h
 
 DISTFILES +=
 

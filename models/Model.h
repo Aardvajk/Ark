@@ -46,6 +46,7 @@ public slots:
 
 signals:
     void changed();
+    void reset();
 
 private:
     pcx::aligned_store<24> cache;

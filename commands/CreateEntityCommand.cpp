@@ -3,14 +3,13 @@
 #include "models/Model.h"
 #include "models/ModelData.h"
 
-CreateEntityCommand::CreateEntityCommand(const QString &name, const Entity &entity, Model *model) : Command(name, model), v(entity)
+CreateEntityCommand::CreateEntityCommand(const QString &name, Model *model) : Command(name, model)
 {
-    redo();
 }
 
 bool CreateEntityCommand::isValid() const
 {
-    return true;
+    return !v.isEmpty();
 }
 
 bool CreateEntityCommand::modifiesPersistentState() const
@@ -20,19 +19,27 @@ bool CreateEntityCommand::modifiesPersistentState() const
 
 void CreateEntityCommand::undo()
 {
-    v = data->entities.back();
-    data->entities.pop_back();
+    for(int i = v.count() - 1; i >= 0; --i)
+    {
+        v[i] = data->entities.back();
+        data->entities.pop_back();
+    }
 
     model->change();
 }
 
 void CreateEntityCommand::redo()
 {
-    if(v)
+    for(int i = 0; i < v.count(); ++i)
     {
-        data->entities.append(*v);
-        v = { };
-
-        model->change();
+        data->entities.append(v[i]);
+        v[i] = Entity();
     }
+
+    model->change();
+}
+
+void CreateEntityCommand::create(const Entity &entity)
+{
+    v.append(entity);
 }

@@ -5,14 +5,14 @@
 
 #include "entity/Entity.h"
 
-#include <pcx/optional.h>
+#include <QVector>
 
 class CreateEntityCommand : public Command
 {
     Q_OBJECT
 
 public:
-    CreateEntityCommand(const QString &name, const Entity &entity, Model *model);
+    CreateEntityCommand(const QString &name, Model *model);
 
     virtual bool isValid() const override;
     virtual bool modifiesPersistentState() const override;
@@ -20,8 +20,10 @@ public:
     virtual void undo() override;
     virtual void redo() override;
 
+    void create(const Entity &entity);
+
 private:
-    pcx::optional<Entity> v;
+    QVector<Entity> v;
 };
 
 #endif // CREATEENTITYCOMMAND_H

@@ -132,7 +132,10 @@ void CreateTool::mouseReleased(ModelView *view, QMouseEvent *event)
         e.setMesh(*mesh);
         e.setSelection(Selection::fromElements(Element::Type::Face, mesh->faces.count()));
 
-        composite->add(new CreateEntityCommand("", e, model));
+        auto create = new CreateEntityCommand("", model);
+        create->create(e);
+
+        composite->add(create);
         model->endCommand(composite);
 
         mesh = { };

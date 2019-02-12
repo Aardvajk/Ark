@@ -37,6 +37,9 @@ signals:
 public slots:
     void setState(const ModelViewState &value);
 
+protected slots:
+    void modelReset();
+
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
 

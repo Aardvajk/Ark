@@ -11,7 +11,7 @@ class EditActions : public QObject
     Q_OBJECT
 
 public:
-    EditActions(Model *model, ActionList *actions, QObject *parent);
+    EditActions(Model *model, ActionList *actions, QObject *parent = nullptr);
 
 private slots:
     void modelChanged();

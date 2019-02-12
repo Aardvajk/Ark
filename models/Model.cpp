@@ -72,6 +72,8 @@ bool Model::clear()
     c.data = new ModelData();
 
     emit changed();
+    emit reset();
+
     return true;
 }
 
@@ -89,6 +91,8 @@ bool Model::open(const QString &path)
         delete old;
 
         emit changed();
+        emit reset();
+
         return true;
     }
 

@@ -11,14 +11,15 @@ class SelectActions : public QObject
     Q_OBJECT
 
 public:
-    SelectActions(Model *model, ActionList *actions, QObject *parent);
+    SelectActions(Model *model, ActionList *actions, QObject *parent = nullptr);
 
 private slots:
     void modelChanged();
 
     void prevFace();
     void nextFace();
-    void allFaces();
+
+    void wholeObject();
 
 private:
     Model *model;

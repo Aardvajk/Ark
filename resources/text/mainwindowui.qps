@@ -19,12 +19,16 @@ Menus
         Edit.Undo
         Edit.Redo
         [Separator]
+        Clipboard.Cut
+        Clipboard.Copy
+        Clipboard.Paste
+        [Separator]
         [Menu] = "&Select"
         {
             Select.Prev.Face
             Select.Next.Face
             [Separator]
-            Select.All.Faces
+            Select.Whole.Object
         }
         [Separator]
         Edit.Delete

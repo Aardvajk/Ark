@@ -6,6 +6,7 @@
 #include "actions/ApplicationActions.h"
 #include "actions/FileActions.h"
 #include "actions/EditActions.h"
+#include "actions/ClipboardActions.h"
 #include "actions/SelectActions.h"
 #include "actions/LayoutActions.h"
 
@@ -69,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     new ApplicationActions(actions, this);
     fileActions = new FileActions(model, actions, this);
     new EditActions(model, actions, this);
+    new ClipboardActions(model, actions, this);
     new SelectActions(model, actions, this);
     new LayoutActions(actions, this);
 

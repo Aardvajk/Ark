@@ -22,6 +22,8 @@ ModelView::ModelView(Model *model, Graphics *graphics, const ModelViewState &sta
 {
     setAttribute(Qt::WA_MouseTracking);
     setFocusPolicy(Qt::StrongFocus);
+
+    connect(model, SIGNAL(reset()), SLOT(modelReset()));
 }
 
 ModelViewState ModelView::state() const
@@ -53,6 +55,11 @@ RenderParams ModelView::renderParams() const
 void ModelView::setState(const ModelViewState &value)
 {
     st = value;
+}
+
+void ModelView::modelReset()
+{
+    st.camera = Projection::camera(st.projection);
 }
 
 void ModelView::paintEvent(QPaintEvent *event)

@@ -9,9 +9,12 @@
 #include "commands/ModifySelectionCommand.h"
 
 #include <QPxCore/QPxAction.h>
+#include <QPxCore/QPxSettings.h>
 
 #include <QtGui/QIcon>
 #include <QtGui/QKeySequence>
+
+#include <pcx/indexed_range.h>
 
 namespace
 {
@@ -54,14 +57,20 @@ template<typename T> void changeFace(const QString &name, Model *model)
 
 }
 
-SelectActions::SelectActions(Model *model, ActionList *actions, QObject *parent) : QObject(parent), model(model), actions(actions)
+SelectActions::SelectActions(Model *model, ActionList *actions, QPx::Settings &settings, QObject *parent) : QObject(parent), model(model), actions(actions), settings(settings)
 {
+    actions->add("Select.All", "&All", QKeySequence("Ctrl+A"), QPx::ActionList::Enable::Off);
+    actions->add("Select.None", "&None", QKeySequence("Ctrl+D"), QPx::ActionList::Enable::Off);
+
     actions->add("Select.Prev.Face", "&Previous Face", QKeySequence("Ctrl+Shift+F"), QPx::ActionList::Enable::Off);
     actions->add("Select.Next.Face", "&Next Face", QKeySequence("Ctrl+F"), QPx::ActionList::Enable::Off);
 
     actions->add("Select.Whole.Object", "&Whole Object", QKeySequence("Ctrl+G"), QPx::ActionList::Enable::Off);
 
     connect(model, SIGNAL(changed()), SLOT(modelChanged()));
+
+    connect(actions->find("Select.All"), SIGNAL(triggered()), SLOT(all()));
+    connect(actions->find("Select.None"), SIGNAL(triggered()), SLOT(none()));
 
     connect(actions->find("Select.Prev.Face"), SIGNAL(triggered()), SLOT(prevFace()));
     connect(actions->find("Select.Next.Face"), SIGNAL(triggered()), SLOT(nextFace()));
@@ -73,10 +82,44 @@ void SelectActions::modelChanged()
 {
     bool any = !model->selected().isEmpty();
 
+    actions->find("Select.All")->setEnabled(!model->entities().isEmpty());
+    actions->find("Select.None")->setEnabled(any);
+
     actions->find("Select.Prev.Face")->setEnabled(any);
     actions->find("Select.Next.Face")->setEnabled(any);
 
     actions->find("Select.Whole.Object")->setEnabled(any && model->objects().count() != model->selected().count());
+}
+
+void SelectActions::all()
+{
+    auto command = new ModifySelectionCommand("Select All", model);
+
+    for(auto i: pcx::indexed_range(model->entities()))
+    {
+        if(settings["Select"]["Element.Type"].value<Element::Type>() == Element::Type::Vertex)
+        {
+            command->change(i.index, i.value.selection().merge(Selection::fromElements(Element::Type::Vertex, i.value.mesh().vertices.count())));
+        }
+        else
+        {
+            command->change(i.index, i.value.selection().merge(Selection::fromElements(Element::Type::Face, i.value.mesh().faces.count())));
+        }
+    }
+
+    model->endCommand(command);
+}
+
+void SelectActions::none()
+{
+    auto command = new ModifySelectionCommand("Select None", model);
+
+    for(auto i: model->selected())
+    {
+        command->change(i, Selection());
+    }
+
+    model->endCommand(command);
 }
 
 void SelectActions::prevFace()

@@ -88,6 +88,11 @@ QIcon CreateTool::icon() const
     return QIcon(":/resources/images/ark.png");
 }
 
+void CreateTool::addOptions(QPx::VBoxLayout *layout) const
+{
+    addGridSnapCheckbox(layout);
+}
+
 void CreateTool::mousePressed(ModelView *view, QMouseEvent *event)
 {
     if(view->state().projection != Projection::Type::Perspective && event->button() == Qt::LeftButton)
@@ -95,7 +100,7 @@ void CreateTool::mousePressed(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
 
         start = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
-        mesh = blockMesh(view->state().projection, start, start, model->property("Grid").value<QVariant>(), model->property("Cursor").value<Gx::Vec3>());
+        mesh = blockMesh(view->state().projection, start, start, gridValue(model), model->property("Cursor").value<Gx::Vec3>());
     }
 }
 
@@ -106,7 +111,7 @@ void CreateTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto p = view->renderParams();
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
-        mesh = blockMesh(view->state().projection, start, pos, model->property("Grid").value<QVariant>(), model->property("Cursor").value<Gx::Vec3>());
+        mesh = blockMesh(view->state().projection, start, pos, gridValue(model), model->property("Cursor").value<Gx::Vec3>());
     }
 }
 

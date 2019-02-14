@@ -71,13 +71,13 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     fileActions = new FileActions(model, actions, this);
     new EditActions(model, actions, this);
     new ClipboardActions(model, actions, this);
-    new SelectActions(model, actions, this);
+    new SelectActions(model, actions, settings["Tools"], this);
     new LayoutActions(actions, this);
 
-    tools->addTool(new SelectTool(actions, model, settings["Tools"]["Select"]));
-    tools->addTool(new MoveTool(actions, model, settings["Tools"]["Move"]));
-    tools->addTool(new CreateTool(actions, model, settings["Tools"]["Create"]));
-    tools->addTool(new CursorTool(actions, model, settings["Tools"]["Cursor"]));
+    tools->addTool(new SelectTool(actions, model, settings["Tools"]));
+    tools->addTool(new MoveTool(actions, model, settings["Tools"]));
+    tools->addTool(new CreateTool(actions, model, settings["Tools"]));
+    tools->addTool(new CursorTool(actions, model, settings["Tools"]));
 
     loadInterface(":/resources/text/mainwindowui.qps", actions);
 

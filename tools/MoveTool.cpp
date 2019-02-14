@@ -34,6 +34,11 @@ QIcon MoveTool::icon() const
     return QIcon(":/resources/images/ark.png");
 }
 
+void MoveTool::addOptions(QPx::VBoxLayout *layout) const
+{
+    addGridSnapCheckbox(layout);
+}
+
 void MoveTool::mousePressed(ModelView *view, QMouseEvent *event)
 {
     if(view->state().projection != Projection::Type::Perspective && event->button() == Qt::LeftButton)
@@ -62,7 +67,7 @@ void MoveTool::mouseMoved(ModelView *view, QMouseEvent *event)
         auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
         auto value = pos - start;
-        auto grid = model->property("Grid").value<QVariant>();
+        auto grid = gridValue(model);
 
         if(grid.isValid())
         {

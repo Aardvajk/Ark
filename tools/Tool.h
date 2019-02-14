@@ -17,6 +17,7 @@ class QMouseEvent;
 class ModelView;
 class Graphics;
 class RenderParams;
+class Model;
 
 class Tool : public QObject
 {
@@ -45,6 +46,9 @@ public slots:
     virtual void focusLost();
 
 protected:
+    void addGridSnapCheckbox(QPx::VBoxLayout *layout) const;
+    QVariant gridValue(Model *model) const;
+
     QPx::Settings &settings;
 };
 

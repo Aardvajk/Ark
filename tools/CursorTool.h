@@ -21,6 +21,8 @@ public:
     virtual QString name() const override;
     virtual QIcon icon() const override;
 
+    virtual void addOptions(QPx::VBoxLayout *layout) const override;
+
 public slots:
     virtual void mousePressed(ModelView *view, QMouseEvent *event) override;
     virtual void mouseMoved(ModelView *view, QMouseEvent *event) override;

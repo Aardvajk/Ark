@@ -22,14 +22,14 @@
 namespace
 {
 
-Gx::Vec3 update(ModelView *view, QMouseEvent *event, Model *model)
+Gx::Vec3 update(ModelView *view, QMouseEvent *event, Model *model, const QVariant &grid)
 {
     auto p = view->renderParams();
     auto pos = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
 
-    if(model->property("Grid").value<QVariant>().isValid())
+    if(grid.isValid())
     {
-        pos = Grid::snap(pos, model->property("Grid").value<float>());
+        pos = Grid::snap(pos, grid.value<float>());
     }
 
     return pos;
@@ -52,11 +52,16 @@ QIcon CursorTool::icon() const
     return QIcon(":/resources/images/ark.png");
 }
 
+void CursorTool::addOptions(QPx::VBoxLayout *layout) const
+{
+    addGridSnapCheckbox(layout);
+}
+
 void CursorTool::mousePressed(ModelView *view, QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton && view->state().projection != Projection::Type::Perspective)
     {
-        pos = update(view, event, model);
+        pos = update(view, event, model, gridValue(model));
         mv = view;
     }
 }
@@ -65,7 +70,7 @@ void CursorTool::mouseMoved(ModelView *view, QMouseEvent *event)
 {
     if(mv == view)
     {
-        pos = update(view, event, model);
+        pos = update(view, event, model, gridValue(model));
     }
 }
 

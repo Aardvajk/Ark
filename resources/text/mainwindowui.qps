@@ -25,6 +25,9 @@ Menus
         [Separator]
         [Menu] = "&Select"
         {
+            Select.All
+            Select.None
+            [Separator]
             Select.Prev.Face
             Select.Next.Face
             [Separator]

@@ -58,7 +58,7 @@ void selectRay(Model *model, QMouseEvent *event, ModifySelectionCommand *command
     for(auto i: pcx::indexed_range(model->entities()))
     {
         float dist = std::numeric_limits<float>::max();
-        auto selection = rayIntersect(settings["Element.Type"].value<Element::Type>(), i.value, ray, dist, settings["Visible.Only"].value<bool>());
+        auto selection = rayIntersect(settings["Select"]["Element.Type"].value<Element::Type>(), i.value, ray, dist, settings["Select"]["Visible.Only"].value<bool>());
 
         if(selection.any())
         {
@@ -86,7 +86,7 @@ void selectMarquee(Model *model, QMouseEvent *event, ModifySelectionCommand *com
 {
     for(auto i: pcx::indexed_range(model->entities()))
     {
-        updateSelection(model, event, command, i.index, rectIntersect(settings["Element.Type"].value<Element::Type>(), i.value, clip, transform, settings["Visible.Only"].value<bool>()));
+        updateSelection(model, event, command, i.index, rectIntersect(settings["Select"]["Element.Type"].value<Element::Type>(), i.value, clip, transform, settings["Select"]["Visible.Only"].value<bool>()));
     }
 }
 
@@ -109,8 +109,8 @@ QIcon SelectTool::icon() const
 
 void SelectTool::addOptions(QPx::VBoxLayout *layout) const
 {
-    layout->addWidget(new SettingsElementBox(settings["Element.Type"]));
-    layout->addWidget(new SettingsCheckBox(settings["Visible.Only"], "Visible Only"));
+    layout->addWidget(new SettingsElementBox(settings["Select"]["Element.Type"]));
+    layout->addWidget(new SettingsCheckBox(settings["Select"]["Visible.Only"], "Visible Only"));
 }
 
 void SelectTool::mousePressed(ModelView *view, QMouseEvent *event)

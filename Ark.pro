@@ -1,5 +1,4 @@
 QT += core gui widgets xml
-
 TARGET = Ark
 TEMPLATE = app
 
@@ -121,7 +120,9 @@ SOURCES += \
     tools/CursorTool.cpp \
     commands/DeleteEntityCommand.cpp \
     actions/ClipboardActions.cpp \
-    commands/CopyEntitiesCommand.cpp
+    commands/CopyEntitiesCommand.cpp \
+    actions/ExportActions.cpp \
+    export/Export.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -211,7 +212,9 @@ HEADERS += \
     tools/CursorTool.h \
     commands/DeleteEntityCommand.h \
     actions/ClipboardActions.h \
-    commands/CopyEntitiesCommand.h
+    commands/CopyEntitiesCommand.h \
+    actions/ExportActions.h \
+    export/Export.h
 
 DISTFILES +=
 

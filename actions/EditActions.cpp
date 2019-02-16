@@ -1,8 +1,8 @@
 #include "EditActions.h"
 
-#include "actions/ActionList.h"
-
 #include "models/Model.h"
+
+#include "actions/ActionList.h"
 
 #include "commands/DeleteEntityCommand.h"
 

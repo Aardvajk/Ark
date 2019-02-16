@@ -17,6 +17,7 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     properties["Background"] = Property(QColor(200, 220, 240));
     properties["Grid"] = Property(1.0f);
     properties["Cursor"] = Property(Gx::Vec3(0, 0, 0));
+    properties["Export"] = Property(QString());
 }
 
 bool ModelData::save(const QString &path) const

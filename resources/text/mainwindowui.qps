@@ -9,6 +9,9 @@ Menus
         File.Save
         File.Save.As
         [Separator]
+        Export.Save
+        Export.Save.As
+        [Separator]
         [Recents]
         [Separator]
         Application.Exit

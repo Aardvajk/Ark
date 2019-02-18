@@ -42,7 +42,7 @@ Graphics::Graphics(QObject *parent) : QObject(parent)
     screenShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/screenvertex.dat")));
     ndcShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/ndcvertex.dat")));
 
-    genericBuffer = resources.add(new Gx::VertexBuffer(device, { 25600, sizeof(ColorVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
+    genericBuffer = resources.add(new Gx::VertexBuffer(device, { 25600 * sizeof(ColorVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
 
     auto timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), SLOT(timeout()));

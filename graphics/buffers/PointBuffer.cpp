@@ -19,7 +19,7 @@
 
 #include <QtCore/QSet>
 
-PointBuffer::PointBuffer(Model *model, Graphics *graphics, QObject *parent) : Buffer(graphics, 65535, sizeof(ColorVertex), parent), model(model)
+PointBuffer::PointBuffer(Model *model, Graphics *graphics, QObject *parent) : Buffer(graphics, 65535 * sizeof(ColorVertex), parent), model(model)
 {
     connect(model, SIGNAL(changed()), SLOT(invalidate()));
 }

@@ -18,7 +18,7 @@ class Buffer : public QObject
     Q_OBJECT
 
 public:
-    Buffer(Graphics *graphics, std::uint32_t elements, std::uint16_t stride, QObject *parent = nullptr);
+    Buffer(Graphics *graphics, std::uint32_t bytes, QObject *parent = nullptr);
 
     void renderTriangleList(Gx::GraphicsDevice &device) const;
     void renderLineList(Gx::GraphicsDevice &device) const;

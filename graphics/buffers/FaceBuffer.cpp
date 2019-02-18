@@ -19,7 +19,7 @@
 
 #include <QGxMaths/QGxColor.h>
 
-FaceBuffer::FaceBuffer(Type type, Model *model, Graphics *graphics, QObject *parent) : Buffer(graphics, 65535, sizeof(PreviewVertex), parent), type(type), model(model)
+FaceBuffer::FaceBuffer(Type type, Model *model, Graphics *graphics, QObject *parent) : Buffer(graphics, 65535 * sizeof(PreviewVertex), parent), type(type), model(model)
 {
     connect(model, SIGNAL(changed()), SLOT(invalidate()));
 }

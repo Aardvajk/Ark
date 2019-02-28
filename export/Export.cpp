@@ -17,6 +17,22 @@
 
 #include <sstream>
 
+namespace
+{
+
+Gx::Vec3 average(const QVector<Gx::Vec3> &vs)
+{
+    Gx::Vec3 a(0, 0, 0);
+    for(auto v: vs)
+    {
+        a += v;
+    }
+
+    return a / static_cast<float>(vs.count());
+}
+
+}
+
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec3 &v){ return os << v.x << v.y << v.z; }
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const QColor &v){ return os << float(v.redF()) << float(v.greenF()) << float(v.blueF()); }
 
@@ -41,6 +57,24 @@ bool exportModel(const QString &path, const Model *model)
     }
 
     os << 1;
+
+    for(const auto &e: geoms)
+    {
+        const auto &mesh = e.mesh();
+        auto pos = average(mesh.vertices);
+
+        os << "staticpolyhedron" << pos;
+
+        os << std::size_t(mesh.vertices.count());
+        for(auto v: mesh.vertices) os << Gx::Vec3(v - pos);
+
+        os << std::size_t(mesh.faces.count());
+        for(auto f: mesh.faces)
+        {
+            os << std::size_t(f.elements.count());
+            for(auto e: f.elements) os << std::size_t(e.index);
+        }
+    }
 
     std::ostringstream bm;
     pcx::data_ostream ms(&bm);
@@ -76,8 +110,13 @@ bool exportModel(const QString &path, const Model *model)
         }
     }
 
+    os << "internalmesh" << "mesh";
     os << bytes;
     os.write(bm.str().data(), bm.str().size());
+
+    os << "staticmeshinstance" << "mesh" << Gx::Vec3(0, 0, 0);
+
+    os << "";
 
     return true;
 }

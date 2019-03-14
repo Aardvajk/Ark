@@ -33,6 +33,7 @@ Gx::Vec3 average(const QVector<Gx::Vec3> &vs)
 
 }
 
+pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec2 &v){ return os << v.x << v.y; }
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec3 &v){ return os << v.x << v.y << v.z; }
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const QColor &v){ return os << float(v.redF()) << float(v.greenF()) << float(v.blueF()); }
 
@@ -100,9 +101,9 @@ bool exportModel(const QString &path, const Model *model)
 
                 for(int i = 1; i < f.value.elements.count() - 1; ++i)
                 {
-                    ms << mesh.vertices[f.value.elements[0].index] << n << Gx::Rgba(color);
-                    ms << mesh.vertices[f.value.elements[i].index] << n << Gx::Rgba(color);
-                    ms << mesh.vertices[f.value.elements[i + 1].index] << n << Gx::Rgba(color);
+                    ms << mesh.vertices[f.value.elements[0].index] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
+                    ms << mesh.vertices[f.value.elements[i].index] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);;
+                    ms << mesh.vertices[f.value.elements[i + 1].index] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);;
 
                     bytes += sizeof(PreviewVertex) * 3;
                 }

@@ -40,9 +40,9 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
                     {
                         auto n = mesh.faceNormal(i);
 
-                        os << mesh.vertex(i, 0) << n << Gx::Rgba(c);
-                        os << mesh.vertex(i, j) << n << Gx::Rgba(c);
-                        os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c);
+                        os << mesh.vertex(i, 0) << n << Gx::Rgba(c) << Gx::Vec2(0, 0);
+                        os << mesh.vertex(i, j) << n << Gx::Rgba(c) << Gx::Vec2(0, 0);
+                        os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c) << Gx::Vec2(0, 0);
 
                         ++count;
                     }

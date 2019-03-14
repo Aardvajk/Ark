@@ -2,6 +2,8 @@
 
 #include <QtCore/QTimer>
 
+#include "core/ResourcePath.h"
+
 #include "graphics/vertices/PreviewVertex.h"
 #include "graphics/vertices/ColorVertex.h"
 
@@ -37,10 +39,10 @@ Graphics::Graphics(QObject *parent) : QObject(parent)
     previewVertexDec = resources.add(new Gx::VertexDeclaration(device, PreviewVertex::declaration()));
     colorVertexDec = resources.add(new Gx::VertexDeclaration(device, ColorVertex::declaration()));
 
-    previewShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/previewvertex.dat")));
-    colorShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/colorvertex.dat")));
-    screenShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/screenvertex.dat")));
-    ndcShader = resources.add(new Gx::VertexShader(device, load("C:/Projects/Ark/Ark/ndcvertex.dat")));
+    previewShader = resources.add(new Gx::VertexShader(device, load(resourcePath("shaders/previewvertex.dat"))));
+    colorShader = resources.add(new Gx::VertexShader(device, load(resourcePath("shaders/colorvertex.dat"))));
+    screenShader = resources.add(new Gx::VertexShader(device, load(resourcePath("shaders/screenvertex.dat"))));
+    ndcShader = resources.add(new Gx::VertexShader(device, load(resourcePath("shaders/ndcvertex.dat"))));
 
     genericBuffer = resources.add(new Gx::VertexBuffer(device, { 25600 * sizeof(ColorVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
 

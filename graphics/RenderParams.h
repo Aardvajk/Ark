@@ -11,7 +11,7 @@
 class RenderParams
 {
 public:
-    RenderParams() = default;
+    RenderParams(){ }
 
     Gx::SizeF size;
     float fov;

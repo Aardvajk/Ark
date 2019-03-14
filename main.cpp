@@ -8,6 +8,8 @@
 
 #include "entity/Entity.h"
 
+#include "core/ShaderCompiler.h"
+
 #include <QGxMaths/QGxMathsMetatypes.h>
 
 #include <pcx/process.h>
@@ -61,13 +63,7 @@ int main(int argc, char *argv[])
 
     try
     {
-        if(pcx::process::execute("shc -v C:/Projects/Ark/Ark/previewvertex.txt C:/Projects/Ark/Ark/previewvertex.dat") ||
-           pcx::process::execute("shc -v C:/Projects/Ark/Ark/colorvertex.txt C:/Projects/Ark/Ark/colorvertex.dat") ||
-           pcx::process::execute("shc -v C:/Projects/Ark/Ark/screenvertex.txt C:/Projects/Ark/Ark/screenvertex.dat") ||
-           pcx::process::execute("shc -v C:/Projects/Ark/Ark/ndcvertex.txt C:/Projects/Ark/Ark/ndcvertex.dat"))
-        {
-            throw std::runtime_error("unable to compile shader");
-        }
+        compileShaders();
 
         MainWindow w;
         w.show();

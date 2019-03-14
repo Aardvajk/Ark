@@ -122,7 +122,9 @@ SOURCES += \
     actions/ClipboardActions.cpp \
     commands/CopyEntitiesCommand.cpp \
     actions/ExportActions.cpp \
-    export/Export.cpp
+    export/Export.cpp \
+    core/ResourcePath.cpp \
+    core/ShaderCompiler.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -214,7 +216,9 @@ HEADERS += \
     actions/ClipboardActions.h \
     commands/CopyEntitiesCommand.h \
     actions/ExportActions.h \
-    export/Export.h
+    export/Export.h \
+    core/ResourcePath.h \
+    core/ShaderCompiler.h
 
 DISTFILES +=
 

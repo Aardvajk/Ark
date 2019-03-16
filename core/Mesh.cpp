@@ -6,33 +6,6 @@
 
 #include <QGxMaths/QGxMathsMetatypes.h>
 
-namespace
-{
-
-void computeTextureCoords(Mesh &mesh, int face, const Gx::Vec2 &scale)
-{
-    auto &f = mesh.faces[face];
-
-    auto a = mesh.vertices[f.elements[0].index];
-    auto b = mesh.vertices[f.elements[1].index];
-    auto c = mesh.vertices[f.elements[2].index];
-
-    auto n = (Gx::Vec3(b - a).cross(Gx::Vec3(c - a))).normalized();
-
-    auto avg = mesh.vertices[f.elements[0].index];
-
-    Gx::SizeF size(scale.x * 2, scale.y * 2);
-    auto transform = Gx::Matrix::lookAt(avg + (n * 10), avg, Gx::Vec3(b - c).normalized()) * Gx::Matrix::ortho(size, { 0.1f, 100.0f });
-
-    for(int j = 0; j < f.elements.count(); ++j)
-    {
-        auto v = mesh.vertices[f.elements[j].index].transformedCoord(transform);
-        f.elements[j].texCoords = Gx::Vec2(v.x, -v.y);
-    }
-}
-
-}
-
 Gx::Vec3 Mesh::vertex(int face, int index) const
 {
     return vertices[faces[face].elements[index].index];
@@ -47,11 +20,25 @@ Gx::Vec3 Mesh::faceNormal(int face) const
     return b.cross(c).normalized();
 }
 
-void Mesh::computeTexCoords(const Gx::Vec2 &scale)
+void Mesh::computeTexCoords(int face, const Gx::Vec2 &scale)
 {
-    for(int i = 0; i < faces.count(); ++i)
+    auto &f = faces[face];
+
+    auto a = vertices[f.elements[0].index];
+    auto b = vertices[f.elements[1].index];
+    auto c = vertices[f.elements[2].index];
+
+    auto n = (Gx::Vec3(b - a).cross(Gx::Vec3(c - a))).normalized();
+
+    auto avg = vertices[f.elements[0].index];
+
+    Gx::SizeF size(scale.x * 2, scale.y * 2);
+    auto transform = Gx::Matrix::lookAt(avg + (n * 10), avg, Gx::Vec3(b - c).normalized()) * Gx::Matrix::ortho(size, { 0.1f, 100.0f });
+
+    for(int j = 0; j < f.elements.count(); ++j)
     {
-        computeTextureCoords(*this, i, scale);
+        auto v = vertices[f.elements[j].index].transformedCoord(transform);
+        f.elements[j].texCoords = Gx::Vec2(v.x, -v.y);
     }
 }
 

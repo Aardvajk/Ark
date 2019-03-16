@@ -1,6 +1,7 @@
 #include "Entity.h"
 
 #include "core/Mesh.h"
+#include "core/TextureData.h"
 
 #include "entity/EntityFactory.h"
 
@@ -91,7 +92,13 @@ void Entity::setMesh(const Mesh &value)
 
 void Entity::computeTexCoords()
 {
-    s.value().mesh.computeTexCoords({ 1, 1 });
+    auto &m = s.value().mesh;
+
+    for(int i = 0; i < m.faces.count(); ++i)
+    {
+        auto data = subProperty(Element::Type::Face, i, "Texture").value<TextureData>();
+        m.computeTexCoords(i, data.scale);
+    }
 }
 
 const char *Entity::typeToString(Type type)
@@ -158,6 +165,11 @@ void Entity::setSubPropertyVariant(Element::Type type, int index, const QString 
     else
     {
         s.value().subProps[type][index][name].setValue(value);
+
+        if(name == "Texture")
+        {
+            computeTexCoords();
+        }
     }
 }
 

@@ -50,8 +50,6 @@ PropertyModel::PropertyModel(Element::Type type, Model *model, PropertyTypeFacto
     selectionChanged();
 }
 
-#include "core/TextureData.h"
-
 void PropertyModel::selectionChanged()
 {
     if(lock) return;

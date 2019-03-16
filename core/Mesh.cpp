@@ -20,7 +20,7 @@ Gx::Vec3 Mesh::faceNormal(int face) const
     return b.cross(c).normalized();
 }
 
-void Mesh::computeTexCoords(int face, const Gx::Vec2 &scale)
+void Mesh::computeTexCoords(int face, const Gx::Vec2 &scale, const Gx::Vec2 &offset)
 {
     auto &f = faces[face];
 
@@ -33,12 +33,12 @@ void Mesh::computeTexCoords(int face, const Gx::Vec2 &scale)
     auto avg = vertices[f.elements[0].index];
 
     Gx::SizeF size(scale.x * 2, scale.y * 2);
-    auto transform = Gx::Matrix::lookAt(avg + (n * 10), avg, Gx::Vec3(b - c).normalized()) * Gx::Matrix::ortho(size, { 0.1f, 100.0f });
+    auto tr = Gx::Matrix::lookAt(avg + (n * 10), avg, Gx::Vec3(b - c).normalized()) * Gx::Matrix::ortho(size, { 0.1f, 100.0f });
 
     for(int j = 0; j < f.elements.count(); ++j)
     {
-        auto v = vertices[f.elements[j].index].transformedCoord(transform);
-        f.elements[j].texCoords = Gx::Vec2(v.x, -v.y);
+        auto v = vertices[f.elements[j].index].transformedCoord(tr);
+        f.elements[j].texCoords = Gx::Vec2(v.x, -v.y) + offset;
     }
 }
 

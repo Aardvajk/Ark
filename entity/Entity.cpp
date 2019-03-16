@@ -97,7 +97,7 @@ void Entity::computeTexCoords()
     for(int i = 0; i < m.faces.count(); ++i)
     {
         auto data = subProperty(Element::Type::Face, i, "Texture").value<TextureData>();
-        m.computeTexCoords(i, data.scale);
+        m.computeTexCoords(i, data.scale, data.offset);
     }
 }
 

@@ -18,7 +18,7 @@ public:
     Gx::Vec3 vertex(int face, int index) const;
     Gx::Vec3 faceNormal(int face) const;
 
-    void computeTexCoords(int face, const Gx::Vec2 &scale);
+    void computeTexCoords(int face, const Gx::Vec2 &scale, const Gx::Vec2 &offset);
 
     Mesh moved(const Gx::Vec3 &distance) const;
 

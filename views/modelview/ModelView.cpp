@@ -131,7 +131,14 @@ void ModelView::renderModel(const RenderParams &params)
     {
         if(auto r = RenderState(params.projection == Projection::Type::Perspective ? RenderState::Type::Preview : RenderState::Type::Flat, { }, graphics, params))
         {
+            if(st.render == Render::Type::Textured)
+            {
+                graphics->device.setTexture(0, *graphics->genericTexture);
+            }
+
             model->buffers()->previewBuffer()->renderTriangleList(graphics->device);
+
+            graphics->device.setTexture(0);
         }
 
         if(auto r = RenderState(RenderState::Type::Color, RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params))

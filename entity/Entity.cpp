@@ -89,6 +89,11 @@ void Entity::setMesh(const Mesh &value)
     s.value().mesh = value;
 }
 
+void Entity::computeTexCoords()
+{
+    s.value().mesh.computeTexCoords({ 1, 1 });
+}
+
 const char *Entity::typeToString(Type type)
 {
     return types[static_cast<int>(type)];
@@ -135,6 +140,8 @@ void Entity::loadFromStream(QDataStream &ds)
 
         ds >> s.value().subProps[element];
     }
+
+    computeTexCoords();
 }
 
 void Entity::setPropertyVariant(const QString &name, const QVariant &value)

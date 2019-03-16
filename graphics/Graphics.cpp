@@ -9,6 +9,7 @@
 
 #include <GxGraphics/GxShader.h>
 #include <GxGraphics/GxVertexBuffer.h>
+#include <GxGraphics/GxTexture.h>
 
 #include <fstream>
 
@@ -45,6 +46,7 @@ Graphics::Graphics(QObject *parent) : QObject(parent)
     ndcShader = resources.add(new Gx::VertexShader(device, load(resourcePath("shaders/ndcvertex.dat"))));
 
     genericBuffer = resources.add(new Gx::VertexBuffer(device, { 25600 * sizeof(ColorVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
+    genericTexture = resources.add(new Gx::Texture(device, resourcePath("assets/generic.png"), { { }, 0, { }, Gx::Graphics::Format::A8R8G8B8, Gx::Graphics::Pool::Managed }));
 
     auto timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), SLOT(timeout()));

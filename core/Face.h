@@ -3,6 +3,8 @@
 
 #include <initializer_list>
 
+#include <GxMaths/GxVector.h>
+
 #include <QtCore/QVector>
 
 class Face
@@ -14,6 +16,7 @@ public:
         explicit Element(int index = -1) : index(index) { }
 
         int index;
+        Gx::Vec2 texCoords;
     };
 
     Face() = default;

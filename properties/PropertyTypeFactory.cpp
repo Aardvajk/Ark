@@ -3,6 +3,7 @@
 #include "properties/Property.h"
 
 #include "properties/types/VecPropertyBrowserType.h"
+#include "properties/types/TextureDataPropertyBrowserType.h"
 
 #include <QPxPropertyBrowser/QPxPropertyBrowserType.h>
 
@@ -31,7 +32,9 @@ PropertyTypeFactory::PropertyTypeFactory(QObject *parent) : QObject(parent)
     c.types[QMetaType::Bool] = new QPx::BoolPropertyBrowserType(this);
     c.types[QMetaType::QColor] = new QPx::ColorPropertyBrowserType(this);
     c.types[QMetaType::QPoint] = new QPx::PointPropertyBrowserType(this);
+    c.types[qMetaTypeId<Gx::Vec2>()] = new Vec2PropertyBrowserType(this);
     c.types[qMetaTypeId<Gx::Vec3>()] = new Vec3PropertyBrowserType(this);
+    c.types[qMetaTypeId<TextureData>()] = new TextureDataPropertyBrowserType(this);
 }
 
 QPx::PropertyBrowserType *PropertyTypeFactory::type(int typeId) const

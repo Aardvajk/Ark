@@ -1,5 +1,7 @@
 #include "EntityFactory.h"
 
+#include "core/TextureData.h"
+
 #include "properties/Property.h"
 
 #include <QtGui/QColor>
@@ -21,4 +23,5 @@ void EntityFactory::defaultFaceProperties(PropertyMap &properties)
 {
     properties["Color"] = Property(QColor(200, 200, 200));
     properties["Visible"] = Property(true);
+    properties["Texture"] = Property(TextureData());
 }

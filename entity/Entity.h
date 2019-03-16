@@ -50,6 +50,8 @@ public:
     const Mesh &mesh() const;
     void setMesh(const Mesh &value);
 
+    void computeTexCoords();
+
     void saveToStream(QDataStream &ds) const;
     void loadFromStream(QDataStream &ds);
 

@@ -135,6 +135,8 @@ void CreateTool::mouseReleased(ModelView *view, QMouseEvent *event)
         auto e = EntityFactory::create(Entity::Type::Geometry);
 
         e.setMesh(*mesh);
+        e.computeTexCoords();
+
         e.setSelection(Selection::fromElements(Element::Type::Face, mesh->faces.count()));
 
         auto create = new CreateEntityCommand("", model);

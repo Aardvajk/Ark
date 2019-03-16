@@ -15,6 +15,7 @@ namespace Gx
 class VertexDeclaration;
 class VertexShader;
 class VertexBuffer;
+class Texture;
 
 }
 
@@ -39,6 +40,7 @@ public:
     Handle<Gx::VertexShader> ndcShader;
 
     Handle<Gx::VertexBuffer> genericBuffer;
+    Handle<Gx::Texture> genericTexture;
 
 signals:
     void render();

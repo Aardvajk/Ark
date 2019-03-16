@@ -8,12 +8,14 @@ struct VS_INPUT
     vector position : POSITION;
     vector normal   : NORMAL;
     vector color    : COLOR;
+    float2 texcoords: TEXCOORD;
 };
 
 struct VS_OUTPUT
 {
     vector position : POSITION;
 	vector color    : COLOR;
+    float2 texcoords: TEXCOORD;
 };
 
 VS_OUTPUT main(VS_INPUT input)
@@ -30,6 +32,7 @@ VS_OUTPUT main(VS_INPUT input)
 	
     output.position = mul(p, viewproj);
 	output.color = input.color * s;
+	output.texcoords = input.texcoords;
 	
     return output;
 }

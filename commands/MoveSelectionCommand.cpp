@@ -15,6 +15,8 @@ void update(Model *model, ModelData *data, const QHash<int, QHash<int, QPx::Inde
             auto &element = v[i.key()][j.key()];
             data->entities[i.key()].mesh().vertices[j.key()] = element[index];
         }
+
+        data->entities[i.key()].computeTexCoords();
     }
 
     model->change();
@@ -70,6 +72,8 @@ void MoveSelectionCommand::move(const Gx::Vec3 &value)
             element.second = element.first + value;
             data->entities[i.key()].mesh().vertices[j.key()] = element.second;
         }
+
+        data->entities[i.key()].computeTexCoords();
     }
 
     model->change();

@@ -3,6 +3,7 @@
 #include "core/Element.h"
 #include "core/Render.h"
 #include "core/Mesh.h"
+#include "core/TextureData.h"
 
 #include "maths/Projection.h"
 
@@ -60,6 +61,9 @@ int main(int argc, char *argv[])
     qRegisterMetaTypeStreamOperators<Render::Type>("Render::Type");
     qRegisterMetaTypeStreamOperators<Mesh>("Mesh");
     qRegisterMetaTypeStreamOperators<Entity::Type>("Entity::Type");
+
+    QMetaType::registerComparators<TextureData>();
+    qRegisterMetaTypeStreamOperators<TextureData>("TextureData");
 
     try
     {

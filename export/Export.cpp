@@ -101,9 +101,9 @@ bool exportModel(const QString &path, const Model *model)
 
                 for(int i = 1; i < f.value.elements.count() - 1; ++i)
                 {
-                    ms << mesh.vertices[f.value.elements[0].index] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);
-                    ms << mesh.vertices[f.value.elements[i].index] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);;
-                    ms << mesh.vertices[f.value.elements[i + 1].index] << n << Gx::Rgba(color) << Gx::Vec2(0, 0);;
+                    ms << mesh.vertices[f.value.elements[0].index] << n << Gx::Rgba(color) << f.value.elements[0].texCoords;
+                    ms << mesh.vertices[f.value.elements[i].index] << n << Gx::Rgba(color) << f.value.elements[i].texCoords;
+                    ms << mesh.vertices[f.value.elements[i + 1].index] << n << Gx::Rgba(color) << f.value.elements[i + 1].texCoords;
 
                     bytes += sizeof(PreviewVertex) * 3;
                 }

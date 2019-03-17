@@ -24,7 +24,7 @@ public:
     QPx::PropertyBrowserType *type(int typeId, Property::SubType subType) const;
 
 private:
-    pcx::aligned_store<16> cache;
+    pcx::aligned_store<24> cache;
 };
 
 #endif // PROPERTYTYPEFACTORY_H

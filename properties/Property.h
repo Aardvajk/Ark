@@ -14,6 +14,7 @@ public:
     enum class SubType
     {
         General,
+        Export,
         Directory
     };
 

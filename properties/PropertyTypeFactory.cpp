@@ -18,7 +18,8 @@ class Cache
 public:
     QMap<int, QPx::PropertyBrowserType*> types;
 
-    PathPropertyBrowserType *pathType;
+    PathPropertyBrowserType *exportType;
+    PathPropertyBrowserType *directoryType;
 };
 
 }
@@ -37,16 +38,20 @@ PropertyTypeFactory::PropertyTypeFactory(QObject *parent) : QObject(parent)
     c.types[qMetaTypeId<Gx::Vec3>()] = new Vec3PropertyBrowserType(this);
     c.types[qMetaTypeId<TextureData>()] = new TextureDataPropertyBrowserType(this);
 
-    c.pathType = new PathPropertyBrowserType(this);
+    c.exportType = new PathPropertyBrowserType(PathPropertyBrowserType::Type::File, "Data Files (*.dat);;Any Files (*.*)", this);
+    c.directoryType = new PathPropertyBrowserType(PathPropertyBrowserType::Type::Directory, QString(), this);
 }
 
 QPx::PropertyBrowserType *PropertyTypeFactory::type(int typeId, Property::SubType subType) const
 {
     auto &c = cache.get<Cache>();
 
-    if(subType == Property::SubType::Directory)
+    switch(subType)
     {
-        return c.pathType;
+        case Property::SubType::Export: return c.exportType;
+        case Property::SubType::Directory: return c.directoryType;
+
+        default: break;
     }
 
     auto &t = c.types;

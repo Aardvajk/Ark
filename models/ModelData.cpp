@@ -17,7 +17,7 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     properties["Background"] = Property(QColor(200, 220, 240));
     properties["Grid"] = Property(1.0f);
     properties["Cursor"] = Property(Gx::Vec3(0, 0, 0));
-    properties["Export"] = Property(QString());
+    properties["Export"] = Property(Property::SubType::Export, QString());
     properties["Textures"] = Property(Property::SubType::Directory, QString());
 }
 

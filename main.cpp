@@ -3,7 +3,7 @@
 #include "core/Element.h"
 #include "core/Render.h"
 #include "core/Mesh.h"
-#include "core/TextureData.h"
+#include "properties/custom/TextureData.h"
 
 #include "maths/Projection.h"
 

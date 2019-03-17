@@ -1,9 +1,8 @@
 #include "PropertyTypeFactory.h"
 
-#include "properties/Property.h"
-
 #include "properties/types/VecPropertyBrowserType.h"
 #include "properties/types/TextureDataPropertyBrowserType.h"
+#include "properties/types/PathPropertyBrowserType.h"
 
 #include <QPxPropertyBrowser/QPxPropertyBrowserType.h>
 
@@ -18,6 +17,8 @@ class Cache
 {
 public:
     QMap<int, QPx::PropertyBrowserType*> types;
+
+    PathPropertyBrowserType *pathType;
 };
 
 }
@@ -35,11 +36,20 @@ PropertyTypeFactory::PropertyTypeFactory(QObject *parent) : QObject(parent)
     c.types[qMetaTypeId<Gx::Vec2>()] = new Vec2PropertyBrowserType(this);
     c.types[qMetaTypeId<Gx::Vec3>()] = new Vec3PropertyBrowserType(this);
     c.types[qMetaTypeId<TextureData>()] = new TextureDataPropertyBrowserType(this);
+
+    c.pathType = new PathPropertyBrowserType(this);
 }
 
-QPx::PropertyBrowserType *PropertyTypeFactory::type(int typeId) const
+QPx::PropertyBrowserType *PropertyTypeFactory::type(int typeId, Property::SubType subType) const
 {
-    auto &t = cache.get<Cache>().types;
+    auto &c = cache.get<Cache>();
+
+    if(subType == Property::SubType::Directory)
+    {
+        return c.pathType;
+    }
+
+    auto &t = c.types;
 
     auto i = t.find(typeId);
     if(i == t.end())

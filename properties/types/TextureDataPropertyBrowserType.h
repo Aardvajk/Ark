@@ -1,7 +1,7 @@
 #ifndef TEXTUREDATAPROPERTYBROWSERTYPE_H
 #define TEXTUREDATAPROPERTYBROWSERTYPE_H
 
-#include "core/TextureData.h"
+#include "properties/custom/TextureData.h"
 
 #include <QPxPropertyBrowser/QPxPropertyBrowserType.h>
 

@@ -35,10 +35,11 @@ class Final
 {
 public:
     Final() = default;
-    Final(const QVariant &value, int userType, QPx::PropertyBrowserItem::Flags flags) : value(value), userType(userType), flags(flags) { }
+    Final(const QVariant &value, int userType, Property::SubType subType, QPx::PropertyBrowserItem::Flags flags) : value(value), userType(userType), subType(subType), flags(flags) { }
 
     QVariant value;
     int userType;
+    Property::SubType subType;
     QPx::PropertyBrowserItem::Flags flags;
 };
 
@@ -114,10 +115,11 @@ void PropertyModel::selectionChanged()
 
         QVariant value = first.value<QVariant>();
         int userType = value.userType();
+        auto subType = first.subType();
 
         for(int i = 1; i < m.second.count(); ++i)
         {
-            if(m.second[i].value<QVariant>().userType() != userType)
+            if(m.second[i].value<QVariant>().userType() != userType || m.second[i].subType() != subType)
             {
                 conflict = true;
                 break;
@@ -137,7 +139,7 @@ void PropertyModel::selectionChanged()
 
         if(!conflict && m.second.count() == total)
         {
-            finals[m.first] = Final(value, userType, flags);
+            finals[m.first] = Final(value, userType, subType, flags);
         }
     }
 
@@ -158,7 +160,7 @@ void PropertyModel::selectionChanged()
         {
             auto &value = m.second.value;
 
-            connect(new QPx::PropertyBrowserItem(factory->type(m.second.userType), this, QModelIndex(), insert, m.first, m.second.flags, value, this), SIGNAL(valueChanged(QVariant)), SLOT(itemValueChanged(QVariant)));
+            connect(new QPx::PropertyBrowserItem(factory->type(m.second.userType, m.second.subType), this, QModelIndex(), insert, m.first, m.second.flags, value, this), SIGNAL(valueChanged(QVariant)), SLOT(itemValueChanged(QVariant)));
 
             for(auto &r: rows)
             {

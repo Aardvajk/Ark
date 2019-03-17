@@ -11,6 +11,12 @@
 class Property
 {
 public:
+    enum class SubType
+    {
+        General,
+        Directory
+    };
+
     enum class Flag
     {
         Hidden = 1,
@@ -21,17 +27,20 @@ public:
     using Flags = pcx::flags<Flag>;
 
     Property() = default;
-    template<typename T> explicit Property(const T &value, Flags flags = Flags()) : s(QVariant::fromValue(value), flags) { }
-    explicit Property(const char *value, Flags flags = Flags()) : s(QString(value), flags) { }
+    template<typename T> explicit Property(const T &value, Flags flags = Flags()) : s(SubType::General, QVariant::fromValue(value), flags) { }
+    explicit Property(const char *value, Flags flags = Flags()) : s(SubType::General, QString(value), flags) { }
+    template<typename T> explicit Property(SubType subType, const T &value, Flags flags = Flags()) : s(subType, QVariant::fromValue(value), flags) { }
 
     template<typename T> void setValue(const T &value){ s.value().value = QVariant::fromValue(value); }
 
+    SubType subType() const { return s.value().subType; }
     template<typename T> T value() const { return s.value().value.value<T>(); }
     Flags flags() const { return s.value().flags; }
 
 private:
     struct Data
     {
+        SubType subType;
         QVariant value;
         Flags flags;
     };

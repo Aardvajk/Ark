@@ -18,6 +18,7 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     properties["Grid"] = Property(1.0f);
     properties["Cursor"] = Property(Gx::Vec3(0, 0, 0));
     properties["Export"] = Property(QString());
+    properties["Textures"] = Property(Property::SubType::Directory, QString());
 }
 
 bool ModelData::save(const QString &path) const

@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 #include "core/Mesh.h"
-#include "core/TextureData.h"
+#include "properties/custom/TextureData.h"
 
 #include "entity/EntityFactory.h"
 

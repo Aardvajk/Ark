@@ -1,6 +1,6 @@
 #include "EntityFactory.h"
 
-#include "core/TextureData.h"
+#include "properties/custom/TextureData.h"
 
 #include "properties/Property.h"
 

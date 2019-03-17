@@ -125,7 +125,8 @@ SOURCES += \
     export/Export.cpp \
     core/ResourcePath.cpp \
     core/ShaderCompiler.cpp \
-    properties/types/TextureDataPropertyBrowserType.cpp
+    properties/types/TextureDataPropertyBrowserType.cpp \
+    properties/types/PathPropertyBrowserType.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -220,8 +221,9 @@ HEADERS += \
     export/Export.h \
     core/ResourcePath.h \
     core/ShaderCompiler.h \
-    core/TextureData.h \
-    properties/types/TextureDataPropertyBrowserType.h
+    properties/custom/TextureData.h \
+    properties/types/TextureDataPropertyBrowserType.h \
+    properties/types/PathPropertyBrowserType.h
 
 DISTFILES +=
 

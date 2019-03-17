@@ -24,7 +24,7 @@ public:
 
 }
 
-PropertyTypeFactory::PropertyTypeFactory(QObject *parent) : QObject(parent)
+PropertyTypeFactory::PropertyTypeFactory(const Model *model, QObject *parent) : QObject(parent)
 {
     auto &c = cache.alloc<Cache>();
 
@@ -36,7 +36,7 @@ PropertyTypeFactory::PropertyTypeFactory(QObject *parent) : QObject(parent)
     c.types[QMetaType::QPoint] = new QPx::PointPropertyBrowserType(this);
     c.types[qMetaTypeId<Gx::Vec2>()] = new Vec2PropertyBrowserType(this);
     c.types[qMetaTypeId<Gx::Vec3>()] = new Vec3PropertyBrowserType(this);
-    c.types[qMetaTypeId<TextureData>()] = new TextureDataPropertyBrowserType(this);
+    c.types[qMetaTypeId<TextureData>()] = new TextureDataPropertyBrowserType(model, this);
 
     c.exportType = new PathPropertyBrowserType(PathPropertyBrowserType::Type::File, "Data Files (*.dat);;Any Files (*.*)", this);
     c.directoryType = new PathPropertyBrowserType(PathPropertyBrowserType::Type::Directory, QString(), this);

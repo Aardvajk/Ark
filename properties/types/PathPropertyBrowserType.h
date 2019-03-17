@@ -49,7 +49,7 @@ public:
     virtual QPx::PropertyBrowserEditor *createEditor(const QPx::PropertyBrowserItem *item, QWidget *parent) const override;
 
 private:
-    pcx::aligned_store<64> cache;
+    pcx::aligned_store<16> cache;
 };
 
 #endif // PATHPROPERTYBROWSERTYPE_H

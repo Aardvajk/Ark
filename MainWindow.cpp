@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
 
     auto relay = new Relay(this);
     auto tools = new ToolList(relay, this);
-    auto factory = new PropertyTypeFactory(this);
+    auto factory = new PropertyTypeFactory(model, this);
 
     auto central = setTypedCentralWidget(new GuiCentralWidget());
     central->layout()->addTypedWidget(new GuiSeparator(GuiSeparator::Style::Line, Qt::Horizontal));

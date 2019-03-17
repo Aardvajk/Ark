@@ -72,7 +72,6 @@ void PathPropertyBrowserEditor::buttonClicked()
 
 PathPropertyBrowserType::PathPropertyBrowserType(Type type, const QString &filter, QObject *parent) : QPx::PropertyBrowserType(parent)
 {
-qDebug() << sizeof(Cache);
     cache.alloc<Cache>(type, filter);
 }
 

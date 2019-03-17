@@ -5,6 +5,8 @@
 
 #include <QPxPropertyBrowser/QPxPropertyBrowserType.h>
 
+class Model;
+class TexturePropertyBrowserType;
 class Vec2PropertyBrowserType;
 
 class TextureDataPropertyBrowserType : public QPx::PropertyBrowserType
@@ -12,7 +14,7 @@ class TextureDataPropertyBrowserType : public QPx::PropertyBrowserType
     Q_OBJECT
 
 public:
-    explicit TextureDataPropertyBrowserType(QObject *parent = nullptr);
+    TextureDataPropertyBrowserType(const Model *model, QObject *parent = nullptr);
 
     virtual void addProperties(QPx::PropertyBrowserItem *item, QPx::PropertyBrowserModel *model, const QModelIndex &parent) const override;
     virtual void updateProperties(QPx::PropertyBrowserItem *item, const QVariant &value) const override;
@@ -25,7 +27,8 @@ private slots:
     void changed(const QVariant &value);
 
 private:
-    Vec2PropertyBrowserType *type;
+    TexturePropertyBrowserType *pathType;
+    Vec2PropertyBrowserType *vecType;
 };
 
 #endif // TEXTUREDATAPROPERTYBROWSERTYPE_H

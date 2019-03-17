@@ -14,17 +14,19 @@ class PropertyBrowserType;
 
 }
 
+class Model;
+
 class PropertyTypeFactory : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit PropertyTypeFactory(QObject *parent = nullptr);
+    PropertyTypeFactory(const Model *model, QObject *parent = nullptr);
 
     QPx::PropertyBrowserType *type(int typeId, Property::SubType subType) const;
 
 private:
-    pcx::aligned_store<24> cache;
+    pcx::aligned_store<32> cache;
 };
 
 #endif // PROPERTYTYPEFACTORY_H

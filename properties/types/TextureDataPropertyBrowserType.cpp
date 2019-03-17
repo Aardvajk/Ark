@@ -1,5 +1,6 @@
 #include "TextureDataPropertyBrowserType.h"
 
+#include "properties/types/TexturePropertyBrowserType.h"
 #include "properties/types/VecPropertyBrowserType.h"
 
 #include <QPxPropertyBrowser/QPxPropertyBrowserItem.h>
@@ -13,25 +14,27 @@ QVector<QVariant> values(const QVariant &value)
     {
         auto d = value.value<TextureData>();
 
-        return { QVariant::fromValue(d.scale), QVariant::fromValue(d.offset) };
+        return { QVariant::fromValue(d.source), QVariant::fromValue(d.scale), QVariant::fromValue(d.offset) };
     }
 
-    return { QVariant(), QVariant() };
+    return { QVariant(), QVariant(), QVariant() };
 }
 
 }
 
-TextureDataPropertyBrowserType::TextureDataPropertyBrowserType(QObject *parent) : QPx::PropertyBrowserType(parent)
+TextureDataPropertyBrowserType::TextureDataPropertyBrowserType(const Model *model, QObject *parent) : QPx::PropertyBrowserType(parent)
 {
-    type = new Vec2PropertyBrowserType(this);
+    pathType = new TexturePropertyBrowserType(model, this);
+    vecType = new Vec2PropertyBrowserType(this);
 }
 
 void TextureDataPropertyBrowserType::addProperties(QPx::PropertyBrowserItem *item, QPx::PropertyBrowserModel *model, const QModelIndex &parent) const
 {
     auto v = values(item->value());
 
-    item->addItem(new QPx::PropertyBrowserItem(type, model, parent, { }, "Scale", item->flags(), v[0], item));
-    item->addItem(new QPx::PropertyBrowserItem(type, model, parent, { }, "Offset", item->flags(), v[1], item));
+    item->addItem(new QPx::PropertyBrowserItem(pathType, model, parent, { }, "Source", item->flags(), v[0], item));
+    item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Scale", item->flags(), v[1], item));
+    item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Offset", item->flags(), v[2], item));
 
     for(auto i: item->items())
     {
@@ -43,8 +46,10 @@ void TextureDataPropertyBrowserType::updateProperties(QPx::PropertyBrowserItem *
 {
     auto v = values(value);
 
-    item->items()[0]->setValue(v[0]);
-    item->items()[1]->setValue(v[1]);
+    for(int i = 0; i < v.count(); ++i)
+    {
+        item->items()[i]->setValue(v[i]);
+    }
 }
 
 QString TextureDataPropertyBrowserType::valueText(const QPx::PropertyBrowserItem *item) const
@@ -73,8 +78,9 @@ void TextureDataPropertyBrowserType::changed(const QVariant &value)
 
         switch(parent->items().indexOf(item))
         {
-            case 0: v.scale = value.value<Gx::Vec2>(); break;
-            case 1: v.offset = value.value<Gx::Vec2>(); break;
+            case 0: v.source = value.value<QString>(); break;
+            case 1: v.scale = value.value<Gx::Vec2>(); break;
+            case 2: v.offset = value.value<Gx::Vec2>(); break;
         }
 
         auto var = QVariant::fromValue(v);

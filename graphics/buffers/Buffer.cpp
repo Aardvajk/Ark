@@ -12,17 +12,17 @@ Buffer::Buffer(Graphics *graphics, std::uint32_t bytes, QObject *parent) : QObje
 
 void Buffer::renderTriangleList(Gx::GraphicsDevice &device) const
 {
-    device.renderTriangleList(buffer(), count());
+    device.renderTriangleList(buffer(), 0, count());
 }
 
 void Buffer::renderLineList(Gx::GraphicsDevice &device) const
 {
-    device.renderLineList(buffer(), count());
+    device.renderLineList(buffer(), 0, count());
 }
 
 void Buffer::renderPointList(Gx::GraphicsDevice &device) const
 {
-    device.renderPointList(buffer(), count());
+    device.renderPointList(buffer(), 0, count());
 }
 
 const Gx::VertexBuffer &Buffer::buffer() const

@@ -8,6 +8,7 @@
 #include <QGxGraphics/QGxGraphicsDevice.h>
 
 #include <pcx/resource_map.h>
+#include <pcx/scoped_ptr.h>
 
 namespace Gx
 {
@@ -19,12 +20,15 @@ class Texture;
 
 }
 
+class TextureCache;
+
 class Graphics : public QObject
 {
     Q_OBJECT
 
 public:
     explicit Graphics(QObject *parent = nullptr);
+    virtual ~Graphics() override;
 
     QGx::GraphicsDevice device;
     pcx::resource_map<Gx::GraphicsResource> resources;
@@ -41,6 +45,8 @@ public:
 
     Handle<Gx::VertexBuffer> genericBuffer;
     Handle<Gx::Texture> genericTexture;
+
+    pcx::scoped_ptr<TextureCache> textures;
 
 signals:
     void render();

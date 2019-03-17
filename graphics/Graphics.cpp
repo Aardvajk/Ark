@@ -4,6 +4,8 @@
 
 #include "core/ResourcePath.h"
 
+#include "graphics/TextureCache.h"
+
 #include "graphics/vertices/PreviewVertex.h"
 #include "graphics/vertices/ColorVertex.h"
 
@@ -48,11 +50,15 @@ Graphics::Graphics(QObject *parent) : QObject(parent)
     genericBuffer = resources.add(new Gx::VertexBuffer(device, { 25600 * sizeof(ColorVertex), Gx::Graphics::Usage::Flag::Dynamic, Gx::Graphics::Pool::Default }));
     genericTexture = resources.add(new Gx::Texture(device, resourcePath("assets/generic.png"), { { }, 0, { }, Gx::Graphics::Format::A8R8G8B8, Gx::Graphics::Pool::Managed }));
 
+    textures = new TextureCache(genericTexture.get(), *this);
+
     auto timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), SLOT(timeout()));
 
     timer->start(0);
 }
+
+Graphics::~Graphics() = default;
 
 void Graphics::timeout()
 {

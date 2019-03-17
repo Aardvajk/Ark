@@ -83,5 +83,5 @@ void renderOrthoGrid(Graphics *graphics, const RenderParams &params, float grid,
     }
 
     auto r = RenderState(RenderState::Type::Color, RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params);
-    graphics->device.renderLineList(*graphics->genericBuffer, n);
+    graphics->device.renderLineList(*graphics->genericBuffer, 0, n);
 }

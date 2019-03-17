@@ -36,7 +36,7 @@ void RenderPrimitives::screenBox(Graphics *graphics, const RenderParams &params,
 
     if(auto r = RenderState(RenderState::Type::Screen, flags, graphics, params))
     {
-        graphics->device.renderLineList(*graphics->genericBuffer, 4);
+        graphics->device.renderLineList(*graphics->genericBuffer, 0, 4);
     }
 }
 
@@ -68,7 +68,7 @@ void RenderPrimitives::screenCircle(Graphics *graphics, const RenderParams &para
 
     if(auto r = RenderState(RenderState::Type::Screen, flags, graphics, params))
     {
-        graphics->device.renderLineList(*graphics->genericBuffer, count);
+        graphics->device.renderLineList(*graphics->genericBuffer, 0, count);
     }
 }
 
@@ -102,7 +102,7 @@ void RenderPrimitives::wireframeMesh(Graphics *graphics, const RenderParams &par
 
     if(auto r = RenderState(RenderState::Type::Color, flags, graphics, params))
     {
-        graphics->device.renderLineList(*graphics->genericBuffer, count);
+        graphics->device.renderLineList(*graphics->genericBuffer, 0, count);
     }
 }
 
@@ -134,7 +134,7 @@ void RenderPrimitives::cursor(Graphics *graphics, const RenderParams &params, Re
 
     if(auto r = RenderState(RenderState::Type::Ndc, flags, graphics, params))
     {
-        graphics->device.renderLineList(*graphics->genericBuffer, count);
+        graphics->device.renderLineList(*graphics->genericBuffer, 0, count);
     }
 
     screenCircle(graphics, params, flags, Projection::worldToScreen(params, pos), 10.0f, 16, color);

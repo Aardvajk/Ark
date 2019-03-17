@@ -54,6 +54,12 @@ void TextureDataPropertyBrowserType::updateProperties(QPx::PropertyBrowserItem *
 
 QString TextureDataPropertyBrowserType::valueText(const QPx::PropertyBrowserItem *item) const
 {
+    auto v = values(item->value());
+    if(v[0].isValid())
+    {
+        return v[0].toString();
+    }
+
     return QString();
 }
 

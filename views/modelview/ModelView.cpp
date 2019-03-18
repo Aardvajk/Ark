@@ -5,7 +5,6 @@
 
 #include "graphics/Graphics.h"
 #include "graphics/RenderState.h"
-#include "graphics/TextureCache.h"
 
 #include "graphics/buffers/PreviewBuffer.h"
 #include "graphics/buffers/FaceBuffer.h"
@@ -132,14 +131,7 @@ void ModelView::renderModel(const RenderParams &params)
     {
         if(auto r = RenderState(params.projection == Projection::Type::Perspective ? RenderState::Type::Preview : RenderState::Type::Flat, { }, graphics, params))
         {
-            if(st.render == Render::Type::Textured)
-            {
-                graphics->device.setTexture(0, graphics->textures->texture("C:/Desk/Images/General Purpose Icons/FatCow-Hosting-png/PNG", "Add.png"));
-            }
-
-            model->buffers()->previewBuffer()->renderTriangleList(graphics->device);
-
-            graphics->device.setTexture(0);
+            model->buffers()->previewBuffer()->render(st.render, graphics);
         }
 
         if(auto r = RenderState(RenderState::Type::Color, RenderState::Flag::NoZ | RenderState::Flag::NoZWrite, graphics, params))

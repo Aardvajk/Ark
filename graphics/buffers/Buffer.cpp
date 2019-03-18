@@ -25,6 +25,11 @@ void Buffer::renderPointList(Gx::GraphicsDevice &device) const
     device.renderPointList(buffer(), 0, count());
 }
 
+void Buffer::renderTriangleList(Gx::GraphicsDevice &device, unsigned start, unsigned count) const
+{
+    device.renderTriangleList(buffer(), start, count);
+}
+
 const Gx::VertexBuffer &Buffer::buffer() const
 {
     checkValid();

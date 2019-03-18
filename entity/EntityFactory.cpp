@@ -14,6 +14,7 @@ Entity EntityFactory::create(Entity::Type type)
     if(type == Entity::Type::Geometry)
     {
         e.addProperty("Name", Property("Geometry"));
+        e.addProperty("Group", Property(QString()));
     }
 
     return e;

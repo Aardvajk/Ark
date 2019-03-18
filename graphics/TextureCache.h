@@ -20,7 +20,9 @@ private:
     const Gx::Texture *generic;
 
     mutable std::vector<Graphics::Handle<Gx::Texture> > v;
-    mutable QHash<QString, const Gx::Texture*> m;
+    mutable std::vector<std::size_t> free;
+
+    mutable QHash<QString, std::size_t> m;
 };
 
 #endif // TEXTURECACHE_H

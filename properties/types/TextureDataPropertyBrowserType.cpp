@@ -32,7 +32,7 @@ void TextureDataPropertyBrowserType::addProperties(QPx::PropertyBrowserItem *ite
 {
     auto v = values(item->value());
 
-    item->addItem(new QPx::PropertyBrowserItem(pathType, model, parent, { }, "Source", item->flags(), v[0], item));
+    item->addItem(new QPx::PropertyBrowserItem(pathType, model, parent, { }, "Diffuse", item->flags(), v[0], item));
     item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Scale", item->flags(), v[1], item));
     item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Offset", item->flags(), v[2], item));
 

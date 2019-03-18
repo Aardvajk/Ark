@@ -128,7 +128,8 @@ SOURCES += \
     properties/types/TextureDataPropertyBrowserType.cpp \
     properties/types/PathPropertyBrowserType.cpp \
     properties/types/TexturePropertyBrowserType.cpp \
-    graphics/TextureCache.cpp
+    graphics/TextureCache.cpp \
+    graphics/RenderKey.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -227,9 +228,14 @@ HEADERS += \
     properties/types/TextureDataPropertyBrowserType.h \
     properties/types/PathPropertyBrowserType.h \
     properties/types/TexturePropertyBrowserType.h \
-    graphics/TextureCache.h
+    graphics/TextureCache.h \
+    graphics/RenderKey.h
 
-DISTFILES +=
+DISTFILES += \
+    shaders/colorvertex.txt \
+    shaders/ndcvertex.txt \
+    shaders/previewvertex.txt \
+    shaders/screenvertex.txt
 
 RESOURCES += \
     resources.qrc

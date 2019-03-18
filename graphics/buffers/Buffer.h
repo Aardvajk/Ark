@@ -24,6 +24,8 @@ public:
     void renderLineList(Gx::GraphicsDevice &device) const;
     void renderPointList(Gx::GraphicsDevice &device) const;
 
+    void renderTriangleList(Gx::GraphicsDevice &device, unsigned start, unsigned count) const;
+
     const Gx::VertexBuffer &buffer() const;
     unsigned count() const;
 
@@ -33,9 +35,9 @@ public slots:
 protected:
     virtual void generate(Gx::VertexBuffer &buffer, unsigned &count) const = 0;
 
-private:
     void checkValid() const;
 
+private:
     mutable Graphics::Handle<Gx::VertexBuffer> handle;
     mutable unsigned n;
     mutable bool valid;

@@ -12,6 +12,11 @@ QString textureId(const QString &path, const QString &file)
     return path + QDir::separator() + file;
 }
 
+Graphics::Handle<Gx::Texture> makeTexture(Graphics &graphics, const QString &id)
+{
+    return graphics.resources.add(new Gx::Texture(graphics.device, id.toStdString(), { { }, 0, { }, Gx::Graphics::Format::A8R8G8B8, Gx::Graphics::Pool::Managed }));
+}
+
 }
 
 TextureCache::TextureCache(const Gx::Texture *generic, Graphics &graphics) : graphics(graphics), generic(generic)
@@ -29,10 +34,21 @@ const Gx::Texture &TextureCache::texture(const QString &path, const QString &fil
     {
         try
         {
-            v.push_back(graphics.resources.add(new Gx::Texture(graphics.device, id.toStdString(), { { }, 0, { }, Gx::Graphics::Format::A8R8G8B8, Gx::Graphics::Pool::Managed })));
-            m[id] = v.back().get();
+            if(!free.empty())
+            {
+                auto index = free.back();
+                free.pop_back();
 
-            return *m[id];
+                v[index] = makeTexture(graphics, id);
+                m[id] = index;
+            }
+            else
+            {
+                v.push_back(makeTexture(graphics, id));
+                m[id] = v.size() - 1;
+            }
+
+            return *v[m[id]];
         }
 
         catch(...)
@@ -41,6 +57,5 @@ const Gx::Texture &TextureCache::texture(const QString &path, const QString &fil
         }
     }
 
-    return *i.value();
+    return *v[i.value()];
 }
-

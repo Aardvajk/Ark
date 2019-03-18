@@ -4,6 +4,10 @@
 
 #include "entity/Entity.h"
 
+#include "properties/custom/TextureData.h"
+
+#include "graphics/RenderKey.h"
+
 #include "graphics/vertices/PreviewVertex.h"
 
 #include <QtGui/QColor>
@@ -11,6 +15,8 @@
 #include <QGxMaths/QGxColor.h>
 
 #include <GxMaths/GxColor.h>
+
+#include <QtCore/QHash>
 
 #include <pcx/datastream.h>
 #include <pcx/indexed_range.h>
@@ -36,6 +42,7 @@ Gx::Vec3 average(const QVector<Gx::Vec3> &vs)
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec2 &v){ return os << v.x << v.y; }
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec3 &v){ return os << v.x << v.y << v.z; }
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const QColor &v){ return os << float(v.redF()) << float(v.greenF()) << float(v.blueF()); }
+pcx::data_ostream &operator<<(pcx::data_ostream &os, const QString &v){ return os << v.toStdString(); }
 
 bool exportModel(const QString &path, const Model *model)
 {
@@ -45,13 +52,13 @@ bool exportModel(const QString &path, const Model *model)
         return false;
     }
 
-    QVector<Entity> geoms;
+    QVector<int> geoms;
 
-    for(const auto &e: model->entities())
+    for(const auto &e: pcx::indexed_range(model->entities()))
     {
-        switch(e.type())
+        switch(e.value.type())
         {
-            case Entity::Type::Geometry: geoms.append(e); break;
+            case Entity::Type::Geometry: geoms.append(e.index); break;
 
             default: break;
         }
@@ -59,8 +66,9 @@ bool exportModel(const QString &path, const Model *model)
 
     os << 1;
 
-    for(const auto &e: geoms)
+    for(auto index: geoms)
     {
+        const auto &e = model->entities()[index];
         const auto &mesh = e.mesh();
         auto pos = average(mesh.vertices);
 
@@ -77,45 +85,65 @@ bool exportModel(const QString &path, const Model *model)
         }
     }
 
-    std::ostringstream bm;
-    pcx::data_ostream ms(&bm);
+    QHash<RenderKey, QVector<QPair<int, int> > > groups;
 
-    unsigned bytes = 0;
-
-    for(const auto &e: geoms)
+    for(auto index: geoms)
     {
+        const auto &e = model->entities()[index];
         const auto &mesh = e.mesh();
 
         QSet<int> visibles;
         for(int i = 0; i < mesh.faces.count(); ++i)
         {
-            if(e.subProperty(Element::Type::Face, i, "Visible").value<bool>()) visibles.insert(i);
-        }
-
-        for(auto f: pcx::indexed_range(mesh.faces))
-        {
-            if(visibles.contains(f.index))
+            if(e.subProperty(Element::Type::Face, i, "Visible").value<bool>())
             {
-                auto color = QGx::Color(e.subProperty(Element::Type::Face, f.index, "Color").value<QColor>());
-                auto n = mesh.faceNormal(f.index);
+                RenderKey key;
 
-                for(int i = 1; i < f.value.elements.count() - 1; ++i)
-                {
-                    ms << mesh.vertices[f.value.elements[0].index] << n << Gx::Rgba(color) << f.value.elements[0].texCoords;
-                    ms << mesh.vertices[f.value.elements[i].index] << n << Gx::Rgba(color) << f.value.elements[i].texCoords;
-                    ms << mesh.vertices[f.value.elements[i + 1].index] << n << Gx::Rgba(color) << f.value.elements[i + 1].texCoords;
+                key.group = e.property("Group").value<QString>();
+                key.diffuse = e.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().source;
 
-                    bytes += sizeof(PreviewVertex) * 3;
-                }
+                groups[key].append(qMakePair(index, i));
             }
         }
     }
 
-    os << "internalmesh" << "mesh";
-    os << bytes;
-    os.write(bm.str().data(), bm.str().size());
+    int groupId = 1;
 
-    os << "staticmeshinstance" << "mesh" << Gx::Vec3(0, 0, 0);
+    for(auto key: groups.keys())
+    {
+        std::ostringstream bm;
+        pcx::data_ostream ms(&bm);
+
+        unsigned bytes = 0;
+
+        for(auto pair: groups[key])
+        {
+            const auto &e = model->entities()[pair.first];
+            const auto &mesh = e.mesh();
+
+            const auto &f = mesh.faces[pair.second];
+
+            auto color = QGx::Color(e.subProperty(Element::Type::Face, pair.second, "Color").value<QColor>());
+            auto n = mesh.faceNormal(pair.second);
+
+            for(int i = 1; i < f.elements.count() - 1; ++i)
+            {
+                ms << mesh.vertices[f.elements[0].index] << n << Gx::Rgba(color) << f.elements[0].texCoords;
+                ms << mesh.vertices[f.elements[i].index] << n << Gx::Rgba(color) << f.elements[i].texCoords;
+                ms << mesh.vertices[f.elements[i + 1].index] << n << Gx::Rgba(color) << f.elements[i + 1].texCoords;
+
+                bytes += sizeof(PreviewVertex) * 3;
+            }
+        }
+
+        auto id = QString("mesh%1").arg(groupId++);
+
+        os << "internalmesh" << id;
+        os << bytes;
+        os.write(bm.str().data(), bm.str().size());
+
+        os << "staticmeshinstance" << id << Gx::Vec3(0, 0, 0);
+    }
 
     os << "";
 

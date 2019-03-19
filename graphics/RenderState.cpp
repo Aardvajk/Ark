@@ -50,7 +50,7 @@ RenderState::RenderState(Type type, Flags flags, Graphics *graphics, const Rende
 
     if(flags & Flag::Invert)
     {
-        graphics->device.setAlphaBlend(Gx::GraphicsDevice::AlphaBlend::Invert);
+        graphics->device.setAlphaBlend(Gx::Graphics::AlphaBlend::Invert);
     }
 
     if(flags & Flag::NoZ)
@@ -75,7 +75,7 @@ RenderState::~RenderState()
     {
         graphics->device.setZBufferEnable(true);
         graphics->device.setZWriteEnable(true);
-        graphics->device.setAlphaBlend(Gx::GraphicsDevice::AlphaBlend::Off);
+        graphics->device.setAlphaBlend(Gx::Graphics::AlphaBlend::Off);
     }
 }
 

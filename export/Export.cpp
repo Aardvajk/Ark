@@ -87,6 +87,8 @@ bool exportModel(const QString &path, const Model *model)
 
     QHash<RenderKey, QVector<QPair<int, int> > > groups;
 
+    QSet<QString> textures;
+
     for(auto index: geoms)
     {
         const auto &e = model->entities()[index];
@@ -102,12 +104,28 @@ bool exportModel(const QString &path, const Model *model)
                 key.group = e.property("Group").value<QString>();
                 key.diffuse = e.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().source;
 
+                if(!key.diffuse.isEmpty())
+                {
+                    textures.insert(key.diffuse);
+                }
+
                 groups[key].append(qMakePair(index, i));
             }
         }
     }
 
-    int groupId = 1;
+    int textureId = 1;
+    QHash<QString, QString> textureIds;
+
+    for(auto texture: textures)
+    {
+        auto id = QString("texture%1").arg(textureId++);
+        textureIds[texture] = id;
+
+        os << "texture" << id << texture;
+    }
+
+    int meshId = 1;
 
     for(auto key: groups.keys())
     {
@@ -136,13 +154,16 @@ bool exportModel(const QString &path, const Model *model)
             }
         }
 
-        auto id = QString("mesh%1").arg(groupId++);
+        if(bytes)
+        {
+            auto id = QString("mesh%1").arg(meshId++);
 
-        os << "internalmesh" << id;
-        os << bytes;
-        os.write(bm.str().data(), bm.str().size());
+            os << "internalmesh" << id;
+            os << bytes;
+            os.write(bm.str().data(), bm.str().size());
 
-        os << "staticmeshinstance" << id << Gx::Vec3(0, 0, 0);
+            os << "staticmeshinstance" << id << textureIds[key.diffuse] << Gx::Vec3(0, 0, 0);
+        }
     }
 
     os << "";

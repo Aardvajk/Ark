@@ -6,7 +6,7 @@ vector light;
 struct VS_INPUT
 {
     vector position : POSITION;
-    vector normal   : NORMAL;
+    float3 normal   : NORMAL;
     vector color    : COLOR;
     float2 texcoords: TEXCOORD;
 };
@@ -23,16 +23,18 @@ VS_OUTPUT main(VS_INPUT input)
     VS_OUTPUT output = (VS_OUTPUT)0;
 
     vector p = mul(input.position, world);
-    vector n = light - p;
 
-    input.normal.w = 0;
+    float3 normal = mul(input.normal, (float3x3)world);
+    normal = normalize(normal);
 
-	float s = dot(normalize(n), normalize(mul(normalize(input.normal), world)));
-	if(s < 0) s = 0;
-	
+    float3 tolight = normalize((float3)light);
+
+    float s = dot(normal, tolight);
+    if(s < 0.3f) s = 0.3f;
+
     output.position = mul(p, viewproj);
-	output.color = input.color * s;
-	output.texcoords = input.texcoords;
+    output.color = input.color * s;
+    output.texcoords = input.texcoords;
 	
     return output;
 }

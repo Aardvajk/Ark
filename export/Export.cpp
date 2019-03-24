@@ -39,8 +39,6 @@ Gx::Vec3 average(const QVector<Gx::Vec3> &vs)
 
 }
 
-pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec2 &v){ return os << v.x << v.y; }
-pcx::data_ostream &operator<<(pcx::data_ostream &os, const Gx::Vec3 &v){ return os << v.x << v.y << v.z; }
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const QColor &v){ return os << float(v.redF()) << float(v.greenF()) << float(v.blueF()); }
 pcx::data_ostream &operator<<(pcx::data_ostream &os, const QString &v){ return os << v.toStdString(); }
 
@@ -72,7 +70,7 @@ bool exportModel(const QString &path, const Model *model)
         const auto &mesh = e.mesh();
         auto pos = average(mesh.vertices);
 
-        os << "staticpolyhedron" << pos;
+        os << "staticpolyhedron" << QString() << pos;
 
         os << std::size_t(mesh.vertices.count());
         for(auto v: mesh.vertices) os << Gx::Vec3(v - pos);

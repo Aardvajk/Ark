@@ -16,6 +16,8 @@ RenderState::RenderState(Type type, Flags flags, Graphics *graphics, const Rende
         graphics->previewShader->setMatrix(graphics->device, "world", Gx::Matrix::identity());
         graphics->previewShader->setMatrix(graphics->device, "viewproj", params.view * params.proj);
         graphics->previewShader->setVector(graphics->device, "light", params.light);
+
+        graphics->device.setPixelShader(*graphics->previewPixelShader);
     }
     if(type == Type::Flat)
     {
@@ -73,6 +75,8 @@ RenderState::~RenderState()
 {
     if(graphics)
     {
+        graphics->device.setPixelShader();
+
         graphics->device.setZBufferEnable(true);
         graphics->device.setZWriteEnable(true);
         graphics->device.setAlphaBlend(Gx::Graphics::AlphaBlend::Off);

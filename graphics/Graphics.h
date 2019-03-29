@@ -15,6 +15,7 @@ namespace Gx
 
 class VertexDeclaration;
 class VertexShader;
+class PixelShader;
 class VertexBuffer;
 class Texture;
 
@@ -42,6 +43,8 @@ public:
     Handle<Gx::VertexShader> colorShader;
     Handle<Gx::VertexShader> screenShader;
     Handle<Gx::VertexShader> ndcShader;
+
+    Handle<Gx::PixelShader> previewPixelShader;
 
     Handle<Gx::VertexBuffer> genericBuffer;
     Handle<Gx::Texture> genericTexture;

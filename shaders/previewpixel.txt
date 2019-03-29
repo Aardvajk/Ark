@@ -1,0 +1,30 @@
+bool textureEnabled;
+
+sampler tex : register(s0);
+
+struct PS_INPUT
+{
+    vector diffuse  : COLOR;
+    float2 texcoord : TEXCOORD;
+};
+
+struct PS_OUTPUT
+{
+    vector diffuse  : COLOR;
+};
+
+PS_OUTPUT main(PS_INPUT input)
+{
+    PS_OUTPUT output = (PS_OUTPUT)0;
+
+    if(textureEnabled)
+    {
+        output.diffuse = tex2D(tex, input.texcoord) * input.diffuse;
+    }
+    else
+    {
+        output.diffuse = input.diffuse;
+    }
+
+    return output;
+}

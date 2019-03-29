@@ -235,7 +235,8 @@ DISTFILES += \
     shaders/colorvertex.txt \
     shaders/ndcvertex.txt \
     shaders/previewvertex.txt \
-    shaders/screenvertex.txt
+    shaders/screenvertex.txt \
+    shaders/previewpixel.txt
 
 RESOURCES += \
     resources.qrc

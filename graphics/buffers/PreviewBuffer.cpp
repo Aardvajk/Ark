@@ -14,6 +14,7 @@
 
 #include <GxGraphics/GxVertexBuffer.h>
 #include <GxGraphics/GxBufferStream.h>
+#include <GxGraphics/GxShader.h>
 
 #include <GxMaths/GxVector.h>
 
@@ -45,6 +46,11 @@ void PreviewBuffer::render(Render::Type type, Graphics *graphics) const
         if(!path.isEmpty() && !texture.isEmpty())
         {
             graphics->device.setTexture(0, graphics->textures->texture(path, texture));
+            graphics->previewPixelShader->setBool(graphics->device, "textureEnabled", true);
+        }
+        else
+        {
+            graphics->previewPixelShader->setBool(graphics->device, "textureEnabled", false);
         }
 
         renderTriangleList(graphics->device, range.first, range.second);

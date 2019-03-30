@@ -105,10 +105,16 @@ bool exportModel(const QString &path, const Model *model)
 
                 key.group = e.property("Group").value<QString>();
                 key.diffuse = e.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().diffuse;
+                key.normal = e.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().normal;
 
                 if(!key.diffuse.isEmpty())
                 {
                     textures.insert(key.diffuse);
+                }
+
+                if(!key.normal.isEmpty())
+                {
+                    textures.insert(key.normal);
                 }
 
                 groups[key].append(qMakePair(index, i));
@@ -174,7 +180,7 @@ bool exportModel(const QString &path, const Model *model)
             os << bytes;
             os.write(bm.str().data(), bm.str().size());
 
-            os << "staticmeshinstance" << id << textureIds[key.diffuse] << Gx::Vec3(0, 0, 0);
+            os << "staticmeshinstance" << id << textureIds[key.diffuse] << textureIds[key.normal] << Gx::Vec3(0, 0, 0);
         }
     }
 

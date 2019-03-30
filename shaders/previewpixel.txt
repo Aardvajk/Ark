@@ -1,11 +1,17 @@
-bool textureEnabled;
+bool diffuseEnabled;
+bool normalEnabled;
 
-sampler tex : register(s0);
+float3 light;
+
+sampler diffuseTex : register(s0);
+sampler normalTex  : register(s1);
 
 struct PS_INPUT
 {
     vector diffuse  : COLOR;
-    float2 texcoord : TEXCOORD;
+    float3 normal   : TEXCOORD0;
+    float2 texcoord : TEXCOORD1;
+    float3 tangent  : TEXCOORD2;
 };
 
 struct PS_OUTPUT
@@ -13,17 +19,41 @@ struct PS_OUTPUT
     vector diffuse  : COLOR;
 };
 
+float3 getNormal(float3 normal_sample, float3 normal, float3 tangent)
+{
+    normal_sample = (normal_sample * 2.0f) - 1.0f;
+
+    tangent = normalize(tangent - dot(tangent, normal) * normal);
+
+    float3 bitangent = cross(normal, -tangent);
+    float3x3 texspace = float3x3(tangent, bitangent, normal);
+
+    return normalize(mul((float3)normal_sample, texspace));
+}
+
 PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT)0;
 
-    if(textureEnabled)
+    float3 n = normalize(input.normal);
+
+    if(normalEnabled)
     {
-        output.diffuse = tex2D(tex, input.texcoord) * input.diffuse;
+        n = getNormal(tex2D(normalTex, input.texcoord).rgb, n, input.tangent);
+    }
+
+    float3 tolight = normalize((float3)light);
+
+    float s = dot(n, tolight);
+    if(s < 0.3f) s = 0.3f;
+
+    if(diffuseEnabled)
+    {
+        output.diffuse = tex2D(diffuseTex, input.texcoord) * input.diffuse * s;
     }
     else
     {
-        output.diffuse = input.diffuse;
+        output.diffuse = input.diffuse * s;
     }
 
     return output;

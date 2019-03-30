@@ -10,6 +10,8 @@
 
 #include "graphics/vertices/PreviewVertex.h"
 
+#include "maths/Tangent.h"
+
 #include <QtGui/QColor>
 
 #include <QGxMaths/QGxColor.h>
@@ -64,6 +66,8 @@ bool exportModel(const QString &path, const Model *model)
 
     os << 1;
 
+    os << model->property("Light").value<Gx::Vec3>();
+
     for(auto index: geoms)
     {
         const auto &e = model->entities()[index];
@@ -100,7 +104,7 @@ bool exportModel(const QString &path, const Model *model)
                 RenderKey key;
 
                 key.group = e.property("Group").value<QString>();
-                key.diffuse = e.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().source;
+                key.diffuse = e.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().diffuse;
 
                 if(!key.diffuse.isEmpty())
                 {
@@ -144,9 +148,19 @@ bool exportModel(const QString &path, const Model *model)
 
             for(int i = 1; i < f.elements.count() - 1; ++i)
             {
-                ms << mesh.vertices[f.elements[0].index] << n << Gx::Rgba(color) << f.elements[0].texCoords;
-                ms << mesh.vertices[f.elements[i].index] << n << Gx::Rgba(color) << f.elements[i].texCoords;
-                ms << mesh.vertices[f.elements[i + 1].index] << n << Gx::Rgba(color) << f.elements[i + 1].texCoords;
+                auto v0 = mesh.vertices[f.elements[0].index];
+                auto v1 = mesh.vertices[f.elements[i].index];
+                auto v2 = mesh.vertices[f.elements[i + 1].index];
+
+                auto t0 = f.elements[0].texCoords;
+                auto t1 = f.elements[i].texCoords;
+                auto t2 = f.elements[i + 1].texCoords;
+
+                auto t = calculateTangent(v0, t0, v1, t2, v2, t2, n);
+
+                ms << v0 << n << Gx::Rgba(color) << t0 << t;
+                ms << v1 << n << Gx::Rgba(color) << t1 << t;
+                ms << v2 << n << Gx::Rgba(color) << t2 << t;
 
                 bytes += sizeof(PreviewVertex) * 3;
             }

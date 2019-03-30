@@ -12,8 +12,9 @@ struct PreviewVertex
     Gx::Vec3 normal;
     Gx::Rgba color;
     Gx::Vec2 texCoords;
+    Gx::Vec3 tangent;
 
-    static std::vector<Gx::VertexElement> declaration(){ return { Gx::VertexElement::Position, Gx::VertexElement::Normal, Gx::VertexElement::Color, Gx::VertexElement::TexCoord }; }
+    static std::vector<Gx::VertexElement> declaration(){ return { Gx::VertexElement::Position, Gx::VertexElement::Normal, Gx::VertexElement::Color, Gx::VertexElement::TexCoord, Gx::VertexElement::Tangent }; }
 };
 
 #endif // PREVIEWVERTEX_H

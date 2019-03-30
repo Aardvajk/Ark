@@ -12,6 +12,7 @@ public:
 
     QString group;
     QString diffuse;
+    QString normal;
 };
 
 uint qHash(const RenderKey &v);

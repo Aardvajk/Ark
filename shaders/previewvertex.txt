@@ -1,21 +1,22 @@
 matrix world;
 matrix viewproj;
 
-vector light;
-
 struct VS_INPUT
 {
     vector position : POSITION;
     float3 normal   : NORMAL;
     vector color    : COLOR;
     float2 texcoords: TEXCOORD;
+    float3 tangent  : TANGENT;
 };
 
 struct VS_OUTPUT
 {
     vector position : POSITION;
+    float3 normal   : TEXCOORD0;
 	vector color    : COLOR;
-    float2 texcoords: TEXCOORD;
+    float2 texcoords: TEXCOORD1;
+    float3 tangent  : TEXCOORD2;
 };
 
 VS_OUTPUT main(VS_INPUT input)
@@ -24,17 +25,11 @@ VS_OUTPUT main(VS_INPUT input)
 
     vector p = mul(input.position, world);
 
-    float3 normal = mul(input.normal, (float3x3)world);
-    normal = normalize(normal);
-
-    float3 tolight = normalize((float3)light);
-
-    float s = dot(normal, tolight);
-    if(s < 0.3f) s = 0.3f;
-
+    output.normal = mul(input.normal, (float3x3)world);
     output.position = mul(p, viewproj);
-    output.color = input.color * s;
+    output.color = input.color;
     output.texcoords = input.texcoords;
+    output.tangent = input.tangent;
 	
     return output;
 }

@@ -10,6 +10,8 @@
 
 #include "models/Model.h"
 
+#include "maths/Tangent.h"
+
 #include "entity/Entity.h"
 
 #include <GxGraphics/GxVertexBuffer.h>
@@ -40,17 +42,28 @@ void PreviewBuffer::render(Render::Type type, Graphics *graphics) const
     for(auto key: sections.keys())
     {
         auto path = model->property("Textures").value<QString>();
-        auto texture = key.diffuse;
+        auto diffuse = key.diffuse;
+        auto normal = key.normal;
         auto range = sections[key];
 
-        if(!path.isEmpty() && !texture.isEmpty())
+        if(!path.isEmpty() && !diffuse.isEmpty())
         {
-            graphics->device.setTexture(0, graphics->textures->texture(path, texture));
-            graphics->previewPixelShader->setBool(graphics->device, "textureEnabled", true);
+            graphics->device.setTexture(0, graphics->textures->texture(path, diffuse));
+            graphics->previewPixelShader->setBool(graphics->device, "diffuseEnabled", true);
         }
         else
         {
-            graphics->previewPixelShader->setBool(graphics->device, "textureEnabled", false);
+            graphics->previewPixelShader->setBool(graphics->device, "diffuseEnabled", false);
+        }
+
+        if(!path.isEmpty() && !normal.isEmpty())
+        {
+            graphics->device.setTexture(1, graphics->textures->texture(path, normal));
+            graphics->previewPixelShader->setBool(graphics->device, "normalEnabled", true);
+        }
+        else
+        {
+            graphics->previewPixelShader->setBool(graphics->device, "normalEnabled", false);
         }
 
         renderTriangleList(graphics->device, range.first, range.second);
@@ -76,8 +89,8 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
                     RenderKey key;
 
                     key.group = e.value.property("Group").value<QString>();
-                    key.diffuse = e.value.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().source;
-
+                    key.diffuse = e.value.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().diffuse;
+                    key.normal = e.value.subProperty(Element::Type::Face, i, "Texture").value<TextureData>().normal;
                     mapping[key].append(qMakePair(static_cast<int>(e.index), i));
                 }
             }
@@ -106,9 +119,13 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
             {
                 auto n = mesh.faceNormal(i);
 
-                os << mesh.vertex(i, 0) << n << Gx::Rgba(c) << mesh.faces[i].elements[0].texCoords;
-                os << mesh.vertex(i, j) << n << Gx::Rgba(c) << mesh.faces[i].elements[j].texCoords;
-                os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c) << mesh.faces[i].elements[j + 1].texCoords;
+                auto &f = mesh.faces[i];
+
+                auto t = calculateTangent(mesh.vertex(i, 0), f.elements[0].texCoords, mesh.vertex(i, j), f.elements[j].texCoords, mesh.vertex(i, j + 1), f.elements[j + 1].texCoords, n);
+
+                os << mesh.vertex(i, 0) << n << Gx::Rgba(c) << f.elements[0].texCoords << t;
+                os << mesh.vertex(i, j) << n << Gx::Rgba(c) << f.elements[j].texCoords << t;
+                os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c) << f.elements[j + 1].texCoords << t;
 
                 ++written;
             }

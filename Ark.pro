@@ -129,7 +129,8 @@ SOURCES += \
     properties/types/PathPropertyBrowserType.cpp \
     properties/types/TexturePropertyBrowserType.cpp \
     graphics/TextureCache.cpp \
-    graphics/RenderKey.cpp
+    graphics/RenderKey.cpp \
+    maths/Tangent.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -229,7 +230,8 @@ HEADERS += \
     properties/types/PathPropertyBrowserType.h \
     properties/types/TexturePropertyBrowserType.h \
     graphics/TextureCache.h \
-    graphics/RenderKey.h
+    graphics/RenderKey.h \
+    maths/Tangent.h
 
 DISTFILES += \
     shaders/colorvertex.txt \

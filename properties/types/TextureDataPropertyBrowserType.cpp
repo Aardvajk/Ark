@@ -14,10 +14,10 @@ QVector<QVariant> values(const QVariant &value)
     {
         auto d = value.value<TextureData>();
 
-        return { QVariant::fromValue(d.source), QVariant::fromValue(d.scale), QVariant::fromValue(d.offset) };
+        return { QVariant::fromValue(d.diffuse), QVariant::fromValue(d.normal), QVariant::fromValue(d.scale), QVariant::fromValue(d.offset) };
     }
 
-    return { QVariant(), QVariant(), QVariant() };
+    return { QVariant(), QVariant(), QVariant(), QVariant() };
 }
 
 }
@@ -33,8 +33,9 @@ void TextureDataPropertyBrowserType::addProperties(QPx::PropertyBrowserItem *ite
     auto v = values(item->value());
 
     item->addItem(new QPx::PropertyBrowserItem(pathType, model, parent, { }, "Diffuse", item->flags(), v[0], item));
-    item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Scale", item->flags(), v[1], item));
-    item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Offset", item->flags(), v[2], item));
+    item->addItem(new QPx::PropertyBrowserItem(pathType, model, parent, { }, "Normal", item->flags(), v[1], item));
+    item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Scale", item->flags(), v[2], item));
+    item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Offset", item->flags(), v[3], item));
 
     for(auto i: item->items())
     {
@@ -84,9 +85,10 @@ void TextureDataPropertyBrowserType::changed(const QVariant &value)
 
         switch(parent->items().indexOf(item))
         {
-            case 0: v.source = value.value<QString>(); break;
-            case 1: v.scale = value.value<Gx::Vec2>(); break;
-            case 2: v.offset = value.value<Gx::Vec2>(); break;
+            case 0: v.diffuse = value.value<QString>(); break;
+            case 1: v.normal = value.value<QString>(); break;
+            case 2: v.scale = value.value<Gx::Vec2>(); break;
+            case 3: v.offset = value.value<Gx::Vec2>(); break;
         }
 
         auto var = QVariant::fromValue(v);

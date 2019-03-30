@@ -15,9 +15,9 @@ RenderState::RenderState(Type type, Flags flags, Graphics *graphics, const Rende
         graphics->device.setVertexShader(*graphics->previewShader);
         graphics->previewShader->setMatrix(graphics->device, "world", Gx::Matrix::identity());
         graphics->previewShader->setMatrix(graphics->device, "viewproj", params.view * params.proj);
-        graphics->previewShader->setVector(graphics->device, "light", params.light);
 
         graphics->device.setPixelShader(*graphics->previewPixelShader);
+        graphics->previewPixelShader->setVector(graphics->device, "light", params.light);
     }
     if(type == Type::Flat)
     {

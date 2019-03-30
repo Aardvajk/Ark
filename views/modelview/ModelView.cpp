@@ -47,7 +47,7 @@ RenderParams ModelView::renderParams() const
     p.view = Gx::Matrix::lookAt(st.camera.position(), st.camera.position() + look, up);
     p.proj = projectionMatrix(p);
 
-    p.light = Gx::Vec3(-1.2f, 1, -0.8f);
+    p.light = model->property("Light").value<Gx::Vec3>();
 
     return p;
 }

@@ -45,8 +45,10 @@ void PerspectiveModelView::updateCamera(float delta)
         auto pos = st.camera.position();
         float step = 8.0f * delta;
 
-        Gx::Vec3 look, right;
-        st.camera.flatVectors(look, right);
+        auto m = Gx::Matrix::rotationY(st.camera.angle().x);
+
+        auto look = Gx::Vec3(0, 0, 1).transformedNormal(m).normalized();
+        auto right = Gx::Vec3(1, 0, 0).transformedNormal(m).normalized();
 
         if(keys.contains(Qt::Key_W)) pos += look * step;
         if(keys.contains(Qt::Key_S)) pos -= look * step;

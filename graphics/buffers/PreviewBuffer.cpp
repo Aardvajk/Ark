@@ -121,11 +121,11 @@ void PreviewBuffer::generate(Gx::VertexBuffer &buffer, unsigned &count) const
 
                 auto &f = mesh.faces[i];
 
-                auto t = calculateTangent(mesh.vertex(i, 0), f.elements[0].texCoords, mesh.vertex(i, j), f.elements[j].texCoords, mesh.vertex(i, j + 1), f.elements[j + 1].texCoords, n);
+                auto tn = calculateTangent(mesh.vertex(i, 0), f.elements[0].texCoords, mesh.vertex(i, j), f.elements[j].texCoords, mesh.vertex(i, j + 1), f.elements[j + 1].texCoords, n);
 
-                os << mesh.vertex(i, 0) << n << Gx::Rgba(c) << f.elements[0].texCoords << t;
-                os << mesh.vertex(i, j) << n << Gx::Rgba(c) << f.elements[j].texCoords << t;
-                os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c) << f.elements[j + 1].texCoords << t;
+                os << mesh.vertex(i, 0) << n << Gx::Rgba(c) << f.elements[0].texCoords << tn;
+                os << mesh.vertex(i, j) << n << Gx::Rgba(c) << f.elements[j].texCoords << tn;
+                os << mesh.vertex(i, j + 1) << n << Gx::Rgba(c) << f.elements[j + 1].texCoords << tn;
 
                 ++written;
             }

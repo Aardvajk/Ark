@@ -135,6 +135,7 @@ bool exportModel(const QString &path, const Model *model)
 
     int meshId = 1;
 
+
     for(auto key: groups.keys())
     {
         std::ostringstream bm;
@@ -162,11 +163,11 @@ bool exportModel(const QString &path, const Model *model)
                 auto t1 = f.elements[i].texCoords;
                 auto t2 = f.elements[i + 1].texCoords;
 
-                auto t = calculateTangent(v0, t0, v1, t2, v2, t2, n);
+                auto tn = calculateTangent(v0, t0, v1, t1, v2, t2, n);
 
-                ms << v0 << n << Gx::Rgba(color) << t0 << t;
-                ms << v1 << n << Gx::Rgba(color) << t1 << t;
-                ms << v2 << n << Gx::Rgba(color) << t2 << t;
+                ms << v0 << n << Gx::Rgba(color) << t0 << tn;
+                ms << v1 << n << Gx::Rgba(color) << t1 << tn;
+                ms << v2 << n << Gx::Rgba(color) << t2 << tn;
 
                 bytes += sizeof(PreviewVertex) * 3;
             }

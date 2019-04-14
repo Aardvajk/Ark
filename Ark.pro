@@ -34,11 +34,6 @@ LIBS += "C:/Projects/QPx/build-QPx/release/libQPx.a" \
         "C:/mingw64/x86_64-w64-mingw32.shared/lib/libgdi32.a" \
         "C:/mingw64/x86_64-w64-mingw32.shared/lib/libpsapi.a"
 
-PRE_TARGETDEPS += "C:/Projects/pcx/build-pcx/release/libpcx.a" \
-                  "C:/Projects/QPx/build-QPx/release/libQPx.a" \
-                  "C:/Projects/Gx/build-Gx/release/libGx.a" \
-                  "C:/Projects/QGx/build-QGx/release/libQGx.a"
-
 SOURCES += \
         main.cpp \
         MainWindow.cpp \

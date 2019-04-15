@@ -33,6 +33,16 @@ QVector<int> ModelCache::objects() const
     return data.objects;
 }
 
+QVector<int> ModelCache::resources() const
+{
+    if(!valid)
+    {
+        refresh();
+    }
+
+    return data.resources;
+}
+
 void ModelCache::invalidate()
 {
     valid = false;
@@ -52,6 +62,11 @@ void ModelCache::refresh() const
         if(i.value.selection().elements[Element::Type::Face].count() && i.value.selection().elements[Element::Type::Face].count() == i.value.mesh().faces.count())
         {
             data.objects.append(static_cast<int>(i.index));
+        }
+
+        if(Entity::isResourceType(i.value.type()))
+        {
+            data.resources.append(static_cast<int>(i.index));
         }
     }
 

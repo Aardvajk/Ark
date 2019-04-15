@@ -8,7 +8,7 @@
 namespace
 {
 
-const char *types[] = { "Geometry" };
+const char *types[] = { "Geometry", "Textures", "Normal Maps" };
 
 }
 
@@ -120,6 +120,11 @@ Entity::Type Entity::typeFromString(const std::string &text)
     }
 
     return Type::Invalid;
+}
+
+bool Entity::isResourceType(Type type)
+{
+    return type == Type::DiffuseMap || type == Type::NormalMap;
 }
 
 void Entity::saveToStream(QDataStream &ds) const

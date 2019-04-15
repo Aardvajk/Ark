@@ -8,6 +8,7 @@
 
 #include "views/PropertyView.h"
 #include "views/ToolOptionsView.h"
+#include "views/ResourcesView.h"
 
 #include "models/PropertyModel.h"
 
@@ -26,6 +27,7 @@ SideViewPanel::SideViewPanel(Model *model, Relay *relay, PropertyTypeFactory *fa
     combo->addItem("Faces");
     combo->addItem("Vertices");
     combo->addItem("Tools");
+    combo->addItem("Resources");
 
     auto menu = new QMenu(this);
 
@@ -84,6 +86,7 @@ void SideViewPanel::comboIndexChanged(int index)
         case 2: view = new PropertyView(new PropertyModel(Element::Type::Face, model, factory), this); break;
         case 3: view = new PropertyView(new PropertyModel(Element::Type::Vertex, model, factory), this); break;
         case 4: view = new ToolOptionsView(relay, currentTool, this); break;
+        case 5: view = new ResourcesView(model, this); break;
     }
 
     if(view) panelLayout->addWidget(view);

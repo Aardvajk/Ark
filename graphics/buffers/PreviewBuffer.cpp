@@ -9,6 +9,7 @@
 #include "graphics/vertices/PreviewVertex.h"
 
 #include "models/Model.h"
+#include "models/TextureMap.h"
 
 #include "maths/Tangent.h"
 
@@ -41,14 +42,13 @@ void PreviewBuffer::render(Render::Type type, Graphics *graphics) const
 
     for(auto key: sections.keys())
     {
-        auto path = model->property("Textures").value<QString>();
         auto diffuse = key.diffuse;
         auto normal = key.normal;
         auto range = sections[key];
 
-        if(!path.isEmpty() && !diffuse.isEmpty())
+        if(!diffuse.isEmpty())
         {
-            graphics->device.setTexture(0, graphics->textures->texture(path, diffuse));
+            graphics->device.setTexture(0, model->textures().texture(diffuse));
             graphics->previewPixelShader->setBool(graphics->device, "diffuseEnabled", true);
         }
         else
@@ -56,9 +56,9 @@ void PreviewBuffer::render(Render::Type type, Graphics *graphics) const
             graphics->previewPixelShader->setBool(graphics->device, "diffuseEnabled", false);
         }
 
-        if(!path.isEmpty() && !normal.isEmpty())
+        if(!normal.isEmpty())
         {
-            graphics->device.setTexture(1, graphics->textures->texture(path, normal));
+            graphics->device.setTexture(1, model->textures().texture(normal));
             graphics->previewPixelShader->setBool(graphics->device, "normalEnabled", true);
         }
         else

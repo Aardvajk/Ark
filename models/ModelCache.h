@@ -14,6 +14,7 @@ public:
 
     QVector<int> selected() const;
     QVector<int> objects() const;
+    QVector<int> resources() const;
 
 public slots:
     void invalidate();
@@ -27,6 +28,7 @@ private:
     {
         QVector<int> selected;
         QVector<int> objects;
+        QVector<int> resources;
     };
 
     mutable Data data;

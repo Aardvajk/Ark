@@ -3,6 +3,7 @@
 #include "models/ModelData.h"
 #include "models/ModelBuffers.h"
 #include "models/ModelCache.h"
+#include "models/TextureMap.h"
 
 #include "commands/Command.h"
 
@@ -14,11 +15,12 @@ namespace
 class Cache
 {
 public:
-    Cache(Model *model, Graphics *graphics) : data(new ModelData(model)), buffers(new ModelBuffers(model, graphics, model)), cache(new ModelCache(model, model)) { }
+    Cache(Model *model, Graphics *graphics) : data(new ModelData(model)), buffers(new ModelBuffers(model, graphics, model)), cache(new ModelCache(model, model)), textures(new TextureMap(model, graphics, model)) { }
 
     ModelData *data;
     ModelBuffers *buffers;
     ModelCache *cache;
+    TextureMap *textures;
 };
 
 }
@@ -64,12 +66,24 @@ QVector<int> Model::objects() const
     return cache.get<Cache>().cache->objects();
 }
 
+QVector<int> Model::resources() const
+{
+    return cache.get<Cache>().cache->resources();
+}
+
+TextureMap &Model::textures()
+{
+    return *cache.get<Cache>().textures;
+}
+
 bool Model::clear()
 {
     auto &c = cache.get<Cache>();
 
     delete c.data;
     c.data = new ModelData();
+
+    c.textures->clear();
 
     emit changed();
     emit reset();
@@ -89,6 +103,17 @@ bool Model::open(const QString &path)
         c.data = data.release();
 
         delete old;
+
+        c.textures->clear();
+
+        for(int i = 0; i < entities().count(); ++i)
+        {
+            auto e = entities()[i];
+            if(Entity::isResourceType(e.type()))
+            {
+                c.textures->add(e.property("Path").value<QString>());
+            }
+        }
 
         emit changed();
         emit reset();

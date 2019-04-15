@@ -34,6 +34,11 @@ LIBS += "C:/Projects/QPx/build-QPx/release/libQPx.a" \
         "C:/mingw64/x86_64-w64-mingw32.shared/lib/libgdi32.a" \
         "C:/mingw64/x86_64-w64-mingw32.shared/lib/libpsapi.a"
 
+PRE_TARGETDEPS += "C:/Projects/QPx/build-QPx/release/libQPx.a" \
+                  "C:/Projects/pcx/build-pcx/release/libpcx.a" \
+                  "C:/Projects/Gx/build-Gx/release/libGx.a" \
+                  "C:/Projects/QGx/build-QGx/release/libQGx.a"
+
 SOURCES += \
         main.cpp \
         MainWindow.cpp \
@@ -125,7 +130,10 @@ SOURCES += \
     properties/types/TexturePropertyBrowserType.cpp \
     graphics/TextureCache.cpp \
     graphics/RenderKey.cpp \
-    maths/Tangent.cpp
+    maths/Tangent.cpp \
+    views/ResourcesView.cpp \
+    models/ResourcesModel.cpp \
+    models/TextureMap.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -226,7 +234,10 @@ HEADERS += \
     properties/types/TexturePropertyBrowserType.h \
     graphics/TextureCache.h \
     graphics/RenderKey.h \
-    maths/Tangent.h
+    maths/Tangent.h \
+    views/ResourcesView.h \
+    models/ResourcesModel.h \
+    models/TextureMap.h
 
 DISTFILES += \
     shaders/colorvertex.txt \

@@ -2,6 +2,7 @@
 
 #include "models/Model.h"
 #include "models/ModelData.h"
+#include "models/TextureMap.h"
 
 DeleteEntityCommand::DeleteEntityCommand(const QString &name, Model *model) : Command(name, model)
 {
@@ -21,6 +22,11 @@ void DeleteEntityCommand::undo()
 {
     for(auto i: v.keys())
     {
+        if(Entity::isResourceType(v[i].type()))
+        {
+            model->textures().add(v[i].property("Path").value<QString>());
+        }
+
         data->entities.insert(data->entities.begin() + i, v[i]);
         v[i] = Entity();
     }
@@ -37,6 +43,11 @@ void DeleteEntityCommand::redo()
 
         v[e] = data->entities[e];
         data->entities.remove(e);
+
+        if(Entity::isResourceType(v[e].type()))
+        {
+            model->textures().remove(v[e].property("Path").value<QString>());
+        }
     }
 
     model->change();

@@ -24,6 +24,8 @@ public:
     enum class Type
     {
         Geometry,
+        DiffuseMap,
+        NormalMap,
         Invalid
     };
 
@@ -57,6 +59,7 @@ public:
 
     static const char *typeToString(Type type);
     static Type typeFromString(const std::string &text);
+    static bool isResourceType(Type type);
 
 private:
     void setPropertyVariant(const QString &name, const QVariant &value);

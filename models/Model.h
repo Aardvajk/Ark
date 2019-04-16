@@ -38,6 +38,7 @@ public:
     QVector<int> resources() const;
 
     TextureMap &textures();
+    const TextureMap &textures() const;
 
     virtual bool clear() override;
     virtual bool open(const QString &path) override;

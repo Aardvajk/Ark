@@ -14,9 +14,15 @@
 #include "commands/ModifySelectionCommand.h"
 #include "commands/CreateEntityCommand.h"
 
+#include "controls/SettingsCreateTree.h"
+
 #include "entity/EntityFactory.h"
 
 #include <GxMaths/GxRay.h>
+
+#include <QPxCore/QPxSettings.h>
+
+#include <QPxWidgets/QPxLayouts.h>
 
 #include <QtGui/QIcon>
 #include <QtGui/QMouseEvent>
@@ -90,6 +96,7 @@ QIcon CreateTool::icon() const
 
 void CreateTool::addOptions(QPx::VBoxLayout *layout) const
 {
+    layout->addWidget(new SettingsCreateTree(settings["Create"]["Type"]));
     addGridSnapCheckbox(layout);
 }
 

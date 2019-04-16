@@ -20,6 +20,7 @@ ModelData::ModelData(QObject *parent) : QObject(parent)
     properties["Light"] = Property(Gx::Vec3(-1.2f, 1, -0.8f));
     properties["Export"] = Property(Property::SubType::Export, QString());
     properties["Textures"] = Property(Property::SubType::Directory, QString());
+    properties["Models"] = Property(Property::SubType::Directory, QString());
 }
 
 bool ModelData::save(const QString &path) const

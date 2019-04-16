@@ -76,6 +76,11 @@ TextureMap &Model::textures()
     return *cache.get<Cache>().textures;
 }
 
+const TextureMap &Model::textures() const
+{
+    return *cache.get<Cache>().textures;
+}
+
 bool Model::clear()
 {
     auto &c = cache.get<Cache>();

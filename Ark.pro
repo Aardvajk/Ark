@@ -128,12 +128,13 @@ SOURCES += \
     properties/types/TextureDataPropertyBrowserType.cpp \
     properties/types/PathPropertyBrowserType.cpp \
     properties/types/TexturePropertyBrowserType.cpp \
-    graphics/TextureCache.cpp \
     graphics/RenderKey.cpp \
     maths/Tangent.cpp \
     views/ResourcesView.cpp \
     models/ResourcesModel.cpp \
-    models/TextureMap.cpp
+    models/TextureMap.cpp \
+    controls/SettingsCreateTree.cpp \
+    models/CreateModel.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -232,12 +233,13 @@ HEADERS += \
     properties/types/TextureDataPropertyBrowserType.h \
     properties/types/PathPropertyBrowserType.h \
     properties/types/TexturePropertyBrowserType.h \
-    graphics/TextureCache.h \
     graphics/RenderKey.h \
     maths/Tangent.h \
     views/ResourcesView.h \
     models/ResourcesModel.h \
-    models/TextureMap.h
+    models/TextureMap.h \
+    controls/SettingsCreateTree.h \
+    models/CreateModel.h
 
 DISTFILES += \
     shaders/colorvertex.txt \

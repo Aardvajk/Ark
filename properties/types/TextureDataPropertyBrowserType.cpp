@@ -24,7 +24,8 @@ QVector<QVariant> values(const QVariant &value)
 
 TextureDataPropertyBrowserType::TextureDataPropertyBrowserType(const Model *model, QObject *parent) : QPx::PropertyBrowserType(parent)
 {
-    pathType = new TexturePropertyBrowserType(model, this);
+    diffuseType = new TexturePropertyBrowserType(model, Entity::Type::DiffuseMap, this);
+    normalType = new TexturePropertyBrowserType(model, Entity::Type::NormalMap, this);
     vecType = new Vec2PropertyBrowserType(this);
 }
 
@@ -32,8 +33,8 @@ void TextureDataPropertyBrowserType::addProperties(QPx::PropertyBrowserItem *ite
 {
     auto v = values(item->value());
 
-    item->addItem(new QPx::PropertyBrowserItem(pathType, model, parent, { }, "Diffuse", item->flags(), v[0], item));
-    item->addItem(new QPx::PropertyBrowserItem(pathType, model, parent, { }, "Normal", item->flags(), v[1], item));
+    item->addItem(new QPx::PropertyBrowserItem(diffuseType, model, parent, { }, "Diffuse", item->flags(), v[0], item));
+    item->addItem(new QPx::PropertyBrowserItem(normalType, model, parent, { }, "Normal", item->flags(), v[1], item));
     item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Scale", item->flags(), v[2], item));
     item->addItem(new QPx::PropertyBrowserItem(vecType, model, parent, { }, "Offset", item->flags(), v[3], item));
 

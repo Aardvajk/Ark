@@ -21,8 +21,6 @@ class Texture;
 
 }
 
-class TextureCache;
-
 class Graphics : public QObject
 {
     Q_OBJECT
@@ -48,8 +46,6 @@ public:
 
     Handle<Gx::VertexBuffer> genericBuffer;
     Handle<Gx::Texture> genericTexture;
-
-    pcx::scoped_ptr<TextureCache> textures;
 
 signals:
     void render();

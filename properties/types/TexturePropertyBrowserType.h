@@ -1,28 +1,34 @@
 #ifndef TEXTUREPROPERTYBROWSERTYPE_H
 #define TEXTUREPROPERTYBROWSERTYPE_H
 
+#include "entity/Entity.h"
+
 #include <QPxPropertyBrowser/QPxPropertyBrowserEditor.h>
 #include <QPxPropertyBrowser/QPxPropertyBrowserType.h>
 
+#include <pcx/scoped_lock.h>
+
 class Model;
-class QLineEdit;
+class QComboBox;
 
 class TexturePropertyBrowserEditor : public QPx::PropertyBrowserEditor
 {
     Q_OBJECT
 
 public:
-    TexturePropertyBrowserEditor(const Model *model, const QString &path, QWidget *parent = nullptr);
+    TexturePropertyBrowserEditor(const Model *model, Entity::Type type, const QString &path, QWidget *parent = nullptr);
 
     virtual QVariant value() const override;
     virtual void setValue(const QVariant &value) override;
 
 private slots:
-    void buttonClicked();
+    void comboChanged(int index);
 
 private:
     const Model *model;
-    QLineEdit *edit;
+    Entity::Type type;
+    QComboBox *combo;
+    pcx::lock lock;
 };
 
 class TexturePropertyBrowserType : public QPx::PropertyBrowserType
@@ -30,7 +36,7 @@ class TexturePropertyBrowserType : public QPx::PropertyBrowserType
     Q_OBJECT
 
 public:
-    TexturePropertyBrowserType(const Model *model, QObject *parent = nullptr);
+    TexturePropertyBrowserType(const Model *model, Entity::Type type, QObject *parent = nullptr);
 
     virtual int userType() const override;
 
@@ -38,6 +44,7 @@ public:
 
 private:
     const Model *model;
+    Entity::Type type;
 };
 
 #endif // TEXTUREPROPERTYBROWSERTYPE_H

@@ -27,7 +27,8 @@ private slots:
     void changed(const QVariant &value);
 
 private:
-    TexturePropertyBrowserType *pathType;
+    TexturePropertyBrowserType *diffuseType;
+    TexturePropertyBrowserType *normalType;
     Vec2PropertyBrowserType *vecType;
 };
 

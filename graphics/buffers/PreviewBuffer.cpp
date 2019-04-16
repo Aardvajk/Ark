@@ -4,8 +4,6 @@
 
 #include "properties/custom/TextureData.h"
 
-#include "graphics/TextureCache.h"
-
 #include "graphics/vertices/PreviewVertex.h"
 
 #include "models/Model.h"

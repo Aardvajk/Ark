@@ -6,9 +6,8 @@ namespace
 class Item
 {
 public:
-    Item(int id, const QString &text) : id(id), text(text) { }
+    explicit Item(const QString &text) : text(text) { }
 
-    int id;
     QString text;
 };
 
@@ -16,9 +15,8 @@ public:
 
 CreateModel::CreateModel(QObject *parent) : QPx::TreeModel(parent)
 {
-    auto prims = appendRow(new Item(-1, "Primitives"));
-    appendRow(new Item(0, "Cuboid"), prims);
-    appendRow(new Item(1, "Sphere"), prims);
+    auto prims = appendRow(new Item("Primitives"));
+    appendRow(new Item("Cuboid"), prims);
 }
 
 int CreateModel::columnCount(const QModelIndex &parent) const

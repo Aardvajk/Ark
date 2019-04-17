@@ -104,10 +104,13 @@ void CreateTool::mousePressed(ModelView *view, QMouseEvent *event)
 {
     if(view->state().projection != Projection::Type::Perspective && event->button() == Qt::LeftButton)
     {
-        auto p = view->renderParams();
+        if(settings["Create"]["Type"].value<QString>() == "Primitives.Cuboid")
+        {
+            auto p = view->renderParams();
 
-        start = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
-        mesh = blockMesh(view->state().projection, start, start, gridValue(model), model->property("Cursor").value<Gx::Vec3>());
+            start = Gx::Ray::compute(Gx::Vec2(event->pos().x(), event->pos().y()), p.size, p.view, p.proj).position;
+            mesh = blockMesh(view->state().projection, start, start, gridValue(model), model->property("Cursor").value<Gx::Vec3>());
+        }
     }
 }
 

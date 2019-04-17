@@ -17,6 +17,8 @@ SettingsCreateTree::SettingsCreateTree(QPx::Settings &settings, QWidget *parent)
     connect(&settings, SIGNAL(valueChanged(QVariant)), SLOT(settingsChanged(QVariant)));
 
     settingsChanged(settings.value<QVariant>());
+
+    expandAll();
 }
 
 void SettingsCreateTree::stateChanged(const QModelIndex &index, const QModelIndex&)
@@ -24,7 +26,18 @@ void SettingsCreateTree::stateChanged(const QModelIndex &index, const QModelInde
     if(!lock)
     {
         auto s = pcx::scoped_lock(lock);
-        settings.setValue(QString("%1.%2").arg(index.parent().data(Qt::DisplayRole).toString()).arg(index.data(Qt::DisplayRole).toString()));
+
+        QString id;
+        if(!index.parent().isValid())
+        {
+            id = index.data(Qt::DisplayRole).toString();
+        }
+        else
+        {
+            id = QString("%1.%2").arg(index.parent().data(Qt::DisplayRole).toString()).arg(index.data(Qt::DisplayRole).toString());
+        }
+
+        settings.setValue(id);
     }
 }
 
@@ -37,6 +50,12 @@ void SettingsCreateTree::settingsChanged(const QVariant &value)
         {
             QModelIndex parent = model->index(i, 0);
             QString prefix = parent.data(Qt::DisplayRole).toString();
+
+            if(prefix == value.toString())
+            {
+                selectionModel()->setCurrentIndex(parent, QItemSelectionModel::ClearAndSelect);
+                return;
+            }
 
             for(int j = 0; j < model->rowCount(parent); ++j)
             {

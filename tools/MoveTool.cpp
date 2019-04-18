@@ -108,56 +108,53 @@ void MoveTool::focusLost()
 
 void MoveTool::rotate(int axis)
 {
-    if(!model->objects().isEmpty())
+    auto command = new ModifyMeshCommand("Rotate", model);
+
+    for(auto i: model->objects())
     {
-        auto command = new ModifyMeshCommand("Rotate", model);
+        auto mesh = model->entities()[i].mesh();
 
-        for(auto i: model->objects())
+        if(!mesh.vertices.isEmpty())
         {
-            auto mesh = model->entities()[i].mesh();
-
-            if(!mesh.vertices.isEmpty())
+            Gx::Vec3 av(0, 0, 0);
+            for(int i = 0; i < mesh.vertices.count(); ++i)
             {
-                Gx::Vec3 av(0, 0, 0);
-                for(int i = 0; i < mesh.vertices.count(); ++i)
-                {
-                    av += mesh.vertices[i];
-                }
+                av += mesh.vertices[i];
+            }
 
-                av /= static_cast<float>(mesh.vertices.count());
+            av /= static_cast<float>(mesh.vertices.count());
 
-                Gx::Matrix m;
+            Gx::Matrix m;
+
+            switch(axis)
+            {
+                case 0: m = Gx::Matrix::rotationX(M_PI / 2); break;
+                case 1: m = Gx::Matrix::rotationY(M_PI / 2); break;
+                case 2: m = Gx::Matrix::rotationZ(M_PI / 2); break;
+            }
+
+            for(auto &v: mesh.vertices)
+            {
+                auto t = av + Gx::Vec3(v - av).transformedCoord(m);
 
                 switch(axis)
                 {
-                    case 0: m = Gx::Matrix::rotationX(M_PI / 2); break;
-                    case 1: m = Gx::Matrix::rotationY(M_PI / 2); break;
-                    case 2: m = Gx::Matrix::rotationZ(M_PI / 2); break;
+                    case 0: v.y = t.y; v.z = t.z; break;
+                    case 1: v.x = t.x; v.z = t.z; break;
+                    case 2: v.x = t.x; v.y = t.y; break;
                 }
 
-                for(auto &v: mesh.vertices)
+                auto grid = gridValue(model);
+                if(grid.isValid())
                 {
-                    auto t = av + Gx::Vec3(v - av).transformedCoord(m);
-
-                    switch(axis)
-                    {
-                        case 0: v.y = t.y; v.z = t.z; break;
-                        case 1: v.x = t.x; v.z = t.z; break;
-                        case 2: v.x = t.x; v.y = t.y; break;
-                    }
-
-                    auto grid = gridValue(model);
-                    if(grid.isValid())
-                    {
-                        v = Grid::snap(v, grid.value<float>());
-                    }
+                    v = Grid::snap(v, grid.value<float>());
                 }
-
-                command->modify(i, mesh);
             }
-        }
 
-        model->endCommand(command);
+            command->modify(i, mesh);
+        }
     }
+
+    model->endCommand(command);
 }
 

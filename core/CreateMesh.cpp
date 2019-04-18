@@ -9,7 +9,7 @@
 namespace
 {
 
-Mesh cuboidMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid, const Gx::Vec3 &cursor)
+QPair<Gx::Vec3, Gx::Vec3> cuboidCorners(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid, const Gx::Vec3 &cursor)
 {
     auto a = start;
     auto b = pos;
@@ -53,7 +53,13 @@ Mesh cuboidMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Ve
     b[z] = cursor[z];
     a[z] = b[z] - (grid.isValid() ? grid.value<float>() : 1.0f);
 
-    return Mesh::cuboidFromCorners(a, b);
+    return qMakePair(a, b);
+}
+
+Mesh cuboidMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid, const Gx::Vec3 &cursor)
+{
+    auto p = cuboidCorners(projection, start, pos, grid, cursor);
+    return Mesh::cuboidFromCorners(p.first, p.second);
 }
 
 }

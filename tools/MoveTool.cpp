@@ -8,6 +8,8 @@
 
 #include "entity/Entity.h"
 
+#include "controls/RotateButtonBox.h"
+
 #include "views/modelview/ModelView.h"
 
 #include "commands/MoveSelectionCommand.h"
@@ -41,7 +43,7 @@ QIcon MoveTool::icon() const
 
 void MoveTool::addOptions(QPx::VBoxLayout *layout) const
 {
-    connect(layout->addTypedWidget(new GuiTextButton("Rotate")), SIGNAL(clicked()), SLOT(rotate()));
+    connect(layout->addTypedWidget(new RotateButtonBox(model)), SIGNAL(rotate(int)), SLOT(rotate(int)));
     addGridSnapCheckbox(layout);
 }
 
@@ -104,7 +106,7 @@ void MoveTool::focusLost()
     }
 }
 
-void MoveTool::rotate()
+void MoveTool::rotate(int axis)
 {
     if(!model->objects().isEmpty())
     {
@@ -119,16 +121,30 @@ void MoveTool::rotate()
                 Gx::Vec3 av(0, 0, 0);
                 for(int i = 0; i < mesh.vertices.count(); ++i)
                 {
-                    av += mesh.vertices[i];;
+                    av += mesh.vertices[i];
                 }
 
                 av /= static_cast<float>(mesh.vertices.count());
 
-                auto m = Gx::Matrix::rotationY(M_PI / 2);
+                Gx::Matrix m;
+
+                switch(axis)
+                {
+                    case 0: m = Gx::Matrix::rotationX(M_PI / 2); break;
+                    case 1: m = Gx::Matrix::rotationY(M_PI / 2); break;
+                    case 2: m = Gx::Matrix::rotationZ(M_PI / 2); break;
+                }
 
                 for(auto &v: mesh.vertices)
                 {
-                    v = av + Gx::Vec3(v - av).transformedCoord(m);
+                    auto t = av + Gx::Vec3(v - av).transformedCoord(m);
+
+                    switch(axis)
+                    {
+                        case 0: v.y = t.y; v.z = t.z; break;
+                        case 1: v.x = t.x; v.z = t.z; break;
+                        case 2: v.x = t.x; v.y = t.y; break;
+                    }
 
                     auto grid = gridValue(model);
                     if(grid.isValid())

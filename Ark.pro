@@ -136,7 +136,8 @@ SOURCES += \
     controls/SettingsCreateTree.cpp \
     models/CreateModel.cpp \
     core/CreateMesh.cpp \
-    commands/ModifyMeshCommand.cpp
+    commands/ModifyMeshCommand.cpp \
+    controls/RotateButtonBox.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -243,7 +244,8 @@ HEADERS += \
     controls/SettingsCreateTree.h \
     models/CreateModel.h \
     core/CreateMesh.h \
-    commands/ModifyMeshCommand.h
+    commands/ModifyMeshCommand.h \
+    controls/RotateButtonBox.h
 
 DISTFILES += \
     shaders/colorvertex.txt \

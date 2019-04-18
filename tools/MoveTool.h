@@ -29,7 +29,7 @@ public slots:
     virtual void focusLost() override;
 
 private slots:
-    void rotate();
+    void rotate(int axis);
 
 private:
     Model *model;

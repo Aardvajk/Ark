@@ -95,6 +95,12 @@ MainWindow::MainWindow(QWidget *parent) : QPx::MainWindow(parent)
     connect(model, SIGNAL(pathChanged(QString)), SLOT(updateTitle()));
 
     actions->find("Tools.Select")->trigger();
+
+auto recent = fileActions->recentFilesMenu();
+if(recent->actions().count() > 1)
+{
+    recent->actions()[0]->trigger();
+}
 }
 
 void MainWindow::customInterfaceAction(const QString &key, QWidget *parent)

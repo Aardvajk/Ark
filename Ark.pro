@@ -134,7 +134,9 @@ SOURCES += \
     models/ResourcesModel.cpp \
     models/TextureMap.cpp \
     controls/SettingsCreateTree.cpp \
-    models/CreateModel.cpp
+    models/CreateModel.cpp \
+    core/CreateMesh.cpp \
+    commands/ModifyMeshCommand.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -239,7 +241,9 @@ HEADERS += \
     models/ResourcesModel.h \
     models/TextureMap.h \
     controls/SettingsCreateTree.h \
-    models/CreateModel.h
+    models/CreateModel.h \
+    core/CreateMesh.h \
+    commands/ModifyMeshCommand.h
 
 DISTFILES += \
     shaders/colorvertex.txt \

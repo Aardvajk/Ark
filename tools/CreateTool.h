@@ -4,6 +4,7 @@
 #include "tools/Tool.h"
 
 #include "core/Mesh.h"
+#include "core/CreateMesh.h"
 
 #include <GxMaths/GxVector.h>
 
@@ -36,7 +37,8 @@ public slots:
 private:
     Model *model;
     Gx::Vec3 start;
-    pcx::optional<Mesh> mesh;
+    CreateMesh::Type type;
+    Mesh mesh;
 };
 
 #endif // CREATETOOL_H

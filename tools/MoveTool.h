@@ -28,6 +28,9 @@ public slots:
 
     virtual void focusLost() override;
 
+private slots:
+    void rotate();
+
 private:
     Model *model;
     MoveSelectionCommand *command;

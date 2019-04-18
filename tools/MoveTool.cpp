@@ -11,8 +11,13 @@
 #include "views/modelview/ModelView.h"
 
 #include "commands/MoveSelectionCommand.h"
+#include "commands/ModifyMeshCommand.h"
+
+#include "gui/GuiTextButton.h"
 
 #include <QPxCore/QPxAction.h>
+
+#include <QPxWidgets/QPxLayouts.h>
 
 #include <GxMaths/GxRay.h>
 
@@ -36,6 +41,7 @@ QIcon MoveTool::icon() const
 
 void MoveTool::addOptions(QPx::VBoxLayout *layout) const
 {
+    connect(layout->addTypedWidget(new GuiTextButton("Rotate")), SIGNAL(clicked()), SLOT(rotate()));
     addGridSnapCheckbox(layout);
 }
 
@@ -97,3 +103,45 @@ void MoveTool::focusLost()
         command = nullptr;
     }
 }
+
+void MoveTool::rotate()
+{
+    if(!model->objects().isEmpty())
+    {
+        auto command = new ModifyMeshCommand("Rotate", model);
+
+        for(auto i: model->objects())
+        {
+            auto mesh = model->entities()[i].mesh();
+
+            if(!mesh.vertices.isEmpty())
+            {
+                Gx::Vec3 av(0, 0, 0);
+                for(int i = 0; i < mesh.vertices.count(); ++i)
+                {
+                    av += mesh.vertices[i];;
+                }
+
+                av /= static_cast<float>(mesh.vertices.count());
+
+                auto m = Gx::Matrix::rotationY(M_PI / 2);
+
+                for(auto &v: mesh.vertices)
+                {
+                    v = av + Gx::Vec3(v - av).transformedCoord(m);
+
+                    auto grid = gridValue(model);
+                    if(grid.isValid())
+                    {
+                        v = Grid::snap(v, grid.value<float>());
+                    }
+                }
+
+                command->modify(i, mesh);
+            }
+        }
+
+        model->endCommand(command);
+    }
+}
+

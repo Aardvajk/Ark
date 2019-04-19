@@ -17,6 +17,7 @@ class MainWindow : public QPx::MainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    virtual ~MainWindow() override;
 
 protected:
     void customInterfaceAction(const QString &key, QWidget *parent);

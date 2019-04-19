@@ -23,6 +23,7 @@ class Model : public QPx::AbstractEditorModel
 
 public:
     Model(Graphics *graphics, QObject *parent = nullptr);
+    virtual ~Model() override;
 
     void beginCommand(Command *command);
 

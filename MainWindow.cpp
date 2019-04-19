@@ -103,6 +103,11 @@ if(recent->actions().count() > 1)
 }
 }
 
+MainWindow::~MainWindow()
+{
+    delete model;
+}
+
 void MainWindow::customInterfaceAction(const QString &key, QWidget *parent)
 {
     if(key == "[Recents]")

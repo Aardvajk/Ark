@@ -31,6 +31,11 @@ Model::Model(Graphics *graphics, QObject *parent) : QPx::AbstractEditorModel(par
     setUndoLimit(100);
 }
 
+Model::~Model()
+{
+    delete cache.get<Cache>().textures;
+}
+
 void Model::beginCommand(Command *command)
 {
     command->data = cache.get<Cache>().data;

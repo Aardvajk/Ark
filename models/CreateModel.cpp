@@ -17,6 +17,7 @@ CreateModel::CreateModel(QObject *parent) : QPx::TreeModel(parent)
 {
     auto prims = appendRow(new Item("Primitives"));
     appendRow(new Item("Cuboid"), prims);
+    appendRow(new Item("Wedge"), prims);
 }
 
 int CreateModel::columnCount(const QModelIndex &parent) const

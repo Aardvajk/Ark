@@ -21,6 +21,7 @@ namespace CreateMesh
 enum class Type
 {
     Cuboid,
+    Wedge,
     Invalid
 };
 

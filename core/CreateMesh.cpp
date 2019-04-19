@@ -62,11 +62,41 @@ Mesh cuboidMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Ve
     return Mesh::cuboidFromCorners(p.first, p.second);
 }
 
+Mesh wedgeMesh(Projection::Type projection, const Gx::Vec3 &start, const Gx::Vec3 &pos, const QVariant &grid, const Gx::Vec3 &cursor)
+{
+    auto p = cuboidCorners(projection, start, pos, grid, cursor);
+
+    auto min = p.first;
+    auto max = p.second;
+
+    float midx = min.x + ((max.x - min.x) / 2);
+
+    QVector<Gx::Vec3> vertices;
+
+    vertices.append(Gx::Vec3(min.x, min.y, min.z));
+    vertices.append(Gx::Vec3(min.x, min.y, max.z));
+    vertices.append(Gx::Vec3(max.x, min.y, max.z));
+    vertices.append(Gx::Vec3(max.x, min.y, min.z));
+
+    vertices.append(Gx::Vec3(midx, max.y, max.z));
+    vertices.append(Gx::Vec3(midx, max.y, min.z));
+
+    QVector<Face> faces;
+
+    faces.append({ 0, 3, 2, 1 });
+    faces.append({ 0, 1, 4, 5 });
+    faces.append({ 2, 3, 5, 4 });
+    faces.append({ 0, 5, 3 });
+    faces.append({ 1, 2, 4 });
+
+    return Mesh(vertices, faces);
+}
+
 }
 
 CreateMesh::Type CreateMesh::fromString(const QString &text)
 {
-    static const char *s[] = { "Primitives.Cuboid", "" };
+    static const char *s[] = { "Primitives.Cuboid", "Primitives.Wedge", "" };
 
     int i = 0;
     while(s[i][0])
@@ -87,6 +117,7 @@ Mesh CreateMesh::create(Type type, Projection::Type projection, const Gx::Vec3 &
     switch(type)
     {
         case Type::Cuboid: return cuboidMesh(projection, start, pos, grid, cursor);
+        case Type::Wedge: return wedgeMesh(projection, start, pos, grid, cursor);
 
         default: break;
     }

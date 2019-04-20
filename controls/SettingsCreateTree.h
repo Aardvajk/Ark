@@ -12,6 +12,7 @@ class Settings;
 
 }
 
+class Model;
 class CreateModel;
 
 class SettingsCreateTree : public QTreeView
@@ -19,7 +20,7 @@ class SettingsCreateTree : public QTreeView
     Q_OBJECT
 
 public:
-    SettingsCreateTree(QPx::Settings &settings, QWidget *parent = nullptr);
+    SettingsCreateTree(Model *model, QPx::Settings &settings, QWidget *parent = nullptr);
 
 private slots:
     void stateChanged(const QModelIndex &index,const QModelIndex&);
@@ -29,7 +30,7 @@ private:
     QPx::Settings &settings;
     pcx::lock lock;
 
-    CreateModel *model;
+    CreateModel *treeModel;
 };
 
 #endif // SETTINGSCREATETREE_H

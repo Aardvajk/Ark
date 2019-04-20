@@ -35,7 +35,10 @@ TexturePropertyBrowserEditor::TexturePropertyBrowserEditor(const Model *model, E
                 index = combo->count();
             }
 
-            combo->addItem(QIcon(e.property("Thumbnail").value<QPixmap>()), file);
+            if(Entity::isThumbnailType(type))
+            {
+                combo->addItem(QIcon(e.property("Thumbnail").value<QPixmap>()), file);
+            }
         }
     }
 

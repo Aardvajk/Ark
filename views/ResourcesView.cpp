@@ -53,18 +53,39 @@ void ResourcesView::addClicked()
 
     if(type != Entity::Type::Invalid)
     {
-        auto base = model->property("Textures").value<QString>();
-        if(!base.isEmpty())
+        if(type == Entity::Type::DiffuseMap || type == Entity::Type::NormalMap)
         {
-            auto path = QFileDialog::getOpenFileName(this, "Select Texture", base, "Images (*.png)");
-            if(!path.isEmpty())
+            auto base = model->property("Textures").value<QString>();
+            if(!base.isEmpty())
             {
-                auto pix = QPixmap(path).scaledToHeight(64, Qt::SmoothTransformation);
-                if(!pix.isNull())
+                auto path = QFileDialog::getOpenFileName(this, "Select Texture", base, "Images (*.png)");
+                if(!path.isEmpty())
+                {
+                    auto pix = QPixmap(path).scaledToHeight(64, Qt::SmoothTransformation);
+                    if(!pix.isNull())
+                    {
+                        auto e = EntityFactory::create(type);
+                        e.setProperty("Path", QFileInfo(path).fileName());
+                        e.setProperty("Thumbnail", QVariant::fromValue(pix));
+
+                        auto command = new CreateEntityCommand("Add", model);
+                        command->create(e);
+
+                        model->endCommand(command);
+                    }
+                }
+            }
+        }
+        else if(type == Entity::Type::Model)
+        {
+            auto base = model->property("Models").value<QString>();
+            if(!base.isEmpty())
+            {
+                auto path = QFileDialog::getOpenFileName(this, "Select Models", base, "Models (*.mod)");
+                if(!path.isEmpty())
                 {
                     auto e = EntityFactory::create(type);
                     e.setProperty("Path", QFileInfo(path).fileName());
-                    e.setProperty("Thumbnail", QVariant::fromValue(pix));
 
                     auto command = new CreateEntityCommand("Add", model);
                     command->create(e);

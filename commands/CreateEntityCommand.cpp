@@ -3,6 +3,7 @@
 #include "models/Model.h"
 #include "models/ModelData.h"
 #include "models/TextureMap.h"
+#include "models/ModelMap.h"
 
 CreateEntityCommand::CreateEntityCommand(const QString &name, Model *model) : Command(name, model)
 {
@@ -25,9 +26,13 @@ void CreateEntityCommand::undo()
         v[i] = data->entities.back();
         data->entities.pop_back();
 
-        if(Entity::isResourceType(v[i].type()))
+        if(v[i].type() == Entity::Type::DiffuseMap || v[i].type() == Entity::Type::NormalMap)
         {
             model->textures().remove(v[i].property("Path").value<QString>());
+        }
+        else if(v[i].type() == Entity::Type::Model)
+        {
+            model->models().remove(v[i].property("Path").value<QString>());
         }
     }
 
@@ -38,9 +43,13 @@ void CreateEntityCommand::redo()
 {
     for(int i = 0; i < v.count(); ++i)
     {
-        if(Entity::isResourceType(v[i].type()))
+        if(v[i].type() == Entity::Type::DiffuseMap || v[i].type() == Entity::Type::NormalMap)
         {
             model->textures().add(v[i].property("Path").value<QString>());
+        }
+        else if(v[i].type() == Entity::Type::Model)
+        {
+            model->models().add(v[i].property("Path").value<QString>());
         }
 
         data->entities.append(v[i]);

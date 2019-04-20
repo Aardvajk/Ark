@@ -26,6 +26,7 @@ public:
         Geometry,
         DiffuseMap,
         NormalMap,
+        Model,
         Invalid
     };
 
@@ -60,6 +61,7 @@ public:
     static const char *typeToString(Type type);
     static Type typeFromString(const std::string &text);
     static bool isResourceType(Type type);
+    static bool isThumbnailType(Type type);
 
 private:
     void setPropertyVariant(const QString &name, const QVariant &value);

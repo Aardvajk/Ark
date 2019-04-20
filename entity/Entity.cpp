@@ -8,7 +8,7 @@
 namespace
 {
 
-const char *types[] = { "Geometry", "Textures", "Normal Maps" };
+const char *types[] = { "Geometry", "Textures", "Normal Maps", "Models" };
 
 }
 
@@ -123,6 +123,11 @@ Entity::Type Entity::typeFromString(const std::string &text)
 }
 
 bool Entity::isResourceType(Type type)
+{
+    return type == Type::DiffuseMap || type == Type::NormalMap || type == Type::Model;
+}
+
+bool Entity::isThumbnailType(Type type)
 {
     return type == Type::DiffuseMap || type == Type::NormalMap;
 }

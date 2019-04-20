@@ -16,6 +16,7 @@ class Entity;
 class ModelBuffers;
 class Command;
 class TextureMap;
+class ModelMap;
 
 class Model : public QPx::AbstractEditorModel
 {
@@ -41,6 +42,9 @@ public:
     TextureMap &textures();
     const TextureMap &textures() const;
 
+    ModelMap &models();
+    const ModelMap &models() const;
+
     virtual bool clear() override;
     virtual bool open(const QString &path) override;
     virtual bool save(const QString &path) const override;
@@ -55,7 +59,7 @@ signals:
     void reset();
 
 private:
-    pcx::aligned_store<32> cache;
+    pcx::aligned_store<40> cache;
 };
 
 #endif // MODEL_H

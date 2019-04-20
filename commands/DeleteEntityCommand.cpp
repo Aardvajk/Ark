@@ -3,6 +3,7 @@
 #include "models/Model.h"
 #include "models/ModelData.h"
 #include "models/TextureMap.h"
+#include "models/ModelMap.h"
 
 DeleteEntityCommand::DeleteEntityCommand(const QString &name, Model *model) : Command(name, model)
 {
@@ -22,9 +23,13 @@ void DeleteEntityCommand::undo()
 {
     for(auto i: v.keys())
     {
-        if(Entity::isResourceType(v[i].type()))
+        if(v[i].type() == Entity::Type::DiffuseMap || v[i].type() == Entity::Type::NormalMap)
         {
             model->textures().add(v[i].property("Path").value<QString>());
+        }
+        else if(v[i].type() == Entity::Type::Model)
+        {
+            model->models().add(v[i].property("Path").value<QString>());
         }
 
         data->entities.insert(data->entities.begin() + i, v[i]);
@@ -44,9 +49,13 @@ void DeleteEntityCommand::redo()
         v[e] = data->entities[e];
         data->entities.remove(e);
 
-        if(Entity::isResourceType(v[e].type()))
+        if(v[i].type() == Entity::Type::DiffuseMap || v[i].type() == Entity::Type::NormalMap)
         {
             model->textures().remove(v[e].property("Path").value<QString>());
+        }
+        else if(v[i].type() == Entity::Type::Model)
+        {
+            model->models().remove(v[e].property("Path").value<QString>());
         }
     }
 

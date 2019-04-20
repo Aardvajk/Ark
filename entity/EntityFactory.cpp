@@ -21,7 +21,11 @@ Entity EntityFactory::create(Entity::Type type)
     else if(Entity::isResourceType(type))
     {
         e.addProperty("Path", Property(QString()));
-        e.addProperty("Thumbnail", Property(QPixmap()));
+
+        if(Entity::isThumbnailType(type))
+        {
+            e.addProperty("Thumbnail", Property(QPixmap()));
+        }
     }
 
     return e;

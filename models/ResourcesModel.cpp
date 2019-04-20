@@ -28,6 +28,9 @@ ResourcesModel::ResourcesModel(Model *model, QObject *parent) : QPx::TreeModel(p
     types[Entity::Type::NormalMap] = rowCount();
     appendRow(new Item(-1, "Normal Maps"));
 
+    types[Entity::Type::Model] = rowCount();
+    appendRow(new Item(-1, "Models"));
+
     connect(model, SIGNAL(changed()), SLOT(modelChanged()));
     modelChanged();
 

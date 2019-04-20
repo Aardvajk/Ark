@@ -137,7 +137,8 @@ SOURCES += \
     models/CreateModel.cpp \
     core/CreateMesh.cpp \
     commands/ModifyMeshCommand.cpp \
-    controls/RotateButtonBox.cpp
+    controls/RotateButtonBox.cpp \
+    models/ModelMap.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -245,7 +246,8 @@ HEADERS += \
     models/CreateModel.h \
     core/CreateMesh.h \
     commands/ModifyMeshCommand.h \
-    controls/RotateButtonBox.h
+    controls/RotateButtonBox.h \
+    models/ModelMap.h
 
 DISTFILES += \
     shaders/colorvertex.txt \

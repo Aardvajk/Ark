@@ -44,7 +44,7 @@ QIcon CreateTool::icon() const
 
 void CreateTool::addOptions(QPx::VBoxLayout *layout) const
 {
-    layout->addWidget(new SettingsCreateTree(settings["Create"]["Type"]));
+    layout->addWidget(new SettingsCreateTree(model, settings["Create"]["Type"]));
     addGridSnapCheckbox(layout);
 }
 

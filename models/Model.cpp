@@ -4,6 +4,7 @@
 #include "models/ModelBuffers.h"
 #include "models/ModelCache.h"
 #include "models/TextureMap.h"
+#include "models/ModelMap.h"
 
 #include "commands/Command.h"
 
@@ -15,12 +16,15 @@ namespace
 class Cache
 {
 public:
-    Cache(Model *model, Graphics *graphics) : data(new ModelData(model)), buffers(new ModelBuffers(model, graphics, model)), cache(new ModelCache(model, model)), textures(new TextureMap(model, graphics, model)) { }
+    Cache(Model *model, Graphics *graphics) : data(new ModelData(model)), buffers(new ModelBuffers(model, graphics, model)), cache(new ModelCache(model, model)),
+                                              textures(new TextureMap(model, graphics, model)),
+                                              models(new ModelMap(model, graphics, model)) { }
 
     ModelData *data;
     ModelBuffers *buffers;
     ModelCache *cache;
     TextureMap *textures;
+    ModelMap *models;
 };
 
 }
@@ -34,6 +38,7 @@ Model::Model(Graphics *graphics, QObject *parent) : QPx::AbstractEditorModel(par
 Model::~Model()
 {
     delete cache.get<Cache>().textures;
+    delete cache.get<Cache>().models;
 }
 
 void Model::beginCommand(Command *command)
@@ -86,6 +91,16 @@ const TextureMap &Model::textures() const
     return *cache.get<Cache>().textures;
 }
 
+ModelMap &Model::models()
+{
+    return *cache.get<Cache>().models;
+}
+
+const ModelMap &Model::models() const
+{
+    return *cache.get<Cache>().models;
+}
+
 bool Model::clear()
 {
     auto &c = cache.get<Cache>();
@@ -119,9 +134,13 @@ bool Model::open(const QString &path)
         for(int i = 0; i < entities().count(); ++i)
         {
             auto e = entities()[i];
-            if(Entity::isResourceType(e.type()))
+            if(e.type() == Entity::Type::DiffuseMap || e.type() == Entity::Type::NormalMap)
             {
                 c.textures->add(e.property("Path").value<QString>());
+            }
+            else if(e.type() == Entity::Type::Model)
+            {
+                c.models->add(e.property("Path").value<QString>());
             }
         }
 

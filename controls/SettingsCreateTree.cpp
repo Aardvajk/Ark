@@ -6,12 +6,12 @@
 
 #include <QtWidgets/QHeaderView>
 
-SettingsCreateTree::SettingsCreateTree(QPx::Settings &settings, QWidget *parent) : QTreeView(parent), settings(settings)
+SettingsCreateTree::SettingsCreateTree(Model *model, QPx::Settings &settings, QWidget *parent) : QTreeView(parent), settings(settings)
 {
     header()->hide();
 
-    model = new CreateModel(this);
-    setModel(model);
+    treeModel = new CreateModel(model, this);
+    setModel(treeModel);
 
     connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(stateChanged(QModelIndex,QModelIndex)));
     connect(&settings, SIGNAL(valueChanged(QVariant)), SLOT(settingsChanged(QVariant)));
@@ -46,9 +46,9 @@ void SettingsCreateTree::settingsChanged(const QVariant &value)
     if(!lock)
     {
         auto s = pcx::scoped_lock(lock);
-        for(int i = 0; i < model->rowCount(); ++i)
+        for(int i = 0; i < treeModel->rowCount(); ++i)
         {
-            QModelIndex parent = model->index(i, 0);
+            QModelIndex parent = treeModel->index(i, 0);
             QString prefix = parent.data(Qt::DisplayRole).toString();
 
             if(prefix == value.toString())
@@ -57,9 +57,9 @@ void SettingsCreateTree::settingsChanged(const QVariant &value)
                 return;
             }
 
-            for(int j = 0; j < model->rowCount(parent); ++j)
+            for(int j = 0; j < treeModel->rowCount(parent); ++j)
             {
-                QModelIndex index = model->index(j, 0, parent);
+                QModelIndex index = treeModel->index(j, 0, parent);
                 if(QString("%1.%2").arg(prefix).arg(index.data(Qt::DisplayRole).toString()) == value.toString())
                 {
                     selectionModel()->setCurrentIndex(index, QItemSelectionModel::ClearAndSelect);

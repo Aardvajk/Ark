@@ -64,14 +64,34 @@ void CreateModel::modelChanged()
         auto parent = index(i, 0);
         if(parent.data(Qt::DisplayRole).toString() == "Models")
         {
-            while(rowCount(parent))
+            QStringList remain;
+
+            int j = 0;
+            while(j < rowCount(parent))
             {
-                removeRow(0, parent);
+                auto path = index(j, 0, parent).data(Qt::DisplayRole).toString();
+
+                if(models.indexOf(path) < 0)
+                {
+                    removeRow(j, parent);
+                }
+                else
+                {
+                    remain.append(path);
+                    ++j;
+                }
             }
 
-            for(auto &m: models)
+            j = 0;
+            while(j < models.count())
             {
-                appendRow(new Item(m), parent);
+                auto path = models[j];
+                if(remain.indexOf(path) < 0)
+                {
+                    insertRow(j, new Item(path), parent);
+                }
+
+                ++j;
             }
 
             break;

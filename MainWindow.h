@@ -20,7 +20,7 @@ public:
     virtual ~MainWindow() override;
 
 protected:
-    void customInterfaceAction(const QString &key, QWidget *parent);
+    virtual void customInterfaceAction(const QString &key, QWidget *parent) override;
     virtual void closeEvent(QCloseEvent *event) override;
 
 private slots:
